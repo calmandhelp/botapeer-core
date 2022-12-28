@@ -1,17 +1,20 @@
 package com.ryokujun.controller.error;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ErrorMessages {
 
-	private ArrayList<String> errors;
+	private List<HashMap<String, String>> messages;
 
-	public ErrorMessages(ArrayList<String> errors) {
-		this.errors = errors;
-	}
-
-	public void add(String error) {
-		this.errors.add(error);
+	public ErrorMessages() {
+		messages = new ArrayList<HashMap<String, String>>();
 	}
 
 }
