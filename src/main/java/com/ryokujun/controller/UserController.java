@@ -17,7 +17,7 @@ import com.ryokujun.constants.ResponseConstants;
 import com.ryokujun.controller.error.ErrorMessages;
 import com.ryokujun.controller.exception.validation.ValidationException;
 import com.ryokujun.domain.entity.User;
-import com.ryokujun.service.IUserService;
+import com.ryokujun.domain.service.IUserService;
 
 import lombok.RequiredArgsConstructor;
 

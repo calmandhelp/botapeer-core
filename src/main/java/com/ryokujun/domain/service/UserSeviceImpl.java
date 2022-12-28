@@ -1,4 +1,4 @@
-package com.ryokujun.service;
+package com.ryokujun.domain.service;
 
 import java.util.Collection;
 
