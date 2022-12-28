@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ryokujun.constants.ResponseConstants;
 import com.ryokujun.controller.error.ErrorMessages;
 import com.ryokujun.controller.exception.validation.ValidationException;
-import com.ryokujun.entity.User;
+import com.ryokujun.domain.entity.User;
 import com.ryokujun.service.IUserService;
 
 import lombok.RequiredArgsConstructor;

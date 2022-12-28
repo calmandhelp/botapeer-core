@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.ryokujun.entity.User;
+import com.ryokujun.domain.entity.User;
 
 public interface UserMapper {
 	@Select("SELECT * FROM users WHERE id = #{id}")

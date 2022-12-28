@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Service;
 
-import com.ryokujun.entity.User;
+import com.ryokujun.domain.entity.User;
 import com.ryokujun.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;

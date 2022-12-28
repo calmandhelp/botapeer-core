@@ -1,4 +1,4 @@
-package com.ryokujun.entity;
+package com.ryokujun.domain.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

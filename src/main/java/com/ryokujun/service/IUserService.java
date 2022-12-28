@@ -2,7 +2,7 @@ package com.ryokujun.service;
 
 import java.util.Collection;
 
-import com.ryokujun.entity.User;
+import com.ryokujun.domain.entity.User;
 
 public interface IUserService {
 
