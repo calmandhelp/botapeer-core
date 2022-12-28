@@ -1,6 +1,7 @@
 package com.ryokujun.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -67,6 +68,12 @@ public class UserController {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+	}
+
+	@GetMapping("/users")
+	public Collection<User> getUserList() {
+		Collection<User> users = userService.findAll();
+		return users;
 	}
 
 }
