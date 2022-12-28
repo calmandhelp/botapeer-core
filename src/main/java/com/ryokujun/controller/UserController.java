@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,14 +27,14 @@ public class UserController {
 
 	private final IUserService userService;
 
-	@GetMapping("/user/{userId}")
+	@GetMapping("/users/{userId}")
 	public User getUser(@PathVariable String userId) {
 		User u = userService.findById(userId);
 		return u;
 	}
 
-	@PostMapping("/user/{userId}")
-	public void updateUser(@PathVariable String userId, @Validated @RequestBody User user,
+	@PostMapping("/users/{userId}")
+	public User updateUser(@PathVariable String userId, @Validated @RequestBody User user,
 			BindingResult result) {
 		if (result.hasErrors()) {
 			List<HashMap<String, String>> list = new ArrayList<>();
@@ -50,6 +51,13 @@ public class UserController {
 		int userIdforUpdate = Integer.parseInt(userId);
 		user.setId(userIdforUpdate);
 		userService.update(user);
+		User u = userService.findById(userId);
+		return u;
+	}
+
+	@DeleteMapping("/users/{userId}")
+	public void deleteUser() {
+
 	}
 
 }
