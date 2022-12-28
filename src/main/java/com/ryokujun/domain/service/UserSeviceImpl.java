@@ -30,4 +30,9 @@ public class UserSeviceImpl implements IUserService {
 		return this.userMapper.update(user);
 	}
 
+	@Override
+	public boolean delete(int userId) {
+		return this.userMapper.delete(userId);
+	}
+
 }

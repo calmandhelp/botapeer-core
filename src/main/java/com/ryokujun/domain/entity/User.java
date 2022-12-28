@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 
 import lombok.Data;
 
@@ -16,10 +15,8 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@NotEmpty
 	private String name;
 
-	@NotEmpty
 	@Email
 	private String email;
 

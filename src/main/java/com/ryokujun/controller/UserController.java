@@ -50,14 +50,23 @@ public class UserController {
 		}
 		int userIdforUpdate = Integer.parseInt(userId);
 		user.setId(userIdforUpdate);
-		userService.update(user);
+		if (!userService.update(user)) {
+			throw new Error();
+		}
 		User u = userService.findById(userId);
 		return u;
 	}
 
 	@DeleteMapping("/users/{userId}")
-	public void deleteUser() {
-
+	public void deleteUser(@PathVariable String userId) {
+		try {
+			int id = Integer.parseInt(userId);
+			if (!userService.delete(id)) {
+				throw new Error();
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 }

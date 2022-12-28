@@ -2,6 +2,7 @@ package com.ryokujun.mapper;
 
 import java.util.Collection;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -21,4 +22,8 @@ public interface UserMapper {
 			+ "pass = #{pass} "
 			+ "WHERE id = #{id}")
 	boolean update(User user);
+
+	@Delete("DELETE FROM users "
+			+ "WHERE id = #{userId}")
+	boolean delete(int userId);
 }
