@@ -14,6 +14,10 @@ public class Plant {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
+	int categoryId;
+
+	int userId;
+
 	String title;
 
 	String description;

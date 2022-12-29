@@ -17,8 +17,13 @@ public class PlantRepositoryImpl implements IPlantRepository {
 	private final PlantMapper plantMapper;
 
 	@Override
-	public Plant findById(int plantId) {
-		return this.plantMapper.findById(plantId);
+	public Plant findById(int id) {
+		return this.plantMapper.findById(id);
+	}
+
+	@Override
+	public Collection<Plant> findByUserId(int userId) {
+		return this.plantMapper.findByUserId(userId);
 	}
 
 	@Override

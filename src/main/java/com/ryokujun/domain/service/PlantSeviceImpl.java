@@ -21,6 +21,11 @@ public class PlantSeviceImpl implements IPlantService {
 	}
 
 	@Override
+	public Collection<Plant> findByUserId(int userId) {
+		return this.plantRepository.findByUserId(userId);
+	}
+
+	@Override
 	public Collection<Plant> findAll() {
 		return this.plantRepository.findAll();
 	}

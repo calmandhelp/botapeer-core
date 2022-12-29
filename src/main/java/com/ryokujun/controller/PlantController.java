@@ -28,7 +28,7 @@ public class PlantController {
 
 	private final IPlantService plantService;
 
-	@GetMapping("/plants/{plantId}")
+	@GetMapping("plants/{plantId}")
 	public Plant getPlant(@PathVariable String plantId) {
 		try {
 			int plantIdForget = Integer.parseInt(plantId);
@@ -40,7 +40,7 @@ public class PlantController {
 		return null;
 	}
 
-	@PostMapping("/plants/{plantId}")
+	@PostMapping("plants/{plantId}")
 	public Plant updatePlant(@PathVariable String plantId, @Validated @RequestBody Plant plant,
 			BindingResult result) {
 		if (result.hasErrors()) {
@@ -69,7 +69,7 @@ public class PlantController {
 		return null;
 	}
 
-	@DeleteMapping("/plants/{plantId}")
+	@DeleteMapping("plants/{plantId}")
 	public void deletePlant(@PathVariable String plantId) {
 		try {
 			int id = Integer.parseInt(plantId);
@@ -81,10 +81,16 @@ public class PlantController {
 		}
 	}
 
-	@GetMapping("/plants")
-	public Collection<Plant> getplantList() {
-		Collection<Plant> plants = plantService.findAll();
-		return plants;
+	@GetMapping("plants/users/{userId}")
+	public Collection<Plant> getUserPlantList(@PathVariable String userId) {
+		try {
+			int userIdforget = Integer.parseInt(userId);
+			Collection<Plant> plants = plantService.findByUserId(userIdforget);
+			return plants;
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
 	}
 
 }

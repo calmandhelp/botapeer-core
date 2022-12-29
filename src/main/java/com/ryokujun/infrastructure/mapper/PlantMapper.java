@@ -15,11 +15,16 @@ public interface PlantMapper {
 	@Select("SELECT * FROM plants")
 	Collection<Plant> findAll();
 
+	@Select("SELECT * FROM plants WHERE 	user_id = #{userId}")
+	Collection<Plant> findByUserId(int userId);
+
 	@Update("UPDATE plants "
 			+ "SET "
+			+ "category_id = #{categoryId}, "
+			+ "user_id = #{userId}, "
 			+ "title = #{title}, "
 			+ "description = #{description}, "
-			+ "imageUrl = #{imageUrl}, "
+			+ "image_url = #{imageUrl}, "
 			+ "status = #{status}, "
 			+ "alive = #{alive} "
 			+ "WHERE id = #{id}")
