@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ryokujun.constants.ResponseConstants;
-import com.ryokujun.controller.error.ErrorMessages;
+import com.ryokujun.controller.exception.validation.ErrorMessages;
 import com.ryokujun.controller.exception.validation.ValidationException;
 import com.ryokujun.domain.entity.User;
 import com.ryokujun.domain.service.IUserService;
@@ -47,10 +47,10 @@ public class UserController {
 		if (result.hasErrors()) {
 			List<HashMap<String, String>> list = new ArrayList<>();
 			for (int i = 0; i < result.getErrorCount(); i++) {
-				HashMap<String, String> errorsList = new HashMap<>();
-				errorsList.put(ResponseConstants.ERRORS_CODE_KEY, result.getAllErrors().get(i).getCode());
-				errorsList.put(ResponseConstants.ERRORS_MESSAGE_KEY, result.getAllErrors().get(i).getDefaultMessage());
-				list.add(errorsList);
+				HashMap<String, String> errorsMap = new HashMap<>();
+				errorsMap.put(ResponseConstants.ERRORS_CODE_KEY, result.getAllErrors().get(i).getCode());
+				errorsMap.put(ResponseConstants.ERRORS_MESSAGE_KEY, result.getAllErrors().get(i).getDefaultMessage());
+				list.add(errorsMap);
 			}
 			ErrorMessages errorMessages = new ErrorMessages();
 			errorMessages.setMessages(list);
@@ -93,10 +93,10 @@ public class UserController {
 		if (result.hasErrors()) {
 			List<HashMap<String, String>> list = new ArrayList<>();
 			for (int i = 0; i < result.getErrorCount(); i++) {
-				HashMap<String, String> errorsList = new HashMap<>();
-				errorsList.put(ResponseConstants.ERRORS_CODE_KEY, result.getAllErrors().get(i).getCode());
-				errorsList.put(ResponseConstants.ERRORS_MESSAGE_KEY, result.getAllErrors().get(i).getDefaultMessage());
-				list.add(errorsList);
+				HashMap<String, String> errorsMap = new HashMap<>();
+				errorsMap.put(ResponseConstants.ERRORS_CODE_KEY, result.getAllErrors().get(i).getCode());
+				errorsMap.put(ResponseConstants.ERRORS_MESSAGE_KEY, result.getAllErrors().get(i).getDefaultMessage());
+				list.add(errorsMap);
 			}
 			ErrorMessages errorMessages = new ErrorMessages();
 			errorMessages.setMessages(list);

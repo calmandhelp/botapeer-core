@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.ryokujun.constants.ResponseConstants;
-import com.ryokujun.controller.error.ErrorMessages;
 
 public class ResponseDto {
 

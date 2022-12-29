@@ -1,4 +1,4 @@
-package com.ryokujun.controller.error;
+package com.ryokujun.controller.exception.validation;
 
 import java.util.HashMap;
 import java.util.List;

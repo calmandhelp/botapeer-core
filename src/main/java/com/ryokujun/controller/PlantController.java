@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ryokujun.constants.ResponseConstants;
-import com.ryokujun.controller.error.ErrorMessages;
+import com.ryokujun.controller.exception.validation.ErrorMessages;
 import com.ryokujun.controller.exception.validation.ValidationException;
 import com.ryokujun.domain.entity.Plant;
 import com.ryokujun.domain.service.IPlantService;
