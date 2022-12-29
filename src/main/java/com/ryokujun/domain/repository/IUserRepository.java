@@ -1,11 +1,10 @@
-package com.ryokujun.domain.service;
+package com.ryokujun.domain.repository;
 
 import java.util.Collection;
 
 import com.ryokujun.domain.entity.User;
 
-public interface IUserService {
-
+public interface IUserRepository {
 	public User findById(int userId);
 
 	public Collection<User> findAll();
@@ -17,5 +16,4 @@ public interface IUserService {
 	public boolean create(User user);
 
 	public User findByEmail(String email);
-
 }

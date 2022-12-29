@@ -1,48 +1,49 @@
-package com.ryokujun.domain.service;
+package com.ryokujun.infrastructure.repository;
 
 import java.util.Collection;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import com.ryokujun.domain.entity.User;
 import com.ryokujun.domain.repository.IUserRepository;
+import com.ryokujun.infrastructure.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
 @RequiredArgsConstructor
-public class UserSeviceImpl implements IUserService {
+@Repository
+public class UserRepositoryImpl implements IUserRepository {
 
-	private final IUserRepository userRepository;
+	private final UserMapper userMapper;
 
 	@Override
 	public User findById(int userId) {
-		return this.userRepository.findById(userId);
+		return this.userMapper.findById(userId);
 	}
 
 	@Override
 	public Collection<User> findAll() {
-		return this.userRepository.findAll();
+		return this.userMapper.findAll();
 	}
 
 	@Override
 	public boolean update(User user) {
-		return this.userRepository.update(user);
+		return this.userMapper.update(user);
 	}
 
 	@Override
 	public boolean delete(int userId) {
-		return this.userRepository.delete(userId);
+		return this.userMapper.delete(userId);
 	}
 
 	@Override
 	public boolean create(User user) {
-		return this.userRepository.create(user);
+		return this.userMapper.create(user);
 	}
 
 	@Override
 	public User findByEmail(String email) {
-		return this.userRepository.findByEmail(email);
+		return this.userMapper.findByEmail(email);
 	}
 
 }

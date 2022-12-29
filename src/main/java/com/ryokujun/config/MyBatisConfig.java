@@ -4,7 +4,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan("com.ryokujun.mapper")
+@MapperScan("com.ryokujun.infrastructure")
 public class MyBatisConfig {
 
 	//	@Bean

@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users
    email VARCHAR (255),
    pass VARCHAR (255),
    description VARCHAR (255),
+   status INT,
    created_at DATETIME,
    updated_at DATETIME,
    PRIMARY KEY (id)
