@@ -12,11 +12,26 @@ CREATE TABLE IF NOT EXISTS users
    updated_at DATETIME,
    PRIMARY KEY (id)
 );
+CREATE TABLE IF NOT EXISTS albums
+(
+   id INT NOT NULL AUTO_INCREMENT,
+   user_id INT,
+   title VARCHAR(255),
+   alive boolean,
+   start_date DATETIME,
+   end_date DATETIME,
+   created_at DATETIME,
+   updated_at DATETIME,
+   PRIMARY KEY (id),
+   CONSTRAINT FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE RESTRICT
+);
 CREATE TABLE IF NOT EXISTS follows
 (
    id INT NOT NULL AUTO_INCREMENT,
    followee_id INT,
    follwer_id INT,
+   start_date DATETIME,
+   end_date DATETIME,
    created_at DATETIME,
    updated_at DATETIME,
    PRIMARY KEY (id),
@@ -34,6 +49,7 @@ CREATE TABLE IF NOT EXISTS plants
    id INT NOT NULL AUTO_INCREMENT,
    category_id INT,
    user_id INT,
+   album_id INT,
    title VARCHAR (255),
    description VARCHAR (255),
    image_url VARCHAR (255),
@@ -42,6 +58,7 @@ CREATE TABLE IF NOT EXISTS plants
    created_at DATETIME,
    updated_at DATETIME,
    PRIMARY KEY (id),
+   CONSTRAINT FOREIGN KEY (album_id) REFERENCES albums (id) ON DELETE RESTRICT ON UPDATE RESTRICT,
    CONSTRAINT FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE RESTRICT ON UPDATE RESTRICT,
    CONSTRAINT FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
