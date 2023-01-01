@@ -10,6 +10,7 @@ erDiagram
     users ||--o{ activities : has
     categories ||--o{ plant_category : tags
     albums ||--o{ plants : has
+    albums ||--o{ comments : has
     plants ||--o{ plant_category : has
     plants ||--o{ comments : has
     plants ||--o{ activities : has
@@ -34,6 +35,7 @@ erDiagram
     albums {
         int id PK
         int user_id FK
+        int comment_id FK
         string title
         boolean alive
         int start_date
