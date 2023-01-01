@@ -2,15 +2,15 @@
 ```mermaid
 erDiagram
     users ||--o{ follows : follows
-    users ||--o{ albums : creates
+    users ||--o{ records : creates
     plants ||--o{ likes : has
     comments ||--o{ likes : has
     users ||--o{ plants : posts
     users ||--o{ comments : posts
     users ||--o{ activities : has
     categories ||--o{ plant_category : tags
-    albums ||--o{ plants : has
-    albums ||--o{ comments : has
+    records ||--o{ plants : has
+    records ||--o{ comments : has
     plants ||--o{ plant_category : has
     plants ||--o{ comments : has
     plants ||--o{ activities : has
@@ -32,7 +32,7 @@ erDiagram
         datetime created_at
         datetime updated_at
     }
-    albums {
+    records {
         int id PK
         int user_id FK
         string title
@@ -44,7 +44,7 @@ erDiagram
         int id PK
         int category_id FK
         int user_id FK
-        int album_id FK
+        int record_id FK
         string title
         string description
         string image_url
@@ -64,7 +64,7 @@ erDiagram
     }
     comments {
         int id PK
-        int album_id FK
+        int record_id FK
         int plant_id FK
         int user_id FK
         string content
