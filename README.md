@@ -33,6 +33,7 @@ erDiagram
     albums {
         int id PK
         string title
+        boolean alive
         int start_date
         int end_date
     }
