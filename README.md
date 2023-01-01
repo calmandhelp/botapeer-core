@@ -2,6 +2,7 @@
 ```mermaid
 erDiagram
     users ||--o{ follows : follows
+    users ||--o{ albums : creates
     plants ||--o{ likes : has
     comments ||--o{ likes : has
     users ||--o{ plants : posts
@@ -32,6 +33,7 @@ erDiagram
     }
     albums {
         int id PK
+        int user_id FK
         string title
         boolean alive
         int start_date
