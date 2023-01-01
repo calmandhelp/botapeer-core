@@ -35,7 +35,6 @@ erDiagram
     albums {
         int id PK
         int user_id FK
-        int comment_id FK
         string title
         boolean alive
         int start_date
@@ -65,6 +64,7 @@ erDiagram
     }
     comments {
         int id PK
+        int album_id FK
         int plant_id FK
         int user_id FK
         string content
