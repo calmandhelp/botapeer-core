@@ -20,7 +20,7 @@ public interface UserMapper {
 			+ "SET "
 			+ "name = #{name}, "
 			+ "email = #{email}, "
-			+ "pass = #{pass}, "
+			+ "password = #{password}, "
 			+ "status = #{status} "
 			+ "WHERE id = #{id}")
 	boolean update(User user);
@@ -33,7 +33,7 @@ public interface UserMapper {
 			+ "( "
 			+ "name, "
 			+ "email, "
-			+ "pass, "
+			+ "password, "
 			+ "status, "
 			+ "updated_at, "
 			+ "created_at "

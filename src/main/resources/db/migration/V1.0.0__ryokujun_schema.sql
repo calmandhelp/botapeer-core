@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users
    id INT NOT NULL AUTO_INCREMENT,
    name VARCHAR (255),
    email VARCHAR (255),
-   pass VARCHAR (255),
+   password VARCHAR (255),
    description VARCHAR (255),
    status INT,
    created_at DATETIME,

@@ -20,7 +20,7 @@ public class User {
 	@Email
 	private String email;
 
-	private String pass;
+	private String password;
 
 	private Integer status;
 }
