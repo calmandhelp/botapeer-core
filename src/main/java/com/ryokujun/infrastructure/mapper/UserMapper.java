@@ -1,6 +1,7 @@
 package com.ryokujun.infrastructure.mapper;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -11,7 +12,7 @@ import com.ryokujun.domain.entity.User;
 
 public interface UserMapper {
 	@Select("SELECT * FROM users WHERE id = #{id}")
-	User findById(int id);
+	Optional<User> findById(int id);
 
 	@Select("SELECT * FROM users")
 	Collection<User> findAll();
@@ -42,7 +43,7 @@ public interface UserMapper {
 			+ "( "
 			+ "#{name}, "
 			+ "#{email}, "
-			+ "#{pass}, "
+			+ "#{password}, "
 			+ "#{status}, "
 			+ "current_timestamp, "
 			+ "current_timestamp "
@@ -50,5 +51,8 @@ public interface UserMapper {
 	boolean create(User user);
 
 	@Select("SELECT * from users WHERE email = #{email}")
-	User findByEmail(String email);
+	Optional<User> findByEmail(String email);
+
+	@Select("SELECT * from users WHERE name = #{name}")
+	Optional<User> findByName(String name);
 }

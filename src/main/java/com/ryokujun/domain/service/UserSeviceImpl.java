@@ -1,7 +1,10 @@
 package com.ryokujun.domain.service;
 
 import java.util.Collection;
+import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ryokujun.domain.entity.User;
@@ -13,10 +16,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserSeviceImpl implements IUserService {
 
+	private final PasswordEncoder passwordEncoder;
+
 	private final IUserRepository userRepository;
 
 	@Override
-	public User findById(int userId) {
+	public Optional<User> findById(int userId) {
 		return this.userRepository.findById(userId);
 	}
 
@@ -27,6 +32,9 @@ public class UserSeviceImpl implements IUserService {
 
 	@Override
 	public boolean update(User user) {
+		if (StringUtils.isEmpty(user.getPassword())) {
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
+		}
 		return this.userRepository.update(user);
 	}
 
@@ -37,12 +45,17 @@ public class UserSeviceImpl implements IUserService {
 
 	@Override
 	public boolean create(User user) {
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return this.userRepository.create(user);
 	}
 
 	@Override
-	public User findByEmail(String email) {
+	public Optional<User> findByEmail(String email) {
 		return this.userRepository.findByEmail(email);
 	}
 
+	@Override
+	public Optional<User> findByName(String name) {
+		return this.userRepository.findByName(name);
+	}
 }

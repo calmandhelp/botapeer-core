@@ -1,11 +1,12 @@
 package com.ryokujun.domain.repository;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import com.ryokujun.domain.entity.User;
 
 public interface IUserRepository {
-	public User findById(int userId);
+	public Optional<User> findById(int userId);
 
 	public Collection<User> findAll();
 
@@ -15,5 +16,7 @@ public interface IUserRepository {
 
 	public boolean create(User user);
 
-	public User findByEmail(String email);
+	public Optional<User> findByEmail(String email);
+
+	public Optional<User> findByName(String name);
 }

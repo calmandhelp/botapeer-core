@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -30,10 +31,10 @@ public class UserController {
 	private final IUserService userService;
 
 	@GetMapping("/users/{userId}")
-	public User getUser(@PathVariable String userId) {
+	public Optional<User> getUser(@PathVariable String userId) {
 		try {
 			int userIdForget = Integer.parseInt(userId);
-			User u = userService.findById(userIdForget);
+			Optional<User> u = userService.findById(userIdForget);
 			return u;
 		} catch (Exception e) {
 			System.out.println(e);
@@ -42,7 +43,7 @@ public class UserController {
 	}
 
 	@PostMapping("/users/{userId}")
-	public User updateUser(@PathVariable String userId, @Validated @RequestBody User user,
+	public Optional<User> updateUser(@PathVariable String userId, @Validated @RequestBody User user,
 			BindingResult result) {
 		if (result.hasErrors()) {
 			List<HashMap<String, String>> list = new ArrayList<>();
@@ -62,7 +63,7 @@ public class UserController {
 			if (!userService.update(user)) {
 				throw new Error();
 			}
-			User u = userService.findById(userIdforUpdate);
+			Optional<User> u = userService.findById(userIdforUpdate);
 			return u;
 		} catch (Exception e) {
 			System.out.println(e);
@@ -89,7 +90,7 @@ public class UserController {
 	}
 
 	@PostMapping("/users")
-	public User createUser(@Validated @RequestBody User user, BindingResult result) {
+	public Optional<User> createUser(@Validated @RequestBody User user, BindingResult result) {
 		if (result.hasErrors()) {
 			List<HashMap<String, String>> list = new ArrayList<>();
 			for (int i = 0; i < result.getErrorCount(); i++) {
@@ -107,14 +108,14 @@ public class UserController {
 			throw new Error();
 		}
 
-		User u = userService.findByEmail(user.getEmail());
+		Optional<User> u = userService.findByEmail(user.getEmail());
 		return u;
 	}
 
 	@GetMapping("/findByEmail")
-	public User findByEmail(@RequestParam String email) {
+	public Optional<User> findByEmail(@RequestParam String email) {
 		try {
-			User u = userService.findByEmail(email);
+			Optional<User> u = userService.findByEmail(email);
 			return u;
 		} catch (Exception e) {
 			System.out.println(e);

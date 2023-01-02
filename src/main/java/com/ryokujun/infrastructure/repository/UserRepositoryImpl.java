@@ -1,6 +1,7 @@
 package com.ryokujun.infrastructure.repository;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +18,7 @@ public class UserRepositoryImpl implements IUserRepository {
 	private final UserMapper userMapper;
 
 	@Override
-	public User findById(int userId) {
+	public Optional<User> findById(int userId) {
 		return this.userMapper.findById(userId);
 	}
 
@@ -42,8 +43,13 @@ public class UserRepositoryImpl implements IUserRepository {
 	}
 
 	@Override
-	public User findByEmail(String email) {
+	public Optional<User> findByEmail(String email) {
 		return this.userMapper.findByEmail(email);
+	}
+
+	@Override
+	public Optional<User> findByName(String name) {
+		return this.userMapper.findByName(name);
 	}
 
 }
