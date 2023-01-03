@@ -20,12 +20,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	private final IUserRepository userRepository;
 
 	@Override
-	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-		Optional<User> user = userRepository.findByName(userId);
+	public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
+		Optional<User> user = userRepository.findUserByNameOrEmail(usernameOrEmail);
 		if (!user.isPresent()) {
-			throw new UsernameNotFoundException(userId + "が存在しません");
+			throw new UsernameNotFoundException(usernameOrEmail + "が存在しません");
 		}
 		return new UserDetailsImpl(user.get());
+	}
+
+	public UserDetails loadUserById(Long userId) {
+		try {
+			Optional<User> user = userRepository.findById(userId);
+			if (!user.isPresent()) {
+				throw new UsernameNotFoundException(userId + "が存在しません");
+			}
+			return new UserDetailsImpl(user.get());
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
 	}
 
 }

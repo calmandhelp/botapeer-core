@@ -18,7 +18,7 @@ public class UserRepositoryImpl implements IUserRepository {
 	private final UserMapper userMapper;
 
 	@Override
-	public Optional<User> findById(int userId) {
+	public Optional<User> findById(Long userId) {
 		return this.userMapper.findById(userId);
 	}
 
@@ -33,13 +33,17 @@ public class UserRepositoryImpl implements IUserRepository {
 	}
 
 	@Override
-	public boolean delete(int userId) {
+	public boolean delete(Long userId) {
 		return this.userMapper.delete(userId);
 	}
 
 	@Override
 	public boolean create(User user) {
 		return this.userMapper.create(user);
+	}
+
+	public Optional<User> findUserByNameOrEmail(String usernameOrEmail) {
+		return this.userMapper.findUserByNameOrEmail(usernameOrEmail);
 	}
 
 	@Override

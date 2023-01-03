@@ -21,7 +21,7 @@ public class UserSeviceImpl implements IUserService {
 	private final IUserRepository userRepository;
 
 	@Override
-	public Optional<User> findById(int userId) {
+	public Optional<User> findById(Long userId) {
 		return this.userRepository.findById(userId);
 	}
 
@@ -39,7 +39,7 @@ public class UserSeviceImpl implements IUserService {
 	}
 
 	@Override
-	public boolean delete(int userId) {
+	public boolean delete(Long userId) {
 		return this.userRepository.delete(userId);
 	}
 
@@ -47,6 +47,11 @@ public class UserSeviceImpl implements IUserService {
 	public boolean create(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return this.userRepository.create(user);
+	}
+
+	@Override
+	public Optional<User> findByUserNameOrEmail(String usernameOrEmail) {
+		return this.userRepository.findUserByNameOrEmail(usernameOrEmail);
 	}
 
 	@Override

@@ -5,7 +5,7 @@ services:
       build:
          context: .
       ports:
-      - 8080:8080
+      - 8081:8080
       volumes:
       - .:/app
       tty: true
@@ -25,7 +25,7 @@ services:
    db:
       image: mysql:8.0.31
       ports:
-      - 3306:3306
+      - 33061:3306
       environment:
          MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
          MYSQL_DATABASE: ${DB_SCHEMA}

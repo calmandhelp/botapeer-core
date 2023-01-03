@@ -12,7 +12,7 @@ import com.ryokujun.domain.entity.User;
 
 public interface UserMapper {
 	@Select("SELECT * FROM users WHERE id = #{id}")
-	Optional<User> findById(int id);
+	Optional<User> findById(Long id);
 
 	@Select("SELECT * FROM users")
 	Collection<User> findAll();
@@ -28,7 +28,7 @@ public interface UserMapper {
 
 	@Delete("DELETE FROM users "
 			+ "WHERE id = #{userId}")
-	boolean delete(int userId);
+	boolean delete(Long userId);
 
 	@Insert("INSERT INTO users"
 			+ "( "
@@ -49,6 +49,9 @@ public interface UserMapper {
 			+ "current_timestamp "
 			+ ")")
 	boolean create(User user);
+
+	@Select("SELECT * from users WHERE email = #{usernameOrEmail} OR name = #{usernameOrEmail}")
+	Optional<User> findUserByNameOrEmail(String usernameOrEmail);
 
 	@Select("SELECT * from users WHERE email = #{email}")
 	Optional<User> findByEmail(String email);

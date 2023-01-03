@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class UserController {
 
 	private final IUserService userService;
@@ -33,8 +35,8 @@ public class UserController {
 	@GetMapping("/users/{userId}")
 	public Optional<User> getUser(@PathVariable String userId) {
 		try {
-			int userIdForget = Integer.parseInt(userId);
-			Optional<User> u = userService.findById(userIdForget);
+			int userIdInt = Integer.parseInt(userId);
+			Optional<User> u = userService.findById((long) userIdInt);
 			return u;
 		} catch (Exception e) {
 			System.out.println(e);
@@ -58,12 +60,12 @@ public class UserController {
 			throw new ValidationException(errorMessages);
 		}
 		try {
-			int userIdforUpdate = Integer.parseInt(userId);
-			user.setId(userIdforUpdate);
+			int userIdInt = Integer.parseInt(userId);
+			user.setId(userIdInt);
 			if (!userService.update(user)) {
 				throw new Error();
 			}
-			Optional<User> u = userService.findById(userIdforUpdate);
+			Optional<User> u = userService.findById((long) userIdInt);
 			return u;
 		} catch (Exception e) {
 			System.out.println(e);
@@ -74,8 +76,8 @@ public class UserController {
 	@DeleteMapping("/users/{userId}")
 	public void deleteUser(@PathVariable String userId) {
 		try {
-			int id = Integer.parseInt(userId);
-			if (!userService.delete(id)) {
+			int userIdInt = Integer.parseInt(userId);
+			if (!userService.delete((long) userIdInt)) {
 				throw new Error();
 			}
 		} catch (Exception e) {
