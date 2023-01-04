@@ -29,16 +29,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	}
 
 	public UserDetails loadUserById(Long userId) {
-		try {
-			Optional<User> user = userRepository.findById(userId);
-			if (!user.isPresent()) {
-				throw new UsernameNotFoundException(userId + "が存在しません");
-			}
-			return new UserDetailsImpl(user.get());
-		} catch (Exception e) {
-			System.out.println(e);
+		Optional<User> user = userRepository.findById(userId);
+		if (!user.isPresent()) {
+			throw new UsernameNotFoundException(userId + "が存在しません");
 		}
-		return null;
+		return new UserDetailsImpl(user.get());
 	}
-
 }
