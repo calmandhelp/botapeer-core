@@ -91,29 +91,6 @@ public class UserController {
 		return users;
 	}
 
-	@PostMapping("/users")
-	public Optional<User> createUser(@Validated @RequestBody User user, BindingResult result) {
-		if (result.hasErrors()) {
-			List<HashMap<String, String>> list = new ArrayList<>();
-			for (int i = 0; i < result.getErrorCount(); i++) {
-				HashMap<String, String> errorsMap = new HashMap<>();
-				errorsMap.put(ResponseConstants.ERRORS_CODE_KEY, result.getAllErrors().get(i).getCode());
-				errorsMap.put(ResponseConstants.ERRORS_MESSAGE_KEY, result.getAllErrors().get(i).getDefaultMessage());
-				list.add(errorsMap);
-			}
-			ErrorMessages errorMessages = new ErrorMessages();
-			errorMessages.setMessages(list);
-			throw new ValidationException(errorMessages);
-		}
-
-		if (!userService.create(user)) {
-			throw new Error();
-		}
-
-		Optional<User> u = userService.findByEmail(user.getEmail());
-		return u;
-	}
-
 	@GetMapping("/findByEmail")
 	public Optional<User> findByEmail(@RequestParam String email) {
 		try {

@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS users
    email VARCHAR (255) UNIQUE,
    password VARCHAR (255),
    description VARCHAR (255),
+   profile_image VARCHAR(255),
+   cover_image VARCHAR(255),
    status INT,
    created_at DATETIME,
    updated_at DATETIME,

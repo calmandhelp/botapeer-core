@@ -37,7 +37,7 @@ public interface UserMapper {
 			+ "password, "
 			+ "status, "
 			+ "updated_at, "
-			+ "created_at "
+			+ "created_at, "
 			+ ") "
 			+ "VALUES "
 			+ "( "

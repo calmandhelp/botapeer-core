@@ -1,11 +1,18 @@
 package com.ryokujun.config;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @MapperScan("com.ryokujun.infrastructure")
 public class MyBatisConfig {
+
+	@Bean
+	public ConfigurationCustomizer configurationCustomizer() {
+		return configuration -> configuration.setMapUnderscoreToCamelCase(true);
+	}
 
 	//	@Bean
 	//	public DataSource dataSource() {

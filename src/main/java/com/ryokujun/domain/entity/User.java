@@ -26,6 +26,12 @@ public class User {
 
 	private Integer status;
 
+	private String description;
+
+	private String profileImage;
+
+	private String coverImage;
+
 	public boolean isPresent() {
 		if (Objects.isNull(this)) {
 			return false;
