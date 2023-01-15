@@ -32,8 +32,13 @@ public class UserSeviceImpl implements IUserService {
 
 	@Override
 	public boolean update(User user) {
-		if (StringUtils.isEmpty(user.getPassword())) {
+		if (!StringUtils.isEmpty(user.getPassword())) {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
+		} else {
+			Optional<User> u = findById((long) user.getId());
+			if (u.isPresent()) {
+				user.setPassword(u.get().getPassword());
+			}
 		}
 		return this.userRepository.update(user);
 	}
