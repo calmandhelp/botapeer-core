@@ -1,0 +1,29 @@
+package com.ryokujun.usecase;
+
+import java.security.Principal;
+import java.util.Collection;
+import java.util.Optional;
+
+import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.ryokujun.domain.entity.User;
+
+public interface IUserUsecase {
+	public Optional<User> findById(Long userId);
+
+	public Collection<User> findAll();
+
+	public Optional<User> update(Principal principal, User user, MultipartFile coverImage, MultipartFile profileImage,
+			BindingResult result);
+
+	public boolean delete(Long userId);
+
+	public boolean create(User user);
+
+	public Optional<User> findByUserNameOrEmail(String usernameOrEmail);
+
+	public Optional<User> findByEmail(String email);
+
+	public Optional<User> findByName(String name);
+}

@@ -1,9 +1,7 @@
 package com.ryokujun.controller;
 
-import java.util.ArrayList;
+import java.security.Principal;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.validation.BindingResult;
@@ -12,16 +10,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.ryokujun.constants.ResponseConstants;
-import com.ryokujun.controller.exception.validation.ErrorMessages;
-import com.ryokujun.controller.exception.validation.ValidationException;
 import com.ryokujun.domain.entity.User;
 import com.ryokujun.domain.service.IUserService;
+import com.ryokujun.usecase.IUserUsecase;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final IUserService userService;
+	private final IUserUsecase userUsecase;
 
 	@GetMapping("/users/{userId}")
 	public Optional<User> getUser(@PathVariable String userId) {
@@ -45,32 +43,15 @@ public class UserController {
 	}
 
 	@PostMapping("/users/{userId}")
-	public Optional<User> updateUser(@PathVariable String userId, @Validated @RequestBody User user,
+	public Optional<User> updateUser(Principal principal,
+			@Validated @RequestPart("formData") User user,
+			@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
+			@RequestPart(value = "coverImage", required = false) MultipartFile coverImage,
 			BindingResult result) {
-		if (result.hasErrors()) {
-			List<HashMap<String, String>> list = new ArrayList<>();
-			for (int i = 0; i < result.getErrorCount(); i++) {
-				HashMap<String, String> errorsMap = new HashMap<>();
-				errorsMap.put(ResponseConstants.ERRORS_CODE_KEY, result.getAllErrors().get(i).getCode());
-				errorsMap.put(ResponseConstants.ERRORS_MESSAGE_KEY, result.getAllErrors().get(i).getDefaultMessage());
-				list.add(errorsMap);
-			}
-			ErrorMessages errorMessages = new ErrorMessages();
-			errorMessages.setMessages(list);
-			throw new ValidationException(errorMessages);
-		}
-		try {
-			int userIdInt = Integer.parseInt(userId);
-			user.setId(userIdInt);
-			if (!userService.update(user)) {
-				throw new Error();
-			}
-			Optional<User> u = userService.findById((long) userIdInt);
-			return u;
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		return null;
+
+		Optional<User> u = userUsecase.update(principal, user, profileImage, coverImage, result);
+
+		return u;
 	}
 
 	@DeleteMapping("/users/{userId}")

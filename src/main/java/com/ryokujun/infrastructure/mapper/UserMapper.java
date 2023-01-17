@@ -22,7 +22,9 @@ public interface UserMapper {
 			+ "name = #{name}, "
 			+ "email = #{email}, "
 			+ "password = #{password}, "
-			+ "status = #{status} "
+			+ "status = #{status}, "
+			+ "profile_image = #{profileImage}, "
+			+ "cover_image = #{coverImage} "
 			+ "WHERE id = #{id}")
 	boolean update(User user);
 

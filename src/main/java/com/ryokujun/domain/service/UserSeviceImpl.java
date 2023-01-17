@@ -3,7 +3,6 @@ package com.ryokujun.domain.service;
 import java.util.Collection;
 import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,14 +31,6 @@ public class UserSeviceImpl implements IUserService {
 
 	@Override
 	public boolean update(User user) {
-		if (!StringUtils.isEmpty(user.getPassword())) {
-			user.setPassword(passwordEncoder.encode(user.getPassword()));
-		} else {
-			Optional<User> u = findById((long) user.getId());
-			if (u.isPresent()) {
-				user.setPassword(u.get().getPassword());
-			}
-		}
 		return this.userRepository.update(user);
 	}
 
