@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class FileUploadService {
 		DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
 		String extension = FilenameUtils.getExtension(fileUploadForm.getMultipartFile().getOriginalFilename())
 				.toLowerCase();
-		String fileName = fileUploadForm.getCreateAt().format(fm) + "." + extension;
+		String fileName = fileUploadForm.getCreateAt().format(fm) + "_" + UUID.randomUUID() + "." + extension;
 		File uploadFile = new File(fileName);
 
 		try (FileOutputStream uploadFileStream = new FileOutputStream(uploadFile)) {

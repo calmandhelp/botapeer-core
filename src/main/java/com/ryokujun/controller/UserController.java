@@ -48,7 +48,6 @@ public class UserController {
 			@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
 			@RequestPart(value = "coverImage", required = false) MultipartFile coverImage,
 			BindingResult result) {
-
 		Optional<User> u = userUsecase.update(principal, user, profileImage, coverImage, result);
 
 		return u;

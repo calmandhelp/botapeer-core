@@ -78,6 +78,7 @@ public class UserUsecase implements IUserUsecase {
 		if (StringUtils.isEmpty(coverImageName)) {
 			user.setCoverImage(targetUser.get().getCoverImage());
 		} else {
+			System.out.println("coverImageName: " + coverImageName);
 			user.setCoverImage(imagePath + coverImageName);
 		}
 
@@ -85,6 +86,7 @@ public class UserUsecase implements IUserUsecase {
 		if (StringUtils.isEmpty(profileImageName)) {
 			user.setProfileImage(targetUser.get().getProfileImage());
 		} else {
+			System.out.println("profileImageName: " + profileImageName);
 			user.setProfileImage(imagePath + profileImageName);
 		}
 
@@ -138,6 +140,7 @@ public class UserUsecase implements IUserUsecase {
 			fileUploadForm.setMultipartFile(image);
 			fileUploadForm.setCreateAt(LocalDateTime.now());
 			try {
+				System.out.println("image: " + image.getOriginalFilename());
 				String fileName = fileUploadService.fileUpload(fileUploadForm, "botapeer.com/images");
 				return fileName;
 			} catch (IOException e) {
