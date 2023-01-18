@@ -24,8 +24,8 @@ import com.ryokujun.controller.exception.validation.ErrorMessages;
 import com.ryokujun.controller.exception.validation.ValidationException;
 import com.ryokujun.domain.entity.User;
 import com.ryokujun.domain.service.IUserService;
-import com.ryokujun.payload.JwtAuthenticationResponse;
-import com.ryokujun.payload.LoginRequest;
+import com.ryokujun.payload.auth.JwtAuthenticationResponse;
+import com.ryokujun.payload.auth.LoginRequest;
 import com.ryokujun.security.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;

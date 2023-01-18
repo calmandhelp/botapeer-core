@@ -11,7 +11,7 @@ public class ValidationConfig {
 	@Bean("messageSource")
 	public MessageSource messageSource() {
 		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-		messageSource.setBasenames("i18n/ValidationMessages");
+		messageSource.setBasenames("i18n/messages", "i18n/ValidationMessages");
 		messageSource.setDefaultEncoding("UTF-8");
 		return messageSource;
 	}

@@ -1,4 +1,4 @@
-package com.ryokujun.payload;
+package com.ryokujun.payload.auth;
 
 import lombok.Data;
 

@@ -29,6 +29,8 @@ public class ResponseDto {
 			return ResponseConstants.EMAIL_VALIDATION_CODE;
 		case ResponseConstants.NOT_EMPTY_VALIDATION:
 			return ResponseConstants.NOT_EMPTY_VALIDATION_CODE;
+		case ResponseConstants.NOT_BLANK_VALIDATION:
+			return ResponseConstants.NOT_BLANK_VALIDATION_CODE;
 		default:
 			return null;
 		}

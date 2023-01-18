@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -23,7 +24,9 @@ import com.ryokujun.controller.exception.validation.ValidationException;
 import com.ryokujun.domain.entity.User;
 import com.ryokujun.domain.service.FileUploadService;
 import com.ryokujun.domain.service.IUserService;
+import com.ryokujun.payload.user.UpdatePasswordRequest;
 import com.ryokujun.s3.FileUploadForm;
+import com.ryokujun.util.ValidationUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +37,8 @@ public class UserUsecase implements IUserUsecase {
 	private final IUserService userService;
 	private final FileUploadService fileUploadService;
 	private final PasswordEncoder passwordEncoder;
+	private final MessageSource messageSource;
+	private final ValidationUtil validation;
 
 	@Value(value = "${imagePath}")
 	private String imagePath;
@@ -52,7 +57,8 @@ public class UserUsecase implements IUserUsecase {
 
 	@Override
 	public Optional<User> update(
-			Principal principal, User user,
+			Principal principal,
+			User user,
 			MultipartFile profileImage,
 			MultipartFile coverImage,
 			BindingResult result) {
@@ -100,8 +106,16 @@ public class UserUsecase implements IUserUsecase {
 			throw new Error();
 		}
 		Optional<User> u = userService.findById((long) user.getId());
+		u.get().setPassword(null);
 		return u;
+	}
 
+	@Override
+	public Optional<User> updatePassword(UpdatePasswordRequest request, BindingResult result) {
+
+		validation.validation(result);
+
+		return Optional.empty();
 	}
 
 	@Override
@@ -150,5 +164,4 @@ public class UserUsecase implements IUserUsecase {
 		}
 		return null;
 	}
-
 }
