@@ -50,7 +50,7 @@ public class UserUsecase implements IUserUsecase {
 	}
 
 	@Override
-	public Collection<User> findAll() {
+	public Collection<User> findUsers() {
 		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
@@ -138,12 +138,6 @@ public class UserUsecase implements IUserUsecase {
 
 	@Override
 	public Optional<User> findByEmail(String email) {
-		// TODO 自動生成されたメソッド・スタブ
-		return Optional.empty();
-	}
-
-	@Override
-	public Optional<User> findByName(String name) {
 		// TODO 自動生成されたメソッド・スタブ
 		return Optional.empty();
 	}

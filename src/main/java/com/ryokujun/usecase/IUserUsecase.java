@@ -13,7 +13,7 @@ import com.ryokujun.payload.user.UpdatePasswordRequest;
 public interface IUserUsecase {
 	public Optional<User> findById(Long userId);
 
-	public Collection<User> findAll();
+	public Collection<User> findUsers();
 
 	public Optional<User> update(Principal principal, User user, MultipartFile coverImage, MultipartFile profileImage,
 			BindingResult result);
@@ -27,6 +27,4 @@ public interface IUserUsecase {
 	public Optional<User> findByUserNameOrEmail(String usernameOrEmail);
 
 	public Optional<User> findByEmail(String email);
-
-	public Optional<User> findByName(String name);
 }

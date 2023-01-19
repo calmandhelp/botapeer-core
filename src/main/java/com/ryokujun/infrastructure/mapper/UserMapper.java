@@ -60,4 +60,10 @@ public interface UserMapper {
 
 	@Select("SELECT * from users WHERE name = #{name}")
 	Optional<User> findByName(String name);
+
+	@Select("SELECT * from users "
+			+ "WHERE CASE "
+			+ "WHEN #{name} IS NULL THEN 1 = 1 "
+			+ "ELSE name = #{name} END")
+	Collection<User> findUsers(String name);
 }

@@ -32,8 +32,15 @@ public class UserController {
 	private final IUserService userService;
 	private final IUserUsecase userUsecase;
 
+	@GetMapping("/users")
+	public Collection<User> findUsers(@RequestParam(required = false) String username) {
+		Collection<User> u = userService.findUsers(username);
+		System.out.println(u);
+		return u;
+	}
+
 	@GetMapping("/users/{userId}")
-	public Optional<User> getUser(@PathVariable String userId) {
+	public Optional<User> findById(@PathVariable String userId) {
 		try {
 			int userIdInt = Integer.parseInt(userId);
 			Optional<User> u = userService.findById((long) userIdInt);
@@ -71,12 +78,6 @@ public class UserController {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-	}
-
-	@GetMapping("/users")
-	public Collection<User> getUserList() {
-		Collection<User> users = userService.findAll();
-		return users;
 	}
 
 	@GetMapping("/findByEmail")

@@ -25,8 +25,8 @@ public class UserSeviceImpl implements IUserService {
 	}
 
 	@Override
-	public Collection<User> findAll() {
-		return this.userRepository.findAll();
+	public Collection<User> findUsers(String name) {
+		return this.userRepository.findUsers(name);
 	}
 
 	@Override
@@ -59,4 +59,5 @@ public class UserSeviceImpl implements IUserService {
 	public Optional<User> findByName(String name) {
 		return this.userRepository.findByName(name);
 	}
+
 }

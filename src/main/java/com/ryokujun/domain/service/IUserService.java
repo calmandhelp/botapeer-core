@@ -9,7 +9,7 @@ public interface IUserService {
 
 	public Optional<User> findById(Long userId);
 
-	public Collection<User> findAll();
+	public Collection<User> findUsers(String username);
 
 	public boolean update(User user);
 

@@ -8,7 +8,7 @@ import com.ryokujun.domain.entity.User;
 public interface IUserRepository {
 	public Optional<User> findById(Long userId);
 
-	public Collection<User> findAll();
+	public Collection<User> findUsers(String name);
 
 	public boolean update(User user);
 
@@ -21,4 +21,5 @@ public interface IUserRepository {
 	public Optional<User> findByEmail(String email);
 
 	public Optional<User> findByName(String name);
+
 }

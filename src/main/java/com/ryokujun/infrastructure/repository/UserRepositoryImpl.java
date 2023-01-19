@@ -23,8 +23,8 @@ public class UserRepositoryImpl implements IUserRepository {
 	}
 
 	@Override
-	public Collection<User> findAll() {
-		return this.userMapper.findAll();
+	public Collection<User> findUsers(String name) {
+		return this.userMapper.findUsers(name);
 	}
 
 	@Override
