@@ -1,4 +1,4 @@
-USE ryokujun_db;
+USE botapeer_db;
 
 INSERT INTO users(name, email, password, description) values("okuda", "sts868dti@dti.ne.jp", "$2a$12$GdY.dZn7wjfLnlqURlaacObGfp9.i0UJ7EQaYbNr4AtAuxVi5nY12", "初めまして！園芸初心者ですがこれから頑張って投稿しようと思います。コメントもお気軽にどうぞ！");
 INSERT INTO users(name, email, password, description) values("oosaki", "masaru1972@example.com", "$2a$12$GdY.dZn7wjfLnlqURlaacObGfp9.i0UJ7EQaYbNr4AtAuxVi5nY12", "自宅で野菜を栽培して10年になります。最近畑を購入しました。");
