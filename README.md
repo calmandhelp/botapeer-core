@@ -3,27 +3,28 @@
 erDiagram
     users ||--o{ follows : follows
     users ||--o{ records : creates
-    plants ||--o{ likes : has
+    posts ||--o{ likes : has
+    posts ||--o{ comments : has
     comments ||--o{ likes : has
-    users ||--o{ plants : posts
+    users ||--o{ likes : likes
+    users ||--o{ goodjobs : goodjobs
     users ||--o{ comments : posts
-    users ||--o{ activities : has
-    categories ||--o{ plant_category : tags
-    records ||--o{ plants : has
+    records ||--o{ posts : has
+    records ||--o{ labels : has
     records ||--o{ comments : has
-    plants ||--o{ plant_category : has
-    plants ||--o{ comments : has
-    plants ||--o{ activities : has
-    comments ||--o{ activities : has
+    labels ||--o{ activities : has
+    activities ||--o{ goodjobs : has
+    l_activity_types ||--o{ activities : has
+    s_activity_types ||--o{ activities : has
     users {
         int id PK
         string name
         string email
         string password
         string description
-        string status
+        int status
         datetime created_at
-        datetime updated_at 　
+        datetime updated_at 
     }
     follows {
         int id PK
@@ -37,55 +38,69 @@ erDiagram
         int user_id FK
         string title
         boolean alive
-        int start_date
-        int end_date
+        int status
+        datetime end_date
+        datetime created_at
+        datetime updated_at
     }
-    plants {
+    labels {
         int id PK
-        int category_id FK
-        int user_id FK
+        int record_id FK
+        string name
+        datetime end_date
+        datetime created_at
+        datetime updated_at
+    }
+    posts {
+        int id PK
         int record_id FK
         string title
         string description
         string image_url
-        boolean alive
         int status
-        int start_date
-        int end_date
         datetime created_at
         datetime updated_at
     }
     likes {
         int id PK
-        int plant_id FK
-        int comments_id FK
+        int user_id FK
+        int post_id FK
+        int comment_id FK
         datetime created_at
         datetime updated_at
     }
     comments {
         int id PK
         int record_id FK
-        int plant_id FK
+        int post_id FK
         int user_id FK
         string content
-        datetime created_at
-        datetime updated_at
-    }
-    categories {
-        int id PK
-        string name
-    }
-    plant_category {
-        int plant_id FK
-        int category_id FK
+        int status
         datetime created_at
         datetime updated_at
     }
     activities {
         int id PK
-        int user_id FK
-        int comments_id FK
-        int plants_id FK
-        int activity_type 
+        int label_id FK
+        datetime date
+        string comment
+        int l_activity_types
+        int s_activity_types
+    }
+    goodjobs {
+        int id PK
+        int received_user_id FK
+        int send_user_id FK
+        int activities_id FK
+        datetime created_at
+        datetime updated_at
+    }
+    l_activity_types {
+        int id PK
+        string name
+    }
+    s_activity_types {
+        int id PK
+        string name
     }
 ```
