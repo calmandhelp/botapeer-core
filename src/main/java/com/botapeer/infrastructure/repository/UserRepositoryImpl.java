@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
-import com.botapeer.domain.entity.UserEntity;
-import com.botapeer.domain.model.User;
+import com.botapeer.infrastructure.entity.UserEntity;
+import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.repository.IUserRepository;
 import com.botapeer.infrastructure.mapper.UserMapper;
-import com.botapeer.infrastructure.repository.dto.UserRepositoryDto;
+import com.botapeer.infrastructure.repository.dto.user.UserRepositoryDto;
 
 import lombok.RequiredArgsConstructor;
 

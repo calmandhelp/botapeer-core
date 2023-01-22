@@ -1,4 +1,4 @@
-package com.botapeer.domain.model;
+package com.botapeer.domain.model.user;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

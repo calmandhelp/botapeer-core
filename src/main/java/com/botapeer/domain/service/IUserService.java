@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
-import com.botapeer.domain.model.User;
+import com.botapeer.domain.model.user.User;
 
 public interface IUserService {
 

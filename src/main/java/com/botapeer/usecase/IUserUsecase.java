@@ -8,7 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
-import com.botapeer.controller.payload.user.UserRequest;
+import com.botapeer.controller.payload.user.UpdateUserRequest;
 import com.botapeer.controller.payload.user.UserResponse;
 
 public interface IUserUsecase {
@@ -16,7 +16,7 @@ public interface IUserUsecase {
 
 	public Collection<UserResponse> findUsers(String name);
 
-	public Optional<UserResponse> update(Principal principal, UserRequest user, MultipartFile coverImage,
+	public Optional<UserResponse> update(Principal principal, UpdateUserRequest user, MultipartFile coverImage,
 			MultipartFile profileImage,
 			BindingResult result);
 
@@ -25,7 +25,7 @@ public interface IUserUsecase {
 
 	public void delete(String userId);
 
-	public boolean create(UserRequest user);
+	//	public boolean create(UserRequest user);
 
 	public Optional<UserResponse> findByUserNameOrEmail(String usernameOrEmail);
 

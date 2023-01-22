@@ -1,13 +1,13 @@
-package com.botapeer.domain.entity;
+package com.botapeer.infrastructure.entity;
 
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.botapeer.domain.model.Password;
-import com.botapeer.domain.model.User;
-import com.botapeer.domain.model.UserName;
+import com.botapeer.domain.model.user.Password;
+import com.botapeer.domain.model.user.User;
+import com.botapeer.domain.model.user.UserName;
 
 import lombok.Getter;
 import lombok.Setter;

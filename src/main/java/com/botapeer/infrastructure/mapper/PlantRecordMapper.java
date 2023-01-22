@@ -6,17 +6,17 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.botapeer.domain.entity.Plant;
+import com.botapeer.infrastructure.entity.PlantRecord;
 
-public interface PlantMapper {
+public interface PlantRecordMapper {
 	@Select("SELECT * FROM plants WHERE id = #{id}")
-	Plant findById(int id);
+	PlantRecord findById(int id);
 
 	@Select("SELECT * FROM plants")
-	Collection<Plant> findAll();
+	Collection<PlantRecord> findAll();
 
 	@Select("SELECT * FROM plants WHERE 	user_id = #{userId}")
-	Collection<Plant> findByUserId(int userId);
+	Collection<PlantRecord> findByUserId(int userId);
 
 	@Update("UPDATE plants "
 			+ "SET "
@@ -28,7 +28,7 @@ public interface PlantMapper {
 			+ "status = #{status}, "
 			+ "alive = #{alive} "
 			+ "WHERE id = #{id}")
-	boolean update(Plant plant);
+	boolean update(PlantRecord plant);
 
 	@Delete("DELETE FROM plants "
 			+ "WHERE id = #{plantId}")

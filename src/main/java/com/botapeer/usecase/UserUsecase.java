@@ -18,13 +18,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
-import com.botapeer.controller.payload.user.UserRequest;
+import com.botapeer.controller.payload.user.UpdateUserRequest;
 import com.botapeer.controller.payload.user.UserResponse;
-import com.botapeer.domain.model.User;
+import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.service.FileUploadService;
 import com.botapeer.domain.service.IUserService;
 import com.botapeer.s3.FileUploadForm;
-import com.botapeer.usecase.dto.user.UserRequestDto;
+import com.botapeer.usecase.dto.user.UpdateUserRequestDto;
 import com.botapeer.usecase.dto.user.UserResponseDto;
 import com.botapeer.util.ValidationUtils;
 
@@ -68,7 +68,7 @@ public class UserUsecase implements IUserUsecase {
 	@Override
 	public Optional<UserResponse> update(
 			Principal principal,
-			UserRequest user,
+			UpdateUserRequest request,
 			MultipartFile profileImage,
 			MultipartFile coverImage,
 			BindingResult result) {
@@ -78,7 +78,11 @@ public class UserUsecase implements IUserUsecase {
 		String name = principal.getName();
 		Optional<User> targetUser = userService.findByName(name);
 
-		User u = UserRequestDto.toModel(user);
+		if (request.getStatus() == null) {
+			request.setStatus(targetUser.get().getStatus());
+		}
+
+		User u = UpdateUserRequestDto.toModel(request);
 
 		u.setId(targetUser.get().getId());
 
@@ -134,11 +138,11 @@ public class UserUsecase implements IUserUsecase {
 
 	}
 
-	@Override
-	public boolean create(UserRequest user) {
-
-		return false;
-	}
+	//	@Override
+	//	public boolean create(UserRequest user) {
+	//
+	//		return false;
+	//	}
 
 	@Override
 	public Optional<UserResponse> findByUserNameOrEmail(String usernameOrEmail) {

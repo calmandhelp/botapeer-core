@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.Optional;
 
 import com.botapeer.controller.payload.user.UserResponse;
-import com.botapeer.domain.model.User;
-import com.botapeer.domain.model.UserName;
+import com.botapeer.domain.model.user.User;
+import com.botapeer.domain.model.user.UserName;
 
 public class UserResponseDto {
 	public static Optional<UserResponse> toResponse(Optional<User> user) {

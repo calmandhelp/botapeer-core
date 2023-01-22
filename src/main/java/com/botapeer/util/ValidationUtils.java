@@ -25,11 +25,6 @@ public class ValidationUtils {
 
 	public void validation(BindingResult result) {
 		if (result.hasErrors()) {
-
-			//			result.getAllErrors().stream()
-			//					.map(e -> messageSource.getMessage(e, Locale.getDefault()))
-			//					.forEach(System.out::println);
-
 			List<HashMap<String, String>> list = new ArrayList<>();
 
 			result.getAllErrors()

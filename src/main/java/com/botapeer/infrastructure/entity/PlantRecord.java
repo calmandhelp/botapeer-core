@@ -1,4 +1,4 @@
-package com.botapeer.domain.entity;
+package com.botapeer.infrastructure.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Plant {
+public class PlantRecord {
 
 	@javax.persistence.Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.botapeer.domain.entity.UserDetailsImpl;
-import com.botapeer.domain.model.User;
+import com.botapeer.infrastructure.entity.UserDetailsImpl;
+import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.repository.IUserRepository;
 
 import lombok.RequiredArgsConstructor;

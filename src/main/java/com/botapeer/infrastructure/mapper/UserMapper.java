@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.botapeer.domain.entity.UserEntity;
+import com.botapeer.infrastructure.entity.UserEntity;
 
 public interface UserMapper {
 	@Select("SELECT * FROM users WHERE id = #{id}")

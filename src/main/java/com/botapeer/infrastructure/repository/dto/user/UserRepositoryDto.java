@@ -1,14 +1,14 @@
-package com.botapeer.infrastructure.repository.dto;
+package com.botapeer.infrastructure.repository.dto.user;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import com.botapeer.domain.entity.UserEntity;
-import com.botapeer.domain.model.Password;
-import com.botapeer.domain.model.User;
-import com.botapeer.domain.model.UserName;
+import com.botapeer.infrastructure.entity.UserEntity;
+import com.botapeer.domain.model.user.Password;
+import com.botapeer.domain.model.user.User;
+import com.botapeer.domain.model.user.UserName;
 
 public class UserRepositoryDto {
 	public static Optional<User> toModel(Optional<UserEntity> user) {

@@ -4,34 +4,34 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Service;
 
-import com.botapeer.domain.entity.Plant;
+import com.botapeer.infrastructure.entity.PlantRecord;
 import com.botapeer.domain.repository.IPlantRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class PlantSeviceImpl implements IPlantService {
+public class PlantRecordSeviceImpl implements IPlantRecordService {
 
 	private final IPlantRepository plantRepository;
 
 	@Override
-	public Plant findById(int plantId) {
+	public PlantRecord findById(int plantId) {
 		return this.plantRepository.findById(plantId);
 	}
 
 	@Override
-	public Collection<Plant> findByUserId(int userId) {
+	public Collection<PlantRecord> findByUserId(int userId) {
 		return this.plantRepository.findByUserId(userId);
 	}
 
 	@Override
-	public Collection<Plant> findAll() {
+	public Collection<PlantRecord> findAll() {
 		return this.plantRepository.findAll();
 	}
 
 	@Override
-	public boolean update(Plant plant) {
+	public boolean update(PlantRecord plant) {
 		return this.plantRepository.update(plant);
 	}
 

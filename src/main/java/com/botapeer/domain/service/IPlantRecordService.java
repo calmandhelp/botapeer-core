@@ -1,10 +1,10 @@
-package com.botapeer.domain.repository;
+package com.botapeer.domain.service;
 
 import java.util.Collection;
 
 import com.botapeer.infrastructure.entity.PlantRecord;
 
-public interface IPlantRepository {
+public interface IPlantRecordService {
 	public PlantRecord findById(int plantId);
 
 	public Collection<PlantRecord> findByUserId(int userId);

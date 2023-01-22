@@ -1,9 +1,6 @@
 package com.botapeer.controller;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -15,59 +12,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.botapeer.constants.ResponseConstants;
-import com.botapeer.controller.exception.validation.ErrorMessages;
-import com.botapeer.controller.exception.validation.ValidationException;
-import com.botapeer.domain.entity.Plant;
-import com.botapeer.domain.service.IPlantService;
+import com.botapeer.infrastructure.entity.PlantRecord;
+import com.botapeer.domain.service.IPlantRecordService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-public class PlantController {
+public class PlantRecordController {
 
-	private final IPlantService plantService;
+	private final IPlantRecordService plantService;
 
-	@GetMapping("plants/{plantId}")
-	public Plant getPlant(@PathVariable String plantId) {
-		try {
-			int plantIdForget = Integer.parseInt(plantId);
-			Plant p = plantService.findById(plantIdForget);
-			return p;
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+	@GetMapping("records/{recordId}")
+	public PlantRecord getPlant(@PathVariable String plantId) {
+
 		return null;
 	}
 
 	@PostMapping("plants/{plantId}")
-	public Plant updatePlant(@PathVariable String plantId, @Validated @RequestBody Plant plant,
+	public PlantRecord updatePlant(@PathVariable String plantId, @Validated @RequestBody PlantRecord plant,
 			BindingResult result) {
-		if (result.hasErrors()) {
-			List<HashMap<String, String>> list = new ArrayList<>();
-			for (int i = 0; i < result.getErrorCount(); i++) {
-				HashMap<String, String> errorsList = new HashMap<>();
-				errorsList.put(ResponseConstants.ERRORS_CODE_KEY, result.getAllErrors().get(i).getCode());
-				errorsList.put(ResponseConstants.ERRORS_MESSAGE_KEY, result.getAllErrors().get(i).getDefaultMessage());
-				list.add(errorsList);
-			}
-			ErrorMessages errorMessages = new ErrorMessages();
-			errorMessages.setMessages(list);
-			throw new ValidationException(errorMessages);
-		}
-		try {
-			int plantIdforUpdate = Integer.parseInt(plantId);
-			plant.setId(plantIdforUpdate);
-			if (!plantService.update(plant)) {
-				throw new Error();
-			}
-			Plant p = plantService.findById(plantIdforUpdate);
-			return p;
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+
 		return null;
 	}
 
@@ -84,10 +50,10 @@ public class PlantController {
 	}
 
 	@GetMapping("plants/users/{userId}")
-	public Collection<Plant> getUserPlantList(@PathVariable String userId) {
+	public Collection<PlantRecord> getUserPlantList(@PathVariable String userId) {
 		try {
 			int userIdforget = Integer.parseInt(userId);
-			Collection<Plant> plants = plantService.findByUserId(userIdforget);
+			Collection<PlantRecord> plants = plantService.findByUserId(userIdforget);
 			return plants;
 		} catch (Exception e) {
 			System.out.println(e);

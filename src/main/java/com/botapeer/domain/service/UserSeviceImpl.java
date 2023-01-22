@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
-import com.botapeer.domain.model.User;
+import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.repository.IUserRepository;
 
 import lombok.RequiredArgsConstructor;

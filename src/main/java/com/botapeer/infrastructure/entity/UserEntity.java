@@ -1,4 +1,4 @@
-package com.botapeer.domain.entity;
+package com.botapeer.infrastructure.entity;
 
 import java.util.Objects;
 

@@ -18,9 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
-import com.botapeer.controller.payload.user.UserRequest;
+import com.botapeer.controller.payload.user.UpdateUserRequest;
 import com.botapeer.controller.payload.user.UserResponse;
-import com.botapeer.domain.service.IUserService;
 import com.botapeer.usecase.IUserUsecase;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api")
 public class UserController {
 
-	private final IUserService userService;
 	private final IUserUsecase userUsecase;
 
 	@GetMapping("/users")
@@ -47,10 +45,10 @@ public class UserController {
 
 	@PostMapping("/users/{userId}")
 	public Optional<UserResponse> updateUser(Principal principal,
-			@Validated @RequestPart("formData") UserRequest user,
+			@RequestPart("formData") @Validated UpdateUserRequest user,
+			BindingResult result,
 			@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
-			@RequestPart(value = "coverImage", required = false) MultipartFile coverImage,
-			BindingResult result) {
+			@RequestPart(value = "coverImage", required = false) MultipartFile coverImage) {
 		Optional<UserResponse> r = userUsecase.update(principal, user, profileImage, coverImage, result);
 
 		return r;
