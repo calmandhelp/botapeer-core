@@ -1,17 +1,17 @@
 package com.botapeer.domain.service;
 
-import java.util.Collection;
+import java.util.Optional;
 
-import com.botapeer.infrastructure.entity.PlantRecord;
+import com.botapeer.domain.model.plantRecord.PlantRecord;
 
 public interface IPlantRecordService {
-	public PlantRecord findById(int plantId);
+	public Optional<PlantRecord> findById(int plantId);
 
-	public Collection<PlantRecord> findByUserId(int userId);
-
-	public Collection<PlantRecord> findAll();
-
-	public boolean update(PlantRecord plant);
-
-	public boolean delete(int plantId);
+	//	public Collection<PlantRecordEntity> findByUserId(int userId);
+	//
+	//	public Collection<PlantRecordEntity> findAll();
+	//
+	//	public boolean update(PlantRecordEntity plant);
+	//
+	//	public boolean delete(int plantId);
 }

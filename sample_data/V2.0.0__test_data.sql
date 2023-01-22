@@ -8,8 +8,8 @@ INSERT INTO users(name, email, password, description, status) values("narumi", "
 
 INSERT INTO plant_records(id, title) values(1, "バラの生育記録");
 
-INSERT INTO posts(plant_record_id, title, content) values(1, "初めての投稿", "初めての投稿です。よろしくお願いします。");
-INSERT INTO posts(plant_record_id, title, content) values(1, "芽が出ました", "徐々に芽がでてきましたー");
-INSERT INTO posts(plant_record_id, title, content) values(1, "徐々に育ってきています", "いい感じです〜");
-INSERT INTO posts(plant_record_id, title, content) values(1, "蕾が咲きました", "もうそろそろ咲きそうかな？");
-INSERT INTO posts(plant_record_id, title, content) values(1, "花が咲きました", "綺麗に咲きました！");
+INSERT INTO posts(plant_record_id, title, article) values(1, "初めての投稿", "初めての投稿です。よろしくお願いします。");
+INSERT INTO posts(plant_record_id, title, article) values(1, "芽が出ました", "徐々に芽がでてきましたー");
+INSERT INTO posts(plant_record_id, title, article) values(1, "徐々に育ってきています", "いい感じです〜");
+INSERT INTO posts(plant_record_id, title, article) values(1, "蕾が咲きました", "もうそろそろ咲きそうかな？");
+INSERT INTO posts(plant_record_id, title, article) values(1, "花が咲きました", "綺麗に咲きました！");
