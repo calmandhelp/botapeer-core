@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS users
    updated_at DATETIME,
    PRIMARY KEY (id)
 );
-CREATE TABLE IF NOT EXISTS records
+CREATE TABLE IF NOT EXISTS plant_records
 (
    id INT NOT NULL AUTO_INCREMENT,
    user_id INT,
@@ -42,40 +42,41 @@ CREATE TABLE IF NOT EXISTS labels
 (
    id INT NOT NULL AUTO_INCREMENT,
    name VARCHAR (255),
-   record_id INT,
-   end_date DATETIME,
+   plant_record_id INT,
    created_at DATETIME,
    updated_at DATETIME,
    PRIMARY KEY (id),
-   CONSTRAINT FOREIGN KEY (record_id) REFERENCES records (id) ON DELETE RESTRICT ON UPDATE CASCADE
+   CONSTRAINT FOREIGN KEY (plant_record_id) REFERENCES plant_records (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS posts
 (
    id INT NOT NULL AUTO_INCREMENT,
-   record_id INT,
+   plant_record_id INT,
    title VARCHAR (255),
-   description VARCHAR (255),
+   content TEXT,
    image_url VARCHAR (255),
    status INT,
    created_at DATETIME,
    updated_at DATETIME,
    PRIMARY KEY (id),
-   CONSTRAINT FOREIGN KEY (record_id) REFERENCES records (id) ON DELETE RESTRICT ON UPDATE CASCADE
+   CONSTRAINT FOREIGN KEY (plant_record_id) REFERENCES plant_records (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS comments
 (
    id INT NOT NULL AUTO_INCREMENT,
-   record_id INT,
+   plant_record_id INT,
    post_id INT,
    user_id INT,
+   comment_id INT,
    status INT,
    content VARCHAR (255),
    created_at DATETIME,
    updated_at DATETIME,
    PRIMARY KEY (id),
-   CONSTRAINT FOREIGN KEY (record_id) REFERENCES records (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+   CONSTRAINT FOREIGN KEY (plant_record_id) REFERENCES plant_records (id) ON DELETE RESTRICT ON UPDATE CASCADE,
    CONSTRAINT FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE,
-   CONSTRAINT FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE RESTRICT ON UPDATE CASCADE
+   CONSTRAINT FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+   CONSTRAINT FOREIGN KEY (comment_id) REFERENCES comments (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS likes
 (
@@ -105,7 +106,7 @@ CREATE TABLE IF NOT EXISTS s_activity_types
 CREATE TABLE IF NOT EXISTS activities
 (
    id INT NOT NULL AUTO_INCREMENT,
-   comments VARCHAR (255),
+   status INT,
    label_id INT,
    l_activity_type_id INT,
    s_activity_type_id INT,
@@ -115,6 +116,18 @@ CREATE TABLE IF NOT EXISTS activities
    CONSTRAINT FOREIGN KEY (label_id) REFERENCES labels (id) ON DELETE RESTRICT ON UPDATE CASCADE,
    CONSTRAINT FOREIGN KEY (l_activity_type_id) REFERENCES l_activity_types (id) ON DELETE RESTRICT ON UPDATE CASCADE,
    CONSTRAINT FOREIGN KEY (s_activity_type_id) REFERENCES s_activity_types (id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+CREATE TABLE IF NOT EXISTS activity_records
+(
+   id INT NOT NULL AUTO_INCREMENT,
+   user_id INT,
+   image_url VARCHAR (255),
+   content TEXT,
+   created_at DATETIME,
+   updated_at DATETIME,
+   status INT,
+   PRIMARY KEY (id),
+    CONSTRAINT FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS goodjobs
 (
