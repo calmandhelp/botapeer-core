@@ -5,9 +5,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.botapeer.domain.entity.User;
+import com.botapeer.controller.payload.user.UpdatePasswordRequest;
+import com.botapeer.domain.entity.UserEntity;
+import com.botapeer.domain.model.User;
 import com.botapeer.domain.repository.IUserRepository;
 import com.botapeer.infrastructure.mapper.UserMapper;
+import com.botapeer.infrastructure.repository.dto.UserRepositoryDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,17 +22,26 @@ public class UserRepositoryImpl implements IUserRepository {
 
 	@Override
 	public Optional<User> findById(Long userId) {
-		return this.userMapper.findById(userId);
+		Optional<UserEntity> user = this.userMapper.findById(userId);
+		return UserRepositoryDto.toModel(user);
 	}
 
 	@Override
 	public Collection<User> findUsers(String name) {
-		return this.userMapper.findUsers(name);
+		Collection<UserEntity> user = this.userMapper.findUsers(name);
+		return UserRepositoryDto.toModel(user);
 	}
 
 	@Override
 	public boolean update(User user) {
-		return this.userMapper.update(user);
+		UserEntity userEntity = UserRepositoryDto.toEntity(user);
+		return this.userMapper.update(userEntity);
+	}
+
+	@Override
+	public boolean updatePassword(UpdatePasswordRequest request) {
+		// TODO 自動生成されたメソッド・スタブ
+		return false;
 	}
 
 	@Override
@@ -39,21 +51,25 @@ public class UserRepositoryImpl implements IUserRepository {
 
 	@Override
 	public boolean create(User user) {
-		return this.userMapper.create(user);
+		UserEntity u = UserRepositoryDto.toEntity(user);
+		return this.userMapper.create(u);
 	}
 
 	public Optional<User> findUserByNameOrEmail(String usernameOrEmail) {
-		return this.userMapper.findUserByNameOrEmail(usernameOrEmail);
+		Optional<UserEntity> user = this.userMapper.findUserByNameOrEmail(usernameOrEmail);
+		return UserRepositoryDto.toModel(user);
 	}
 
 	@Override
 	public Optional<User> findByEmail(String email) {
-		return this.userMapper.findByEmail(email);
+		Optional<UserEntity> user = this.userMapper.findByEmail(email);
+		return UserRepositoryDto.toModel(user);
 	}
 
 	@Override
 	public Optional<User> findByName(String name) {
-		return this.userMapper.findByName(name);
+		Optional<UserEntity> user = this.userMapper.findByName(name);
+		return UserRepositoryDto.toModel(user);
 	}
 
 }

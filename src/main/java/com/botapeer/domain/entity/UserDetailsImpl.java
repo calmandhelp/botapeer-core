@@ -5,6 +5,10 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.botapeer.domain.model.Password;
+import com.botapeer.domain.model.User;
+import com.botapeer.domain.model.UserName;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,12 +34,16 @@ public class UserDetailsImpl implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return this.user.getPassword();
+		Password password = this.user.getPassword();
+		String strPassword = password.getPassword();
+		return strPassword;
 	}
 
 	@Override
 	public String getUsername() {
-		return this.user.getName();
+		UserName userName = this.user.getName();
+		String strUserName = userName.getName();
+		return strUserName;
 	}
 
 	@Override

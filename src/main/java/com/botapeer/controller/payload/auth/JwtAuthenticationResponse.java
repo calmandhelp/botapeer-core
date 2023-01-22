@@ -1,4 +1,4 @@
-package com.botapeer.payload.auth;
+package com.botapeer.controller.payload.auth;
 
 import lombok.Data;
 

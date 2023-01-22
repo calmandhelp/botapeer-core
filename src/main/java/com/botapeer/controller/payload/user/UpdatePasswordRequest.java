@@ -1,4 +1,4 @@
-package com.botapeer.payload.user;
+package com.botapeer.controller.payload.user;
 
 import javax.validation.constraints.NotBlank;
 

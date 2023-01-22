@@ -11,8 +11,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class User {
-
+public class UserEntity {
 	@javax.persistence.Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;

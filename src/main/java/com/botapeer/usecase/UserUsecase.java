@@ -3,14 +3,13 @@ package com.botapeer.usecase;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,15 +17,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.botapeer.constants.ResponseConstants;
-import com.botapeer.controller.exception.validation.ErrorMessages;
-import com.botapeer.controller.exception.validation.ValidationException;
-import com.botapeer.domain.entity.User;
+import com.botapeer.controller.payload.user.UpdatePasswordRequest;
+import com.botapeer.controller.payload.user.UserRequest;
+import com.botapeer.controller.payload.user.UserResponse;
+import com.botapeer.domain.model.User;
 import com.botapeer.domain.service.FileUploadService;
 import com.botapeer.domain.service.IUserService;
-import com.botapeer.payload.user.UpdatePasswordRequest;
 import com.botapeer.s3.FileUploadForm;
-import com.botapeer.util.ValidationUtil;
+import com.botapeer.usecase.dto.user.UserRequestDto;
+import com.botapeer.usecase.dto.user.UserResponseDto;
+import com.botapeer.util.ValidationUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,111 +38,122 @@ public class UserUsecase implements IUserUsecase {
 	private final FileUploadService fileUploadService;
 	private final PasswordEncoder passwordEncoder;
 	private final MessageSource messageSource;
-	private final ValidationUtil validation;
+	private final ValidationUtils validation;
+
+	Logger logger = LoggerFactory.getLogger(UserUsecase.class);
 
 	@Value(value = "${imagePath}")
 	private String imagePath;
 
 	@Override
-	public Optional<User> findById(Long userId) {
-		// TODO 自動生成されたメソッド・スタブ
+	public Optional<UserResponse> findById(String userId) {
+		try {
+			int id = Integer.parseInt(userId);
+			Optional<User> user = userService.findById((long) id);
+			Optional<UserResponse> r = UserResponseDto.toResponse(user);
+			return r;
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
 		return Optional.empty();
 	}
 
 	@Override
-	public Collection<User> findUsers() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+	public Collection<UserResponse> findUsers(String name) {
+		Collection<User> user = userService.findUsers(name);
+		Collection<UserResponse> r = UserResponseDto.toResponse(user);
+		return r;
 	}
 
 	@Override
-	public Optional<User> update(
+	public Optional<UserResponse> update(
 			Principal principal,
-			User user,
+			UserRequest user,
 			MultipartFile profileImage,
 			MultipartFile coverImage,
 			BindingResult result) {
 
+		validation.validation(result);
+
 		String name = principal.getName();
 		Optional<User> targetUser = userService.findByName(name);
-		user.setId(targetUser.get().getId());
 
-		if (result.hasErrors()) {
-			List<HashMap<String, String>> list = new ArrayList<>();
-			for (int i = 0; i < result.getErrorCount(); i++) {
-				HashMap<String, String> errorsMap = new HashMap<>();
-				errorsMap.put(ResponseConstants.ERRORS_CODE_KEY, result.getAllErrors().get(i).getCode());
-				errorsMap.put(ResponseConstants.ERRORS_MESSAGE_KEY, result.getAllErrors().get(i).getDefaultMessage());
-				list.add(errorsMap);
-			}
-			ErrorMessages errorMessages = new ErrorMessages();
-			errorMessages.setMessages(list);
-			throw new ValidationException(errorMessages);
-		}
+		User u = UserRequestDto.toModel(user);
 
-		String coverImageName = uploadImage(user, coverImage);
+		u.setId(targetUser.get().getId());
+
+		String coverImageName = uploadImage(coverImage);
 		if (StringUtils.isEmpty(coverImageName)) {
-			user.setCoverImage(targetUser.get().getCoverImage());
+			u.setCoverImage(targetUser.get().getCoverImage());
 		} else {
 			System.out.println("coverImageName: " + coverImageName);
-			user.setCoverImage(imagePath + coverImageName);
+			u.setCoverImage(imagePath + coverImageName);
 		}
 
-		String profileImageName = uploadImage(user, profileImage);
+		String profileImageName = uploadImage(profileImage);
 		if (StringUtils.isEmpty(profileImageName)) {
-			user.setProfileImage(targetUser.get().getProfileImage());
+			u.setProfileImage(targetUser.get().getProfileImage());
 		} else {
 			System.out.println("profileImageName: " + profileImageName);
-			user.setProfileImage(imagePath + profileImageName);
+			u.setProfileImage(imagePath + profileImageName);
 		}
 
-		if (!StringUtils.isEmpty(user.getPassword())) {
-			user.setPassword(passwordEncoder.encode(user.getPassword()));
-		} else {
-			user.setPassword(targetUser.get().getPassword());
-		}
+		u.setPassword(targetUser.get().getPassword());
 
-		if (!userService.update(user)) {
+		if (!userService.update(u)) {
 			throw new Error();
 		}
-		Optional<User> u = userService.findById((long) user.getId());
-		u.get().setPassword(null);
-		return u;
+
+		Optional<User> userModel = userService.findById((long) targetUser.get().getId());
+
+		Optional<UserResponse> r = UserResponseDto.toResponse(userModel);
+		return r;
 	}
 
 	@Override
-	public Optional<User> updatePassword(UpdatePasswordRequest request, BindingResult result) {
+	public Optional<UserResponse> updatePassword(Principal principal, UpdatePasswordRequest request,
+			BindingResult result) {
 
 		validation.validation(result);
 
-		return Optional.empty();
+		if (userService.updatePassword(request)) {
+			throw new Error();
+		}
+
+		String name = principal.getName();
+		Optional<User> user = userService.findByName(name);
+
+		Optional<UserResponse> r = UserResponseDto.toResponse(user);
+
+		return r;
 	}
 
 	@Override
-	public boolean delete(Long userId) {
+	public void delete(String userId) {
 		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	@Override
+	public boolean create(UserRequest user) {
+
 		return false;
 	}
 
 	@Override
-	public boolean create(User user) {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
-	}
-
-	@Override
-	public Optional<User> findByUserNameOrEmail(String usernameOrEmail) {
+	public Optional<UserResponse> findByUserNameOrEmail(String usernameOrEmail) {
 		// TODO 自動生成されたメソッド・スタブ
 		return Optional.empty();
 	}
 
 	@Override
-	public Optional<User> findByEmail(String email) {
-		// TODO 自動生成されたメソッド・スタブ
-		return Optional.empty();
+	public Optional<UserResponse> findByEmail(String email) {
+		Optional<User> user = userService.findByEmail(email);
+		Optional<UserResponse> r = UserResponseDto.toResponse(user);
+		return r;
 	}
 
-	public String uploadImage(User user, MultipartFile image) {
+	public String uploadImage(MultipartFile image) {
 		if (!ObjectUtils.isEmpty(image)) {
 			FileUploadForm fileUploadForm = new FileUploadForm();
 			fileUploadForm.setMultipartFile(image);

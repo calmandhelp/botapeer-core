@@ -6,7 +6,8 @@ import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.botapeer.domain.entity.User;
+import com.botapeer.controller.payload.user.UpdatePasswordRequest;
+import com.botapeer.domain.model.User;
 import com.botapeer.domain.repository.IUserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -35,13 +36,26 @@ public class UserSeviceImpl implements IUserService {
 	}
 
 	@Override
+	public boolean updatePassword(UpdatePasswordRequest request) {
+
+		String currentPassword = request.getCurrentPassword();
+		String newPassword = request.getNewPassword();
+
+		if (newPassword.length() < 8
+				|| newPassword.length() < 20) {
+			throw new Error();
+		}
+
+		return this.userRepository.updatePassword(request);
+	}
+
+	@Override
 	public boolean delete(Long userId) {
 		return this.userRepository.delete(userId);
 	}
 
 	@Override
 	public boolean create(User user) {
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return this.userRepository.create(user);
 	}
 

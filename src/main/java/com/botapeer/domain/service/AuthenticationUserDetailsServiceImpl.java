@@ -16,10 +16,10 @@ package com.botapeer.domain.service;
 //		switch (credential) {
 //		case "key1":
 //			// GetItemという名前の権限をもつユーザを作成
-//			return new User("user", "", AuthorityUtils.createAuthorityList("GetItem"));
+//			return new UserEntity("user", "", AuthorityUtils.createAuthorityList("GetItem"));
 //		case "key2":
 //			// // GetItem, GetEmployeeという名前の権限をもつユーザを作成
-//			return new User("manager", "", AuthorityUtils.createAuthorityList("GetItem", "GetEmployee"));
+//			return new UserEntity("manager", "", AuthorityUtils.createAuthorityList("GetItem", "GetEmployee"));
 //		default:
 //			throw new UsernameNotFoundException("Invalid authorization header");
 //		}

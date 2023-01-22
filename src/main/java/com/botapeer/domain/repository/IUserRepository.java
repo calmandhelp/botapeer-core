@@ -3,7 +3,8 @@ package com.botapeer.domain.repository;
 import java.util.Collection;
 import java.util.Optional;
 
-import com.botapeer.domain.entity.User;
+import com.botapeer.controller.payload.user.UpdatePasswordRequest;
+import com.botapeer.domain.model.User;
 
 public interface IUserRepository {
 	public Optional<User> findById(Long userId);
@@ -11,6 +12,8 @@ public interface IUserRepository {
 	public Collection<User> findUsers(String name);
 
 	public boolean update(User user);
+
+	public boolean updatePassword(UpdatePasswordRequest request);
 
 	public boolean delete(Long userId);
 

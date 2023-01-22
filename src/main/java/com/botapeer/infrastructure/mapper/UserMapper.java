@@ -8,25 +8,24 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.botapeer.domain.entity.User;
+import com.botapeer.domain.entity.UserEntity;
 
 public interface UserMapper {
 	@Select("SELECT * FROM users WHERE id = #{id}")
-	Optional<User> findById(Long id);
+	Optional<UserEntity> findById(Long id);
 
 	@Select("SELECT * FROM users")
-	Collection<User> findAll();
+	Collection<UserEntity> findAll();
 
 	@Update("UPDATE users "
 			+ "SET "
 			+ "name = #{name}, "
 			+ "email = #{email}, "
-			+ "password = #{password}, "
 			+ "status = #{status}, "
 			+ "profile_image = #{profileImage}, "
 			+ "cover_image = #{coverImage} "
 			+ "WHERE id = #{id}")
-	boolean update(User user);
+	boolean update(UserEntity user);
 
 	@Delete("DELETE FROM users "
 			+ "WHERE id = #{userId}")
@@ -50,20 +49,20 @@ public interface UserMapper {
 			+ "current_timestamp, "
 			+ "current_timestamp "
 			+ ")")
-	boolean create(User user);
+	boolean create(UserEntity user);
 
 	@Select("SELECT * from users WHERE email = #{usernameOrEmail} OR name = #{usernameOrEmail}")
-	Optional<User> findUserByNameOrEmail(String usernameOrEmail);
+	Optional<UserEntity> findUserByNameOrEmail(String usernameOrEmail);
 
 	@Select("SELECT * from users WHERE email = #{email}")
-	Optional<User> findByEmail(String email);
+	Optional<UserEntity> findByEmail(String email);
 
 	@Select("SELECT * from users WHERE name = #{name}")
-	Optional<User> findByName(String name);
+	Optional<UserEntity> findByName(String name);
 
 	@Select("SELECT * from users "
 			+ "WHERE CASE "
 			+ "WHEN #{name} IS NULL THEN 1 = 1 "
 			+ "ELSE name = #{name} END")
-	Collection<User> findUsers(String name);
+	Collection<UserEntity> findUsers(String name);
 }

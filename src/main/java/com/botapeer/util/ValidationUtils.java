@@ -19,7 +19,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Component
-public class ValidationUtil {
+public class ValidationUtils {
 
 	private final MessageSource messageSource;
 

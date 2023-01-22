@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.botapeer.domain.entity.User;
+import com.botapeer.controller.payload.user.UpdatePasswordRequest;
+import com.botapeer.controller.payload.user.UserRequest;
+import com.botapeer.controller.payload.user.UserResponse;
 import com.botapeer.domain.service.IUserService;
-import com.botapeer.payload.user.UpdatePasswordRequest;
 import com.botapeer.usecase.IUserUsecase;
 
 import lombok.RequiredArgsConstructor;
@@ -33,62 +34,45 @@ public class UserController {
 	private final IUserUsecase userUsecase;
 
 	@GetMapping("/users")
-	public Collection<User> findUsers(@RequestParam(required = false) String username) {
-		Collection<User> u = userService.findUsers(username);
-		System.out.println(u);
+	public Collection<UserResponse> findUsers(@RequestParam(required = false) String username) {
+		Collection<UserResponse> u = userUsecase.findUsers(username);
 		return u;
 	}
 
 	@GetMapping("/users/{userId}")
-	public Optional<User> findById(@PathVariable String userId) {
-		try {
-			int userIdInt = Integer.parseInt(userId);
-			Optional<User> u = userService.findById((long) userIdInt);
-			return u;
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		return null;
-	}
-
-	@PostMapping("/users/{userId}")
-	public Optional<User> updateUser(Principal principal,
-			@Validated @RequestPart("formData") User user,
-			@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
-			@RequestPart(value = "coverImage", required = false) MultipartFile coverImage,
-			BindingResult result) {
-		Optional<User> u = userUsecase.update(principal, user, profileImage, coverImage, result);
-
+	public Optional<UserResponse> findById(@PathVariable String userId) {
+		Optional<UserResponse> u = userUsecase.findById(userId);
 		return u;
 	}
 
+	@PostMapping("/users/{userId}")
+	public Optional<UserResponse> updateUser(Principal principal,
+			@Validated @RequestPart("formData") UserRequest user,
+			@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
+			@RequestPart(value = "coverImage", required = false) MultipartFile coverImage,
+			BindingResult result) {
+		Optional<UserResponse> r = userUsecase.update(principal, user, profileImage, coverImage, result);
+
+		return r;
+	}
+
 	@PostMapping("/users/{userId}/password")
-	public Optional<User> updatePassword(@RequestBody @Validated UpdatePasswordRequest request, BindingResult result) {
-		Optional<User> u = userUsecase.updatePassword(request, result);
-		return null;
+	public Optional<UserResponse> updatePassword(Principal principal,
+			@RequestBody @Validated UpdatePasswordRequest request,
+			BindingResult result) {
+		Optional<UserResponse> r = userUsecase.updatePassword(principal, request, result);
+		return r;
 	}
 
 	@DeleteMapping("/users/{userId}")
 	public void deleteUser(@PathVariable String userId) {
-		try {
-			int userIdInt = Integer.parseInt(userId);
-			if (!userService.delete((long) userIdInt)) {
-				throw new Error();
-			}
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+		userUsecase.delete(userId);
 	}
 
 	@GetMapping("/findByEmail")
-	public Optional<User> findByEmail(@RequestParam String email) {
-		try {
-			Optional<User> u = userService.findByEmail(email);
-			return u;
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		return null;
+	public Optional<UserResponse> findByEmail(@RequestParam String email) {
+		Optional<UserResponse> r = userUsecase.findByEmail(email);
+		return r;
 	}
 
 }

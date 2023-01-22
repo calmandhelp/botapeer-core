@@ -1,8 +1,5 @@
 package com.botapeer.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -19,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.botapeer.constants.ResponseConstants;
-import com.botapeer.controller.exception.validation.ErrorMessages;
-import com.botapeer.controller.exception.validation.ValidationException;
-import com.botapeer.domain.entity.User;
+import com.botapeer.controller.payload.auth.JwtAuthenticationResponse;
+import com.botapeer.controller.payload.auth.LoginRequest;
+import com.botapeer.controller.payload.user.UserRequest;
+import com.botapeer.controller.payload.user.UserResponse;
 import com.botapeer.domain.service.IUserService;
-import com.botapeer.payload.auth.JwtAuthenticationResponse;
-import com.botapeer.payload.auth.LoginRequest;
 import com.botapeer.security.JwtTokenProvider;
+import com.botapeer.usecase.IUserUsecase;
+import com.botapeer.util.ValidationUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,6 +35,8 @@ public class AuthController {
 	private final AuthenticationManager authenticationManager;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final IUserService userService;
+	private final IUserUsecase userUsecase;
+	private final ValidationUtils validationUtils;
 
 	@PostMapping("/signin")
 	public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -51,26 +50,15 @@ public class AuthController {
 	}
 
 	@PostMapping("/signup")
-	public Optional<User> createUser(@Validated @RequestBody User user, BindingResult result) {
-		if (result.hasErrors()) {
-			List<HashMap<String, String>> list = new ArrayList<>();
-			for (int i = 0; i < result.getErrorCount(); i++) {
-				HashMap<String, String> errorsMap = new HashMap<>();
-				errorsMap.put(ResponseConstants.ERRORS_CODE_KEY, result.getAllErrors().get(i).getCode());
-				errorsMap.put(ResponseConstants.ERRORS_MESSAGE_KEY, result.getAllErrors().get(i).getDefaultMessage());
-				list.add(errorsMap);
-			}
-			ErrorMessages errorMessages = new ErrorMessages();
-			errorMessages.setMessages(list);
-			throw new ValidationException(errorMessages);
-		}
+	public Optional<UserResponse> createUser(@Validated @RequestBody UserRequest user, BindingResult result) {
 
-		if (!userService.create(user)) {
+		validationUtils.validation(result);
+
+		if (!userUsecase.create(user)) {
 			throw new Error();
 		}
 
-		Optional<User> u = userService.findByEmail(user.getEmail());
-		return u;
+		return null;
 	}
 
 }
