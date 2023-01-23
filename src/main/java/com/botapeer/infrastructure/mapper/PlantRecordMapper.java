@@ -2,6 +2,7 @@ package com.botapeer.infrastructure.mapper;
 
 import java.util.Optional;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
 import com.botapeer.infrastructure.entity.PlantRecordEntity;
@@ -9,6 +10,24 @@ import com.botapeer.infrastructure.entity.PlantRecordEntity;
 public interface PlantRecordMapper {
 	@Select("SELECT * FROM plant_records WHERE id = #{id}")
 	Optional<PlantRecordEntity> findById(int id);
+
+	@Insert("INSERT INTO plant_records ( "
+			+ "user_id, "
+			+ "title, "
+			+ "alive, "
+			+ "status, "
+			+ "created_at, "
+			+ "updated_at "
+			+ ") "
+			+ "VALUES ( "
+			+ "#{userId}, "
+			+ "#{title}, "
+			+ "#{alive}, "
+			+ "#{status}, "
+			+ "CURRENT_TIMESTAMP, "
+			+ "CURRENT_TIMESTAMP "
+			+ ");")
+	boolean create(PlantRecordEntity entity);
 
 	//	@Select("SELECT * FROM plant_records")
 	//	Collection<PlantRecordEntity> findAll();

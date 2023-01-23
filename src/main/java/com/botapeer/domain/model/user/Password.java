@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Password {
-	String password;
+	private String password;
 
 	public Password(String password) {
 		if (password.length() < 8) {

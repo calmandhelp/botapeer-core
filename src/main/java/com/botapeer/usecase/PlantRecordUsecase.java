@@ -1,6 +1,7 @@
 package com.botapeer.usecase;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -9,14 +10,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.botapeer.controller.payload.plantRecord.CreatePlantRecordRequest;
 import com.botapeer.controller.payload.plantRecord.PlantRecordResponse;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
+import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.service.FileUploadService;
 import com.botapeer.domain.service.IPlantRecordService;
+import com.botapeer.domain.service.IUserService;
 import com.botapeer.s3.FileUploadForm;
-import com.botapeer.usecase.dto.user.PlantRecordResponseDto;
+import com.botapeer.usecase.plantRecord.CreatePlantRecordRequestDto;
+import com.botapeer.usecase.plantRecord.PlantRecordResponseDto;
 import com.botapeer.util.ValidationUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +33,7 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 
 	private final IPlantRecordService plantRecordService;
 	private final FileUploadService fileUploadService;
+	private final IUserService userService;
 	private final ValidationUtils validation;
 
 	Logger logger = LoggerFactory.getLogger(PlantRecordUsecase.class);
@@ -47,6 +54,27 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 		return Optional.empty();
 	}
 
+	@Override
+	public Optional<PlantRecordResponse> create(CreatePlantRecordRequest request, BindingResult result,
+			Principal principal) {
+
+		validation.validation(result);
+
+		PlantRecord plantRecord = CreatePlantRecordRequestDto.toModel(request);
+
+		plantRecord.setAlive(1);
+		plantRecord.setStatus(1);
+
+		String userName = principal.getName();
+		Optional<User> user = userService.findByName(userName);
+
+		plantRecord.setUserId(user.get().getId());
+
+		plantRecordService.create(plantRecord);
+
+		return Optional.empty();
+	}
+
 	//	@Override
 	//	public Collection<PlantRecordResponse> findPlantRecords(String name) {
 	//		Collection<PlantRecordEntity> user = userService.findUsers(name);
@@ -57,7 +85,7 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 	//	@Override
 	//	public Optional<PlantRecordResponse> update(
 	//			Principal principal,
-	//			UpdateUserRequest request,
+	//			CreatePlantRecordRequest request,
 	//			MultipartFile profileImage,
 	//			MultipartFile coverImage,
 	//			BindingResult result) {
@@ -71,7 +99,7 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 	//			request.setStatus(targetUser.get().getStatus());
 	//		}
 	//
-	//		User u = UpdateUserRequestDto.toModel(request);
+	//		User u = CreatePlantRecordRequestDto.toModel(request);
 	//
 	//		u.setId(targetUser.get().getId());
 	//

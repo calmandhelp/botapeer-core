@@ -1,4 +1,4 @@
-package com.botapeer.usecase.dto.user;
+package com.botapeer.usecase.plantRecord;
 
 import java.util.Optional;
 

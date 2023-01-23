@@ -7,6 +7,8 @@ import com.botapeer.domain.model.plantRecord.PlantRecord;
 public interface IPlantRepository {
 	public Optional<PlantRecord> findById(int plantId);
 
+	public boolean create(PlantRecord plantRecord);
+
 	//	public Collection<PlantRecordEntity> findByUserId(int userId);
 	//
 	//	public Collection<PlantRecordEntity> findAll();

@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+import com.botapeer.domain.model.Label;
+
 import lombok.Data;
 
 @Data
@@ -18,13 +20,17 @@ public class PlantRecordEntity {
 
 	private Integer userId;
 
-	String title;
+	private String title;
 
-	Integer alive;
+	private Label[] labels;
 
-	String endDate;
+	private Integer status;
 
-	LocalDate createdAt;
+	private Integer alive;
 
-	LocalDate updatedAt;
+	private String endDate;
+
+	private LocalDate createdAt;
+
+	private LocalDate updatedAt;
 }

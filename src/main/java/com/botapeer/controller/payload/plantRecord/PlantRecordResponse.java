@@ -8,14 +8,14 @@ import lombok.Data;
 public class PlantRecordResponse {
 	private Integer id;
 
-	String title;
+	private String title;
 
-	Integer alive;
+	private Integer alive;
 
-	String endDate;
+	private String endDate;
 
-	LocalDate createdAt;
+	private LocalDate createdAt;
 
-	LocalDate updatedAt;
+	private LocalDate updatedAt;
 
 }

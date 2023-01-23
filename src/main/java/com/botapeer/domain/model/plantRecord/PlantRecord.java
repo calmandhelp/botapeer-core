@@ -2,6 +2,7 @@ package com.botapeer.domain.model.plantRecord;
 
 import java.time.LocalDate;
 
+import com.botapeer.domain.model.Label;
 import com.botapeer.domain.model.text.Title;
 
 import lombok.Data;
@@ -12,13 +13,17 @@ public class PlantRecord {
 
 	private Integer userId;
 
-	Title title;
+	private Title title;
 
-	Integer alive;
+	private Label[] labels;
 
-	String endDate;
+	private Integer alive;
 
-	LocalDate createdAt;
+	private Integer status;
 
-	LocalDate updatedAt;
+	private String endDate;
+
+	private LocalDate createdAt;
+
+	private LocalDate updatedAt;
 }

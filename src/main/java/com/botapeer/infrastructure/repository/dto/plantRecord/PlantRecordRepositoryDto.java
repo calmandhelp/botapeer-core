@@ -15,6 +15,7 @@ public class PlantRecordRepositoryDto {
 			Title t = new Title(title);
 			model.setTitle(t);
 			model.setAlive(entity.get().getAlive());
+			model.setStatus(entity.get().getStatus());
 			model.setCreatedAt(entity.get().getCreatedAt());
 			model.setUpdatedAt(entity.get().getUpdatedAt());
 			model.setEndDate(entity.get().getEndDate());
@@ -49,19 +50,15 @@ public class PlantRecordRepositoryDto {
 	//		return user;
 	//	}
 	//
-	//	public static UserEntity toEntity(User user) {
-	//		UserEntity u = new UserEntity();
-	//		u.setId(user.getId());
-	//		u.setEmail(user.getEmail());
-	//
-	//		UserName userName = user.getName();
-	//		String strUserName = userName.getName();
-	//
-	//		u.setName(strUserName);
-	//		u.setProfileImage(user.getProfileImage());
-	//		u.setCoverImage(user.getCoverImage());
-	//		u.setStatus(user.getStatus());
-	//		u.setDescription(user.getDescription());
-	//		return u;
-	//	}
+	public static PlantRecordEntity toEntity(PlantRecord plantRecord) {
+		PlantRecordEntity plantRecordEntity = new PlantRecordEntity();
+		plantRecordEntity.setUserId(plantRecord.getUserId());
+		plantRecordEntity.setAlive(plantRecord.getAlive());
+		plantRecordEntity.setStatus(plantRecord.getStatus());
+		Title title = plantRecord.getTitle();
+		String t = title.getTitle();
+		plantRecordEntity.setTitle(t);
+		plantRecordEntity.setLabels(plantRecord.getLabels());
+		return plantRecordEntity;
+	}
 }

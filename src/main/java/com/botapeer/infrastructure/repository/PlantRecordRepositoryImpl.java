@@ -16,13 +16,19 @@ import lombok.RequiredArgsConstructor;
 @Repository
 public class PlantRecordRepositoryImpl implements IPlantRepository {
 
-	private final PlantRecordMapper plantMapper;
+	private final PlantRecordMapper plantRecordMapper;
 
 	@Override
 	public Optional<PlantRecord> findById(int id) {
-		Optional<PlantRecordEntity> recordEntity = this.plantMapper.findById(id);
+		Optional<PlantRecordEntity> recordEntity = this.plantRecordMapper.findById(id);
 		Optional<PlantRecord> record = PlantRecordRepositoryDto.toModel(recordEntity);
 		return record;
+	}
+
+	@Override
+	public boolean create(PlantRecord plantRecord) {
+		PlantRecordEntity entity = PlantRecordRepositoryDto.toEntity(plantRecord);
+		return this.plantRecordMapper.create(entity);
 	}
 
 	//	@Override

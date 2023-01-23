@@ -33,6 +33,8 @@ public class ResponseDto {
 			return ResponseConstants.NOT_BLANK_VALIDATION_CODE;
 		case ResponseConstants.NOT_NULL_VALIDATION:
 			return ResponseConstants.NOT_NULL_VALIDATION_CODE;
+		case ResponseConstants.SIZE_VALIDATION:
+			return ResponseConstants.SIZE_VALIDATION_CODE;
 		default:
 			return null;
 		}

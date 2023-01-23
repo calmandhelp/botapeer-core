@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class UserName {
 	@NotBlank
-	String name;
+	private String name;
 
 	public UserName(String name) {
 		if (name.length() > 15) {
