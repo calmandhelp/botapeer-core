@@ -1,5 +1,6 @@
 package com.botapeer.infrastructure.mapper;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import org.apache.ibatis.annotations.Insert;
@@ -32,6 +33,9 @@ public interface PlantRecordMapper {
 			+ ");")
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
 	boolean create(PlantRecordEntity entity);
+
+	@Select("SELECT * FROM plant_records WHERE user_id = #{userId}")
+	Collection<PlantRecordEntity> findByUserId(Long userId);
 
 	//	@Select("SELECT * FROM plant_records")
 	//	Collection<PlantRecordEntity> findAll();

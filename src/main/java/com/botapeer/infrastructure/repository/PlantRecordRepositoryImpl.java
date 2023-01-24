@@ -1,5 +1,6 @@
 package com.botapeer.infrastructure.repository;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -20,7 +21,7 @@ public class PlantRecordRepositoryImpl implements IPlantRecordRepository {
 
 	@Override
 	public Optional<PlantRecord> findById(int id) {
-		Optional<PlantRecordEntity> recordEntity = this.plantRecordMapper.findById(id);
+		Optional<PlantRecordEntity> recordEntity = plantRecordMapper.findById(id);
 		Optional<PlantRecord> record = PlantRecordRepositoryDto.toModel(recordEntity);
 		return record;
 	}
@@ -28,8 +29,15 @@ public class PlantRecordRepositoryImpl implements IPlantRecordRepository {
 	@Override
 	public Integer create(PlantRecord plantRecord) {
 		PlantRecordEntity entity = PlantRecordRepositoryDto.toEntity(plantRecord);
-		this.plantRecordMapper.create(entity);
+		plantRecordMapper.create(entity);
 		return entity.getId();
+	}
+
+	@Override
+	public Collection<PlantRecord> findByUserId(Long userId) {
+		Collection<PlantRecordEntity> recordEntity = plantRecordMapper.findByUserId(userId);
+		Collection<PlantRecord> record = PlantRecordRepositoryDto.toModel(recordEntity);
+		return record;
 	}
 
 	//	@Override

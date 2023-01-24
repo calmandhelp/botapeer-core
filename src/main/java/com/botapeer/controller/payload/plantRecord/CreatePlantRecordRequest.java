@@ -1,5 +1,7 @@
 package com.botapeer.controller.payload.plantRecord;
 
+import java.util.Collection;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -13,9 +15,9 @@ public class CreatePlantRecordRequest {
 	private String title;
 
 	@Size(min = 1, max = 20)
-	private LabelRequest[] labels;
+	private Collection<LabelRequest> labels;
 
-	public CreatePlantRecordRequest(String title, LabelRequest[] labels) {
+	public CreatePlantRecordRequest(String title, Collection<LabelRequest> labels) {
 		this.title = title;
 		this.labels = labels;
 	}

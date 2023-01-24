@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.botapeer.controller.payload.plantRecord.PlantRecordResponse;
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 import com.botapeer.controller.payload.user.UpdateUserRequest;
 import com.botapeer.controller.payload.user.UserResponse;
@@ -67,10 +68,16 @@ public class UserController {
 		userUsecase.delete(userId);
 	}
 
-	@GetMapping("/findByEmail")
+	@GetMapping("/users/findByEmail")
 	public Optional<UserResponse> findByEmail(@RequestParam String email) {
 		Optional<UserResponse> r = userUsecase.findByEmail(email);
 		return r;
+	}
+
+	@GetMapping("/users/{userId}/plant_records")
+	public Collection<PlantRecordResponse> findPlantRecords(@PathVariable String userId) {
+		Collection<PlantRecordResponse> response = userUsecase.findPlantRecords(userId);
+		return response;
 	}
 
 }

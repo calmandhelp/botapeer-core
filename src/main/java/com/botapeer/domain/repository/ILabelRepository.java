@@ -1,9 +1,11 @@
 package com.botapeer.domain.repository;
 
+import java.util.Collection;
+
 import com.botapeer.domain.model.Label;
 
 public interface ILabelRepository {
-	//	public Optional<PlantRecord> findById(int plantId);
+	public Collection<Label> findById(int plantRecordId);
 
 	public boolean create(Label label);
 

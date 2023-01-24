@@ -1,9 +1,12 @@
 package com.botapeer.domain.service;
 
+import java.util.Collection;
+
 import org.springframework.stereotype.Service;
 
 import com.botapeer.domain.model.Label;
 import com.botapeer.domain.repository.ILabelRepository;
+import com.botapeer.domain.service.interfaces.ILabelService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,10 +16,10 @@ public class LabelSeviceImpl implements ILabelService {
 
 	private final ILabelRepository labelRepository;
 
-	//	@Override
-	//	public Optional<PlantRecord> findById(int plantId) {
-	//		return this.plantRepository.findById(plantId);
-	//	}
+	@Override
+	public Collection<Label> findById(int plantRecordId) {
+		return labelRepository.findById(plantRecordId);
+	}
 
 	@Override
 	public boolean create(Label label) {

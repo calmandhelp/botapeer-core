@@ -17,15 +17,21 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.botapeer.controller.payload.plantRecord.PlantRecordResponse;
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 import com.botapeer.controller.payload.user.UpdateUserRequest;
 import com.botapeer.controller.payload.user.UserResponse;
+import com.botapeer.domain.model.Label;
+import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.service.FileUploadService;
-import com.botapeer.domain.service.IUserService;
+import com.botapeer.domain.service.interfaces.ILabelService;
+import com.botapeer.domain.service.interfaces.IPlantRecordService;
+import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.s3.FileUploadForm;
 import com.botapeer.usecase.dto.user.UpdateUserRequestDto;
 import com.botapeer.usecase.dto.user.UserResponseDto;
+import com.botapeer.usecase.plantRecord.PlantRecordResponseDto;
 import com.botapeer.util.ValidationUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -38,6 +44,8 @@ public class UserUsecase implements IUserUsecase {
 	private final FileUploadService fileUploadService;
 	private final PasswordEncoder passwordEncoder;
 	private final MessageSource messageSource;
+	private final IPlantRecordService plantRecordService;
+	private final ILabelService labelService;
 	private final ValidationUtils validation;
 
 	Logger logger = LoggerFactory.getLogger(UserUsecase.class);
@@ -157,13 +165,33 @@ public class UserUsecase implements IUserUsecase {
 		return r;
 	}
 
+	@Override
+	public Collection<PlantRecordResponse> findPlantRecords(String userId) {
+		try {
+			Integer numUserId = Integer.parseInt(userId);
+			Collection<PlantRecord> plantRecords = userService.findPlantRecords((long) numUserId);
+
+			for (PlantRecord p : plantRecords) {
+				Collection<Label> labels = labelService.findById(p.getId());
+				p.setLabels(labels);
+			}
+
+			Collection<PlantRecordResponse> response = PlantRecordResponseDto.toResponse(plantRecords);
+
+			return response;
+		} catch (NumberFormatException ex) {
+			logger.error(ex.getMessage());
+		}
+		return null;
+	}
+
 	public String uploadImage(MultipartFile image) {
 		if (!ObjectUtils.isEmpty(image)) {
 			FileUploadForm fileUploadForm = new FileUploadForm();
 			fileUploadForm.setMultipartFile(image);
 			fileUploadForm.setCreateAt(LocalDateTime.now());
 			try {
-				System.out.println("image: " + image.getOriginalFilename());
+				logger.info("image: " + image.getOriginalFilename());
 				String fileName = fileUploadService.fileUpload(fileUploadForm, "botapeer.com/images");
 				return fileName;
 			} catch (IOException e) {

@@ -1,5 +1,7 @@
 package com.botapeer.infrastructure.repository.dto.plantRecord;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 import com.botapeer.domain.model.plantRecord.PlantRecord;
@@ -24,32 +26,30 @@ public class PlantRecordRepositoryDto {
 		return null;
 	}
 
-	//	public static Collection<User> toModel(Collection<UserEntity> users) {
-	//
-	//		List<UserEntity> userList = new ArrayList<>(users);
-	//
-	//		Collection<User> user = new ArrayList<User>();
-	//
-	//		for (UserEntity userEntity : userList) {
-	//			User u = new User();
-	//			u.setId(userEntity.getId());
-	//			u.setEmail(userEntity.getEmail());
-	//
-	//			String strUserName = userEntity.getName();
-	//			UserName userName = new UserName(strUserName);
-	//			u.setName(userName);
-	//
-	//			u.setProfileImage(userEntity.getProfileImage());
-	//			u.setCoverImage(userEntity.getCoverImage());
-	//			u.setStatus(userEntity.getStatus());
-	//			u.setDescription(userEntity.getDescription());
-	//
-	//			user.add(u);
-	//		}
-	//
-	//		return user;
-	//	}
-	//
+	public static Collection<PlantRecord> toModel(Collection<PlantRecordEntity> entities) {
+
+		Collection<PlantRecord> plantRecordList = new ArrayList<>();
+
+		for (PlantRecordEntity entity : entities) {
+			PlantRecord model = new PlantRecord();
+			model.setId(entity.getId());
+			model.setAlive(entity.getAlive());
+			model.setStatus(entity.getStatus());
+			String strTitle = entity.getTitle();
+			Title t = new Title(strTitle);
+			model.setTitle(t);
+			model.setCreatedAt(entity.getCreatedAt());
+			model.setUpdatedAt(entity.getUpdatedAt());
+			model.setEndDate(entity.getEndDate());
+			model.setUserId(entity.getUserId());
+			model.setLabels(entity.getLabels());
+
+			plantRecordList.add(model);
+		}
+
+		return plantRecordList;
+	}
+
 	public static PlantRecordEntity toEntity(PlantRecord plantRecord) {
 		PlantRecordEntity plantRecordEntity = new PlantRecordEntity();
 		plantRecordEntity.setUserId(plantRecord.getUserId());

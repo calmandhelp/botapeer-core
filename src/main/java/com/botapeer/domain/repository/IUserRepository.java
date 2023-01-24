@@ -24,5 +24,4 @@ public interface IUserRepository {
 	public Optional<User> findByEmail(String email);
 
 	public Optional<User> findByName(String name);
-
 }

@@ -25,16 +25,15 @@ public class PlantRecordController {
 
 	private final IPlantRecordUsecase plantUsecase;
 
-	@GetMapping("plant_records/{plant_record_id}")
+	@GetMapping("/plant_records/{plant_record_id}")
 	public Optional<PlantRecordResponse> getPlantRecord(@PathVariable String plant_record_id) {
 		Optional<PlantRecordResponse> response = plantUsecase.findById(plant_record_id);
 		return response;
 	}
 
-	@PostMapping("plant_records")
+	@PostMapping("/plant_records")
 	public Optional<PlantRecordResponse> createPlant(@Validated @RequestBody CreatePlantRecordRequest record,
 			BindingResult result, Principal principal) {
-		System.out.println("test");
 		Optional<PlantRecordResponse> response = plantUsecase.create(record, result, principal);
 		return response;
 	}

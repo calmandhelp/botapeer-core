@@ -1,9 +1,10 @@
-package com.botapeer.domain.service;
+package com.botapeer.domain.service.interfaces;
 
 import java.util.Collection;
 import java.util.Optional;
 
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
+import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.user.User;
 
 public interface IUserService {
@@ -25,5 +26,7 @@ public interface IUserService {
 	public Optional<User> findByEmail(String email);
 
 	public Optional<User> findByName(String name);
+
+	public Collection<PlantRecord> findPlantRecords(Long userId);
 
 }

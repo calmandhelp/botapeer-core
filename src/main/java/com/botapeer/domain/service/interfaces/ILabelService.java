@@ -1,9 +1,11 @@
-package com.botapeer.domain.service;
+package com.botapeer.domain.service.interfaces;
+
+import java.util.Collection;
 
 import com.botapeer.domain.model.Label;
 
 public interface ILabelService {
-	//	public Optional<Label> findById(int plantId);
+	public Collection<Label> findById(int plantRecordId);
 
 	public boolean create(Label label);
 

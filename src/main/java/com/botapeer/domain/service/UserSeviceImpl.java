@@ -7,8 +7,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
+import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.user.User;
+import com.botapeer.domain.repository.IPlantRecordRepository;
 import com.botapeer.domain.repository.IUserRepository;
+import com.botapeer.domain.service.interfaces.IUserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +22,7 @@ public class UserSeviceImpl implements IUserService {
 	private final PasswordEncoder passwordEncoder;
 
 	private final IUserRepository userRepository;
+	private final IPlantRecordRepository plantRecordRepository;
 
 	@Override
 	public Optional<User> findById(Long userId) {
@@ -46,32 +50,37 @@ public class UserSeviceImpl implements IUserService {
 			throw new Error();
 		}
 
-		return this.userRepository.updatePassword(request);
+		return userRepository.updatePassword(request);
 	}
 
 	@Override
 	public boolean delete(Long userId) {
-		return this.userRepository.delete(userId);
+		return userRepository.delete(userId);
 	}
 
 	@Override
 	public boolean create(User user) {
-		return this.userRepository.create(user);
+		return userRepository.create(user);
 	}
 
 	@Override
 	public Optional<User> findByUserNameOrEmail(String usernameOrEmail) {
-		return this.userRepository.findUserByNameOrEmail(usernameOrEmail);
+		return userRepository.findUserByNameOrEmail(usernameOrEmail);
 	}
 
 	@Override
 	public Optional<User> findByEmail(String email) {
-		return this.userRepository.findByEmail(email);
+		return userRepository.findByEmail(email);
 	}
 
 	@Override
 	public Optional<User> findByName(String name) {
-		return this.userRepository.findByName(name);
+		return userRepository.findByName(name);
+	}
+
+	@Override
+	public Collection<PlantRecord> findPlantRecords(Long userId) {
+		return plantRecordRepository.findByUserId(userId);
 	}
 
 }

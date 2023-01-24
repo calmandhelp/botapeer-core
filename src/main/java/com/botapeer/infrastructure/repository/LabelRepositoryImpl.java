@@ -1,5 +1,7 @@
 package com.botapeer.infrastructure.repository;
 
+import java.util.Collection;
+
 import org.springframework.stereotype.Repository;
 
 import com.botapeer.domain.model.Label;
@@ -14,12 +16,10 @@ public class LabelRepositoryImpl implements ILabelRepository {
 
 	private final LabelMapper labelMapper;
 
-	//	@Override
-	//	public Optional<PlantRecord> findById(int id) {
-	//		Optional<PlantRecordEntity> recordEntity = this.plantRecordMapper.findById(id);
-	//		Optional<PlantRecord> record = PlantRecordRepositoryDto.toModel(recordEntity);
-	//		return record;
-	//	}
+	@Override
+	public Collection<Label> findById(int id) {
+		return labelMapper.findById(id);
+	}
 
 	@Override
 	public boolean create(Label label) {

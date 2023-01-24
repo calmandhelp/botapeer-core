@@ -1,6 +1,7 @@
 package com.botapeer.infrastructure.entity;
 
 import java.time.LocalDate;
+import java.util.Collection;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ public class PlantRecordEntity {
 
 	private String title;
 
-	private Label[] labels;
+	private Collection<Label> labels;
 
 	private Integer status;
 

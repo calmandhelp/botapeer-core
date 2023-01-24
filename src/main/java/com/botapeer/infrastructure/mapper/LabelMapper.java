@@ -1,12 +1,18 @@
 package com.botapeer.infrastructure.mapper;
 
+import java.util.Collection;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import com.botapeer.domain.model.Label;
 
 @Mapper
 public interface LabelMapper {
+
+	@Select("SELECT * FROM labels WHERE plant_record_id = #{id}")
+	Collection<Label> findById(int id);
 
 	@Insert("INSERT INTO labels ( "
 			+ "name, "

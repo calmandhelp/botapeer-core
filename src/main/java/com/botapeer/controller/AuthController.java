@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.botapeer.controller.payload.auth.JwtAuthenticationResponse;
 import com.botapeer.controller.payload.auth.LoginRequest;
-import com.botapeer.domain.service.IUserService;
+import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.security.JwtTokenProvider;
 import com.botapeer.usecase.IUserUsecase;
 import com.botapeer.util.ValidationUtils;

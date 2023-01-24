@@ -9,6 +9,7 @@ import com.botapeer.domain.model.Label;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.repository.ILabelRepository;
 import com.botapeer.domain.repository.IPlantRecordRepository;
+import com.botapeer.domain.service.interfaces.IPlantRecordService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,7 +38,9 @@ public class PlantRecordSeviceImpl implements IPlantRecordService {
 			}
 		}
 
-		return null;
+		Optional<PlantRecord> resultRecord = plantRepository.findById(plantRecordId);
+
+		return resultRecord;
 	}
 
 	//	@Override

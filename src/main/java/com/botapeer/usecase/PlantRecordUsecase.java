@@ -3,6 +3,7 @@ package com.botapeer.usecase;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Optional;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -15,11 +16,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.controller.payload.plantRecord.CreatePlantRecordRequest;
 import com.botapeer.controller.payload.plantRecord.PlantRecordResponse;
+import com.botapeer.domain.model.Label;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.service.FileUploadService;
-import com.botapeer.domain.service.IPlantRecordService;
-import com.botapeer.domain.service.IUserService;
+import com.botapeer.domain.service.interfaces.ILabelService;
+import com.botapeer.domain.service.interfaces.IPlantRecordService;
+import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.s3.FileUploadForm;
 import com.botapeer.usecase.plantRecord.CreatePlantRecordRequestDto;
 import com.botapeer.usecase.plantRecord.PlantRecordResponseDto;
@@ -34,6 +37,7 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 	private final IPlantRecordService plantRecordService;
 	private final FileUploadService fileUploadService;
 	private final IUserService userService;
+	private final ILabelService labelService;
 	private final ValidationUtils validation;
 
 	Logger logger = LoggerFactory.getLogger(PlantRecordUsecase.class);
@@ -70,9 +74,12 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 
 		plantRecord.setUserId(user.get().getId());
 
-		plantRecordService.create(plantRecord);
+		Optional<PlantRecord> resultRecord = plantRecordService.create(plantRecord);
+		Collection<Label> labels = labelService.findById(resultRecord.get().getId());
 
-		return Optional.empty();
+		resultRecord.get().setLabels(labels);
+
+		return PlantRecordResponseDto.toResponse(resultRecord);
 	}
 
 	//	@Override

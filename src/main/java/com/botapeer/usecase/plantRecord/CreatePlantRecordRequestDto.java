@@ -1,5 +1,8 @@
 package com.botapeer.usecase.plantRecord;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.springframework.stereotype.Component;
 
 import com.botapeer.controller.payload.label.LabelRequest;
@@ -21,12 +24,13 @@ public class CreatePlantRecordRequestDto {
 		Title t = new Title(title);
 		plantRecord.setTitle(t);
 
-		Label[] labels = new Label[request.getLabels().length];
+		Collection<Label> labels = new ArrayList<>();
 
-		for (int i = 0; i < request.getLabels().length; i++) {
-			LabelRequest[] requestLabels = request.getLabels();
-			Label l = new Label(requestLabels[i].getName());
-			labels[i] = l;
+		Collection<LabelRequest> requestLabels = request.getLabels();
+
+		for (LabelRequest labelRequest : requestLabels) {
+			Label l = new Label(labelRequest.getName());
+			labels.add(l);
 		}
 
 		plantRecord.setLabels(labels);

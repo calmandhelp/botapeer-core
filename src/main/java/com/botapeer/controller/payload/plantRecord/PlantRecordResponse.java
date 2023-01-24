@@ -1,6 +1,9 @@
 package com.botapeer.controller.payload.plantRecord;
 
 import java.time.LocalDate;
+import java.util.Collection;
+
+import com.botapeer.controller.payload.label.LabelResponse;
 
 import lombok.Data;
 
@@ -17,5 +20,7 @@ public class PlantRecordResponse {
 	private LocalDate createdAt;
 
 	private LocalDate updatedAt;
+
+	private Collection<LabelResponse> labels;
 
 }

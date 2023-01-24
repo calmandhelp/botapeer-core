@@ -1,6 +1,7 @@
 package com.botapeer.domain.model.plantRecord;
 
 import java.time.LocalDate;
+import java.util.Collection;
 
 import com.botapeer.domain.model.Label;
 import com.botapeer.domain.model.text.Title;
@@ -15,7 +16,7 @@ public class PlantRecord {
 
 	private Title title;
 
-	private Label[] labels;
+	private Collection<Label> labels;
 
 	private Integer alive;
 

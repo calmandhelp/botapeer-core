@@ -1,4 +1,4 @@
-package com.botapeer.domain.service;
+package com.botapeer.domain.service.interfaces;
 
 import java.util.Optional;
 

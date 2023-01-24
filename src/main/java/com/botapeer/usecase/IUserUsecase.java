@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.botapeer.controller.payload.plantRecord.PlantRecordResponse;
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 import com.botapeer.controller.payload.user.UpdateUserRequest;
 import com.botapeer.controller.payload.user.UserResponse;
@@ -30,4 +31,6 @@ public interface IUserUsecase {
 	public Optional<UserResponse> findByUserNameOrEmail(String usernameOrEmail);
 
 	public Optional<UserResponse> findByEmail(String email);
+
+	public Collection<PlantRecordResponse> findPlantRecords(String userId);
 }
