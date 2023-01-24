@@ -16,12 +16,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.controller.payload.plantRecord.CreatePlantRecordRequest;
 import com.botapeer.controller.payload.plantRecord.PlantRecordResponse;
-import com.botapeer.domain.model.Label;
+import com.botapeer.domain.model.label.Label;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
+import com.botapeer.domain.model.post.Post;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.service.FileUploadService;
 import com.botapeer.domain.service.interfaces.ILabelService;
 import com.botapeer.domain.service.interfaces.IPlantRecordService;
+import com.botapeer.domain.service.interfaces.IPostService;
 import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.s3.FileUploadForm;
 import com.botapeer.usecase.interfaces.IPlantRecordUsecase;
@@ -39,6 +41,7 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 	private final FileUploadService fileUploadService;
 	private final IUserService userService;
 	private final ILabelService labelService;
+	private final IPostService postService;
 	private final ValidationUtils validation;
 
 	Logger logger = LoggerFactory.getLogger(PlantRecordUsecase.class);
@@ -47,13 +50,13 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 	private String imagePath;
 
 	@Override
-	public Optional<PlantRecordResponse> findById(String plantId) {
+	public Optional<PlantRecordResponse> findById(String plantRecordId) {
 		try {
-			int id = Integer.parseInt(plantId);
+			int id = Integer.parseInt(plantRecordId);
 			Optional<PlantRecord> record = plantRecordService.findById(id);
 			Optional<PlantRecordResponse> r = PlantRecordResponseDto.toResponse(record);
 			return r;
-		} catch (Exception e) {
+		} catch (NumberFormatException e) {
 			logger.error(e.getMessage(), e);
 		}
 		return Optional.empty();
@@ -79,6 +82,10 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 		Collection<Label> labels = labelService.findById(resultRecord.get().getId());
 
 		resultRecord.get().setLabels(labels);
+
+		Collection<Post> posts = postService.findByPlantRecordId(resultRecord.get().getId());
+
+		resultRecord.get().setPosts(posts);
 
 		return PlantRecordResponseDto.toResponse(resultRecord);
 	}

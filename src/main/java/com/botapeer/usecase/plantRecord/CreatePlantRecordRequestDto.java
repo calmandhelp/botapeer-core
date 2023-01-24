@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.botapeer.controller.payload.label.LabelRequest;
 import com.botapeer.controller.payload.plantRecord.CreatePlantRecordRequest;
-import com.botapeer.domain.model.Label;
+import com.botapeer.domain.model.label.Label;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.text.Title;
 

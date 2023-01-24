@@ -5,8 +5,6 @@ import java.util.Optional;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +23,11 @@ public class PlantRecordController {
 
 	private final IPlantRecordUsecase plantUsecase;
 
-	@GetMapping("/plant_records/{plant_record_id}")
-	public Optional<PlantRecordResponse> getPlantRecord(@PathVariable String plant_record_id) {
-		Optional<PlantRecordResponse> response = plantUsecase.findById(plant_record_id);
-		return response;
-	}
+	//	@GetMapping("/plant_records/{plant_record_id}")
+	//	public Optional<PlantRecordResponse> getPlantRecord(@PathVariable String plant_record_id) {
+	//		Optional<PlantRecordResponse> response = plantUsecase.findById(plant_record_id);
+	//		return response;
+	//	}
 
 	@PostMapping("/plant_records")
 	public Optional<PlantRecordResponse> createPlant(@Validated @RequestBody CreatePlantRecordRequest record,

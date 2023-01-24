@@ -1,4 +1,4 @@
-package com.botapeer.domain.model;
+package com.botapeer.domain.model.label;
 
 import lombok.Data;
 

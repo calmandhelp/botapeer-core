@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.botapeer.domain.model.Label;
+import com.botapeer.domain.model.label.Label;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.repository.ILabelRepository;
 import com.botapeer.domain.repository.IPlantRecordRepository;

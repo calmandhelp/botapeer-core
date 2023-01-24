@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-import com.botapeer.domain.model.Label;
+import com.botapeer.domain.model.label.Label;
 
 @Mapper
 public interface LabelMapper {

@@ -2,7 +2,7 @@ package com.botapeer.domain.service.interfaces;
 
 import java.util.Collection;
 
-import com.botapeer.domain.model.Label;
+import com.botapeer.domain.model.label.Label;
 
 public interface ILabelService {
 	public Collection<Label> findById(int plantRecordId);

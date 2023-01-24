@@ -3,7 +3,8 @@ package com.botapeer.domain.model.plantRecord;
 import java.time.LocalDate;
 import java.util.Collection;
 
-import com.botapeer.domain.model.Label;
+import com.botapeer.domain.model.label.Label;
+import com.botapeer.domain.model.post.Post;
 import com.botapeer.domain.model.text.Title;
 
 import lombok.Data;
@@ -17,6 +18,8 @@ public class PlantRecord {
 	private Title title;
 
 	private Collection<Label> labels;
+
+	private Collection<Post> posts;
 
 	private Integer alive;
 

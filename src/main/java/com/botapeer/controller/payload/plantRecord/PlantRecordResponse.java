@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 import com.botapeer.controller.payload.label.LabelResponse;
+import com.botapeer.controller.payload.post.PostResponse;
 
 import lombok.Data;
 
@@ -22,5 +23,7 @@ public class PlantRecordResponse {
 	private LocalDate updatedAt;
 
 	private Collection<LabelResponse> labels;
+
+	private Collection<PostResponse> posts;
 
 }

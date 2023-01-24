@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.springframework.stereotype.Service;
 
-import com.botapeer.domain.model.Label;
+import com.botapeer.domain.model.label.Label;
 import com.botapeer.domain.repository.ILabelRepository;
 import com.botapeer.domain.service.interfaces.ILabelService;
 

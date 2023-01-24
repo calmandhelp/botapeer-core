@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
-import com.botapeer.domain.model.Label;
+import com.botapeer.domain.model.label.Label;
 
 import lombok.Data;
 
