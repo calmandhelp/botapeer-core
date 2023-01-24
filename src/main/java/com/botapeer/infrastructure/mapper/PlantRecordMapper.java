@@ -3,10 +3,13 @@ package com.botapeer.infrastructure.mapper;
 import java.util.Optional;
 
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import com.botapeer.infrastructure.entity.PlantRecordEntity;
 
+@Mapper
 public interface PlantRecordMapper {
 	@Select("SELECT * FROM plant_records WHERE id = #{id}")
 	Optional<PlantRecordEntity> findById(int id);
@@ -27,6 +30,7 @@ public interface PlantRecordMapper {
 			+ "CURRENT_TIMESTAMP, "
 			+ "CURRENT_TIMESTAMP "
 			+ ");")
+	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
 	boolean create(PlantRecordEntity entity);
 
 	//	@Select("SELECT * FROM plant_records")

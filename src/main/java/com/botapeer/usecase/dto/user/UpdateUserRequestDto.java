@@ -17,8 +17,6 @@ public class UpdateUserRequestDto {
 		UserName userName = new UserName(request.getName());
 		user.setName(userName);
 		user.setEmail(request.getEmail());
-		user.setProfileImage(request.getProfileImage());
-		user.setCoverImage(request.getCoverImage());
 		user.setStatus(request.getStatus());
 		user.setDescription(request.getDescription());
 		return user;

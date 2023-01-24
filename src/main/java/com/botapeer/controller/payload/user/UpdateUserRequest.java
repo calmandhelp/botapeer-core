@@ -19,9 +19,4 @@ public class UpdateUserRequest {
 	private Integer status;
 
 	private String description;
-
-	private String profileImage;
-
-	private String coverImage;
-
 }

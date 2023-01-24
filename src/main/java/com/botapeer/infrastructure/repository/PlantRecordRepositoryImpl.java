@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 import com.botapeer.domain.model.plantRecord.PlantRecord;
-import com.botapeer.domain.repository.IPlantRepository;
+import com.botapeer.domain.repository.IPlantRecordRepository;
 import com.botapeer.infrastructure.entity.PlantRecordEntity;
 import com.botapeer.infrastructure.mapper.PlantRecordMapper;
 import com.botapeer.infrastructure.repository.dto.plantRecord.PlantRecordRepositoryDto;
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Repository
-public class PlantRecordRepositoryImpl implements IPlantRepository {
+public class PlantRecordRepositoryImpl implements IPlantRecordRepository {
 
 	private final PlantRecordMapper plantRecordMapper;
 
@@ -26,9 +26,10 @@ public class PlantRecordRepositoryImpl implements IPlantRepository {
 	}
 
 	@Override
-	public boolean create(PlantRecord plantRecord) {
+	public Integer create(PlantRecord plantRecord) {
 		PlantRecordEntity entity = PlantRecordRepositoryDto.toEntity(plantRecord);
-		return this.plantRecordMapper.create(entity);
+		this.plantRecordMapper.create(entity);
+		return entity.getId();
 	}
 
 	//	@Override

@@ -90,7 +90,7 @@ public class UserUsecase implements IUserUsecase {
 		if (StringUtils.isEmpty(coverImageName)) {
 			u.setCoverImage(targetUser.get().getCoverImage());
 		} else {
-			System.out.println("coverImageName: " + coverImageName);
+			logger.info("coverImageName: " + coverImageName);
 			u.setCoverImage(imagePath + coverImageName);
 		}
 
@@ -98,7 +98,7 @@ public class UserUsecase implements IUserUsecase {
 		if (StringUtils.isEmpty(profileImageName)) {
 			u.setProfileImage(targetUser.get().getProfileImage());
 		} else {
-			System.out.println("profileImageName: " + profileImageName);
+			logger.info("profileImageName: " + profileImageName);
 			u.setProfileImage(imagePath + profileImageName);
 		}
 

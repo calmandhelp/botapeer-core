@@ -1,18 +1,17 @@
 package com.botapeer.infrastructure.mapper;
 
-import java.util.Optional;
-
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
 
 import com.botapeer.domain.model.Label;
-import com.botapeer.infrastructure.entity.PlantRecordEntity;
 
+@Mapper
 public interface LabelMapper {
 
 	@Insert("INSERT INTO labels ( "
 			+ "name, "
 			+ "plant_record_id, "
-			+ "created_at "
+			+ "created_at, "
 			+ "updated_at "
 			+ ") "
 			+ "VALUES ( "
@@ -21,6 +20,6 @@ public interface LabelMapper {
 			+ "CURRENT_TIMESTAMP, "
 			+ "CURRENT_TIMESTAMP "
 			+ ");")
-	Optional<PlantRecordEntity> create(Label label);
+	boolean create(Label label);
 
 }
