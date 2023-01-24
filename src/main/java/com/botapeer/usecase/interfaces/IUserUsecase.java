@@ -1,4 +1,4 @@
-package com.botapeer.usecase;
+package com.botapeer.usecase.interfaces;
 
 import java.security.Principal;
 import java.util.Collection;

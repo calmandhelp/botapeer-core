@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.botapeer.controller.payload.plantRecord.CreatePlantRecordRequest;
 import com.botapeer.controller.payload.plantRecord.PlantRecordResponse;
-import com.botapeer.usecase.IPlantRecordUsecase;
+import com.botapeer.usecase.interfaces.IPlantRecordUsecase;
 
 import lombok.RequiredArgsConstructor;
 

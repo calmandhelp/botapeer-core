@@ -21,7 +21,7 @@ import com.botapeer.controller.payload.plantRecord.PlantRecordResponse;
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 import com.botapeer.controller.payload.user.UpdateUserRequest;
 import com.botapeer.controller.payload.user.UserResponse;
-import com.botapeer.usecase.IUserUsecase;
+import com.botapeer.usecase.interfaces.IUserUsecase;
 
 import lombok.RequiredArgsConstructor;
 

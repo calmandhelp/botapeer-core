@@ -24,6 +24,7 @@ import com.botapeer.domain.service.interfaces.ILabelService;
 import com.botapeer.domain.service.interfaces.IPlantRecordService;
 import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.s3.FileUploadForm;
+import com.botapeer.usecase.interfaces.IPlantRecordUsecase;
 import com.botapeer.usecase.plantRecord.CreatePlantRecordRequestDto;
 import com.botapeer.usecase.plantRecord.PlantRecordResponseDto;
 import com.botapeer.util.ValidationUtils;

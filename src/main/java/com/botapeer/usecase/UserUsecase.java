@@ -31,6 +31,7 @@ import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.s3.FileUploadForm;
 import com.botapeer.usecase.dto.user.UpdateUserRequestDto;
 import com.botapeer.usecase.dto.user.UserResponseDto;
+import com.botapeer.usecase.interfaces.IUserUsecase;
 import com.botapeer.usecase.plantRecord.PlantRecordResponseDto;
 import com.botapeer.util.ValidationUtils;
 

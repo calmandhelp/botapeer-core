@@ -16,7 +16,7 @@ import com.botapeer.controller.payload.auth.JwtAuthenticationResponse;
 import com.botapeer.controller.payload.auth.LoginRequest;
 import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.security.JwtTokenProvider;
-import com.botapeer.usecase.IUserUsecase;
+import com.botapeer.usecase.interfaces.IUserUsecase;
 import com.botapeer.util.ValidationUtils;
 
 import lombok.RequiredArgsConstructor;
