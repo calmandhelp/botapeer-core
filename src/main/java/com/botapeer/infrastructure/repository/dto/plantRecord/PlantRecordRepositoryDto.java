@@ -14,6 +14,7 @@ public class PlantRecordRepositoryDto {
 		if (entity.isPresent()) {
 			PlantRecord model = new PlantRecord();
 			model.setId(entity.get().getId());
+			model.setUserId(entity.get().getUserId());
 			String title = entity.get().getTitle();
 			Title t = new Title(title);
 			model.setTitle(t);
@@ -22,6 +23,9 @@ public class PlantRecordRepositoryDto {
 			model.setCreatedAt(entity.get().getCreatedAt());
 			model.setUpdatedAt(entity.get().getUpdatedAt());
 			model.setEndDate(entity.get().getEndDate());
+			Place place = new Place();
+			place.setId(entity.get().getPlaceId());
+			model.setPlace(place);
 			return Optional.ofNullable(model);
 		}
 		return null;

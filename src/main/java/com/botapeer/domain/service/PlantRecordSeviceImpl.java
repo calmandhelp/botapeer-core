@@ -1,5 +1,6 @@
 package com.botapeer.domain.service;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -15,22 +16,27 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PlantRecordSeviceImpl implements IPlantRecordService {
 
-	private final IPlantRecordRepository plantRepository;
+	private final IPlantRecordRepository plantRecordRepository;
 
 	@Override
 	public Optional<PlantRecord> findById(int plantId) {
-		return this.plantRepository.findById(plantId);
+		return this.plantRecordRepository.findById(plantId);
 	}
 
 	@Override
 	@Transactional
 	public Optional<PlantRecord> create(PlantRecord plantRecord) {
 
-		int plantRecordId = plantRepository.create(plantRecord);
+		int plantRecordId = plantRecordRepository.create(plantRecord);
 
-		Optional<PlantRecord> resultRecord = plantRepository.findById(plantRecordId);
+		Optional<PlantRecord> resultRecord = plantRecordRepository.findById(plantRecordId);
 
 		return resultRecord;
+	}
+
+	@Override
+	public Collection<PlantRecord> findByUserId(Long userId) {
+		return plantRecordRepository.findByUserId(userId);
 	}
 
 	//	@Override

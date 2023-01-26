@@ -54,6 +54,14 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 		try {
 			int id = Integer.parseInt(plantRecordId);
 			Optional<PlantRecord> record = plantRecordService.findById(id);
+
+			Collection<Post> posts = postService.findByPlantRecordId(record.get().getId());
+
+			record.get().setPosts(posts);
+
+			Optional<Place> place = placeService.findById(record.get().getPlace().getId());
+			record.get().setPlace(place.get());
+
 			Optional<PlantRecordResponse> r = PlantRecordResponseDto.toResponse(record);
 			return r;
 		} catch (NumberFormatException e) {
@@ -91,72 +99,27 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 		return PlantRecordResponseDto.toResponse(resultRecord);
 	}
 
-	//	@Override
-	//	public Collection<PlantRecordResponse> findPlantRecords(String name) {
-	//		Collection<PlantRecordEntity> user = userService.findUsers(name);
-	//		Collection<PlantRecordResponse> r = UserResponseDto.toResponse(user);
-	//		return r;
-	//	}
+	@Override
+	public Collection<PlantRecordResponse> findByUserId(String userId) {
+		try {
+			Integer numUserId = Integer.parseInt(userId);
+			Collection<PlantRecord> plantRecords = plantRecordService.findByUserId((long) numUserId);
+			for (PlantRecord p : plantRecords) {
+				Collection<Post> posts = postService.findByPlantRecordId(p.getId());
+				p.setPosts(posts);
 
-	//	@Override
-	//	public Optional<PlantRecordResponse> update(
-	//			Principal principal,
-	//			CreatePlantRecordRequest request,
-	//			MultipartFile profileImage,
-	//			MultipartFile coverImage,
-	//			BindingResult result) {
-	//
-	//		validation.validation(result);
-	//
-	//		String name = principal.getName();
-	//		Optional<User> targetUser = userService.findByName(name);
-	//
-	//		if (request.getStatus() == null) {
-	//			request.setStatus(targetUser.get().getStatus());
-	//		}
-	//
-	//		User u = CreatePlantRecordRequestDto.toModel(request);
-	//
-	//		u.setId(targetUser.get().getId());
-	//
-	//		String coverImageName = uploadImage(coverImage);
-	//		if (StringUtils.isEmpty(coverImageName)) {
-	//			u.setCoverImage(targetUser.get().getCoverImage());
-	//		} else {
-	//			System.out.println("coverImageName: " + coverImageName);
-	//			u.setCoverImage(imagePath + coverImageName);
-	//		}
-	//
-	//		String profileImageName = uploadImage(profileImage);
-	//		if (StringUtils.isEmpty(profileImageName)) {
-	//			u.setProfileImage(targetUser.get().getProfileImage());
-	//		} else {
-	//			System.out.println("profileImageName: " + profileImageName);
-	//			u.setProfileImage(imagePath + profileImageName);
-	//		}
-	//
-	//		u.setPassword(targetUser.get().getPassword());
-	//
-	//		if (!userService.update(u)) {
-	//			throw new Error();
-	//		}
-	//
-	//		Optional<User> userModel = userService.findById((long) targetUser.get().getId());
-	//
-	//		Optional<PlantRecordResponse> r = UserResponseDto.toResponse(userModel);
-	//		return r;
-	//	}
+				Optional<Place> place = placeService.findById((long) p.getPlace().getId());
+				p.setPlace(place.get());
+			}
 
-	//	@Override
-	//	public void delete(String userId) {
-	//
-	//	}
+			Collection<PlantRecordResponse> response = PlantRecordResponseDto.toResponse(plantRecords);
 
-	//	@Override
-	//	public boolean create(UserRequest user) {
-	//
-	//		return false;
-	//	}
+			return response;
+		} catch (NumberFormatException ex) {
+			logger.error(ex.getMessage());
+		}
+		return null;
+	}
 
 	public String uploadImage(MultipartFile image) {
 		if (!ObjectUtils.isEmpty(image)) {
@@ -174,4 +137,5 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 		}
 		return null;
 	}
+
 }

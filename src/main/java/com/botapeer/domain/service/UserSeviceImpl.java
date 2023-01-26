@@ -7,7 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
-import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.repository.IPlantRecordRepository;
 import com.botapeer.domain.repository.IUserRepository;
@@ -76,11 +75,6 @@ public class UserSeviceImpl implements IUserService {
 	@Override
 	public Optional<User> findByName(String name) {
 		return userRepository.findByName(name);
-	}
-
-	@Override
-	public Collection<PlantRecord> findPlantRecords(Long userId) {
-		return plantRecordRepository.findByUserId(userId);
 	}
 
 }

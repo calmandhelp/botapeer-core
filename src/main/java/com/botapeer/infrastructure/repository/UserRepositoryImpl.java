@@ -71,5 +71,4 @@ public class UserRepositoryImpl implements IUserRepository {
 		Optional<UserEntity> user = this.userMapper.findByName(name);
 		return UserRepositoryDto.toModel(user);
 	}
-
 }

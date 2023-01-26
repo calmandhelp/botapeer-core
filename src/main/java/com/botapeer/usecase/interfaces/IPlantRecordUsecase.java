@@ -1,6 +1,7 @@
 package com.botapeer.usecase.interfaces;
 
 import java.security.Principal;
+import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,8 @@ public interface IPlantRecordUsecase {
 
 	public Optional<PlantRecordResponse> create(CreatePlantRecordRequest request, BindingResult result,
 			Principal principal);
+
+	public Collection<PlantRecordResponse> findByUserId(String userId);
 	//
 	//	public Optional<PlantRecordResponse> update(Principal principal, CreatePlantRecordRequest user, MultipartFile coverImage,
 	//			MultipartFile profileImage,
