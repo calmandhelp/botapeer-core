@@ -6,7 +6,14 @@ INSERT INTO users(name, email, password, description, status) values("okumura", 
 INSERT INTO users(name, email, password, description, status) values("takeuti", "yumi3119@dti.ad.jp", "$2a$12$GdY.dZn7wjfLnlqURlaacObGfp9.i0UJ7EQaYbNr4AtAuxVi5nY12", "自宅で野菜を栽培して10年になります。最近畑を購入しました。", 1);
 INSERT INTO users(name, email, password, description, status) values("narumi", "utiumi81@example.jp", "$2a$12$GdY.dZn7wjfLnlqURlaacObGfp9.i0UJ7EQaYbNr4AtAuxVi5nY12", "自宅で野菜を栽培して10年になります。最近畑を購入しました。", 1);
 
-INSERT INTO plant_records(id, title) values(1, "バラの生育記録");
+INSERT INTO places(name) values("リビング");
+INSERT INTO places(name) values("キッチン");
+INSERT INTO places(name) values("テラス");
+INSERT INTO places(name) values("庭");
+INSERT INTO places(name) values("玄関");
+INSERT INTO places(name) values("その他");
+
+INSERT INTO plant_records(title, alive) values("バラの生育記録", 1);
 
 INSERT INTO posts(plant_record_id, title, article) values(1, "初めての投稿", "初めての投稿です。よろしくお願いします。");
 INSERT INTO posts(plant_record_id, title, article) values(1, "芽が出ました", "徐々に芽がでてきましたー");

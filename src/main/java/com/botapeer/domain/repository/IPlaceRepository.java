@@ -1,13 +1,16 @@
 package com.botapeer.domain.repository;
 
 import java.util.Collection;
+import java.util.Optional;
 
-import com.botapeer.domain.model.label.Label;
+import com.botapeer.domain.model.place.Place;
 
-public interface ILabelRepository {
-	public Collection<Label> findById(int plantRecordId);
+public interface IPlaceRepository {
+	public Collection<Place> findAll();
 
-	public boolean create(Label label);
+	public Optional<Place> findById(Long placeId);
+
+	//	public boolean create(Label label);
 
 	//	public Collection<PlantRecordEntity> findByUserId(int userId);
 	//

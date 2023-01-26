@@ -16,19 +16,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.controller.payload.plantRecord.CreatePlantRecordRequest;
 import com.botapeer.controller.payload.plantRecord.PlantRecordResponse;
-import com.botapeer.domain.model.label.Label;
+import com.botapeer.domain.model.place.Place;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.post.Post;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.service.FileUploadService;
-import com.botapeer.domain.service.interfaces.ILabelService;
+import com.botapeer.domain.service.interfaces.IPlaceService;
 import com.botapeer.domain.service.interfaces.IPlantRecordService;
 import com.botapeer.domain.service.interfaces.IPostService;
 import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.s3.FileUploadForm;
+import com.botapeer.usecase.dto.plantRecord.CreatePlantRecordRequestDto;
+import com.botapeer.usecase.dto.plantRecord.PlantRecordResponseDto;
 import com.botapeer.usecase.interfaces.IPlantRecordUsecase;
-import com.botapeer.usecase.plantRecord.CreatePlantRecordRequestDto;
-import com.botapeer.usecase.plantRecord.PlantRecordResponseDto;
 import com.botapeer.util.ValidationUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 	private final IPlantRecordService plantRecordService;
 	private final FileUploadService fileUploadService;
 	private final IUserService userService;
-	private final ILabelService labelService;
+	private final IPlaceService placeService;
 	private final IPostService postService;
 	private final ValidationUtils validation;
 
@@ -78,14 +78,15 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 
 		plantRecord.setUserId(user.get().getId());
 
-		Optional<PlantRecord> resultRecord = plantRecordService.create(plantRecord);
-		Collection<Label> labels = labelService.findById(resultRecord.get().getId());
+		Optional<Place> place = placeService.findById(request.getPlaceId());
+		plantRecord.setPlace(place.get());
 
-		resultRecord.get().setLabels(labels);
+		Optional<PlantRecord> resultRecord = plantRecordService.create(plantRecord);
 
 		Collection<Post> posts = postService.findByPlantRecordId(resultRecord.get().getId());
 
 		resultRecord.get().setPosts(posts);
+		resultRecord.get().setPlace(place.get());
 
 		return PlantRecordResponseDto.toResponse(resultRecord);
 	}

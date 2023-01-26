@@ -5,9 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.botapeer.domain.model.label.Label;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
-import com.botapeer.domain.repository.ILabelRepository;
 import com.botapeer.domain.repository.IPlantRecordRepository;
 import com.botapeer.domain.service.interfaces.IPlantRecordService;
 
@@ -18,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 public class PlantRecordSeviceImpl implements IPlantRecordService {
 
 	private final IPlantRecordRepository plantRepository;
-	private final ILabelRepository labelRepository;
 
 	@Override
 	public Optional<PlantRecord> findById(int plantId) {
@@ -30,13 +27,6 @@ public class PlantRecordSeviceImpl implements IPlantRecordService {
 	public Optional<PlantRecord> create(PlantRecord plantRecord) {
 
 		int plantRecordId = plantRepository.create(plantRecord);
-
-		for (Label label : plantRecord.getLabels()) {
-			label.setPlantRecordId(plantRecordId);
-			if (!labelRepository.create(label)) {
-				throw new Error();
-			}
-		}
 
 		Optional<PlantRecord> resultRecord = plantRepository.findById(plantRecordId);
 

@@ -14,10 +14,19 @@ CREATE TABLE IF NOT EXISTS users
    updated_at DATETIME,
    PRIMARY KEY (id)
 );
+CREATE TABLE IF NOT EXISTS places
+(
+   id INT NOT NULL AUTO_INCREMENT,
+   name VARCHAR (255),
+   created_at DATETIME,
+   updated_at DATETIME,
+   PRIMARY KEY (id)
+);
 CREATE TABLE IF NOT EXISTS plant_records
 (
    id INT NOT NULL AUTO_INCREMENT,
    user_id INT,
+   place_id INT,
    title VARCHAR(255),
    alive boolean,
    status INT,
@@ -25,7 +34,8 @@ CREATE TABLE IF NOT EXISTS plant_records
    created_at DATETIME,
    updated_at DATETIME,
    PRIMARY KEY (id),
-   CONSTRAINT FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE
+   CONSTRAINT FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+   CONSTRAINT FOREIGN KEY (place_id) REFERENCES places (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS follows
 (
@@ -37,16 +47,6 @@ CREATE TABLE IF NOT EXISTS follows
    PRIMARY KEY (id),
    CONSTRAINT FOREIGN KEY (followee_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE,
    CONSTRAINT FOREIGN KEY (follwer_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE
-);
-CREATE TABLE IF NOT EXISTS labels
-(
-   id INT NOT NULL AUTO_INCREMENT,
-   name VARCHAR (255),
-   plant_record_id INT,
-   created_at DATETIME,
-   updated_at DATETIME,
-   PRIMARY KEY (id),
-   CONSTRAINT FOREIGN KEY (plant_record_id) REFERENCES plant_records (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 CREATE TABLE IF NOT EXISTS posts
 (
@@ -107,13 +107,13 @@ CREATE TABLE IF NOT EXISTS activities
 (
    id INT NOT NULL AUTO_INCREMENT,
    status INT,
-   label_id INT,
+   plant_record_id INT,
    l_activity_type_id INT,
    s_activity_type_id INT,
    created_at DATETIME,
    updated_at DATETIME,
    PRIMARY KEY (id),
-   CONSTRAINT FOREIGN KEY (label_id) REFERENCES labels (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+   CONSTRAINT FOREIGN KEY (plant_record_id) REFERENCES plant_records (id) ON DELETE RESTRICT ON UPDATE CASCADE,
    CONSTRAINT FOREIGN KEY (l_activity_type_id) REFERENCES l_activity_types (id) ON DELETE RESTRICT ON UPDATE CASCADE,
    CONSTRAINT FOREIGN KEY (s_activity_type_id) REFERENCES s_activity_types (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );

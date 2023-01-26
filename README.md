@@ -13,10 +13,10 @@ erDiagram
     comments ||--o{ comments : has
     l_activity_types ||--o{ activities : types
     s_activity_types ||--o{ activities : types
-    labels ||--o{ activities : has
+    plant_records ||--o{ activities : has     
     plant_records ||--o{ posts : has
-    plant_records ||--o{ labels : has
     plant_records ||--o{ comments : has
+    plant_records ||--o{ places : has
     activity_records ||--o{ goodjobs : has
     activity_records ||--o{ activities : has
     activity_records ||--o{ comments : has
@@ -40,16 +40,16 @@ erDiagram
     plant_records {
         int id PK
         int user_id FK
+        int place_id FK
         string title
         boolean alive
         int status
         datetime end_date
         datetime created_at
-        datetime updated_at
+        datetime updated_at 
     }
-    labels {
+    places {
         int id PK
-        int plant_record_id FK
         string name
         datetime created_at
         datetime updated_at
@@ -94,7 +94,7 @@ erDiagram
     }
     activities {
         int id PK
-        int label_id FK
+        int plant_record_id FK
         int activity_record_id FK
         int l_activity_types
         int s_activity_types
@@ -106,7 +106,7 @@ erDiagram
         int id PK
         int received_user_id FK
         int send_user_id FK
-        int activity_record_id FK
+        int activity_record_id FK     
         datetime created_at
         datetime updated_at
     }

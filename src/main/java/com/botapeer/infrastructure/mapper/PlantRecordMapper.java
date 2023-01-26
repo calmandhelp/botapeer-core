@@ -20,6 +20,7 @@ public interface PlantRecordMapper {
 			+ "title, "
 			+ "alive, "
 			+ "status, "
+			+ "place_id, "
 			+ "created_at, "
 			+ "updated_at "
 			+ ") "
@@ -28,6 +29,7 @@ public interface PlantRecordMapper {
 			+ "#{title}, "
 			+ "#{alive}, "
 			+ "#{status}, "
+			+ "#{placeId}, "
 			+ "CURRENT_TIMESTAMP, "
 			+ "CURRENT_TIMESTAMP "
 			+ ");")

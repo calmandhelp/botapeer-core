@@ -21,20 +21,20 @@ import com.botapeer.controller.payload.plantRecord.PlantRecordResponse;
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 import com.botapeer.controller.payload.user.UpdateUserRequest;
 import com.botapeer.controller.payload.user.UserResponse;
-import com.botapeer.domain.model.label.Label;
+import com.botapeer.domain.model.place.Place;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.post.Post;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.service.FileUploadService;
-import com.botapeer.domain.service.interfaces.ILabelService;
+import com.botapeer.domain.service.interfaces.IPlaceService;
 import com.botapeer.domain.service.interfaces.IPlantRecordService;
 import com.botapeer.domain.service.interfaces.IPostService;
 import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.s3.FileUploadForm;
+import com.botapeer.usecase.dto.plantRecord.PlantRecordResponseDto;
 import com.botapeer.usecase.dto.user.UpdateUserRequestDto;
 import com.botapeer.usecase.dto.user.UserResponseDto;
 import com.botapeer.usecase.interfaces.IUserUsecase;
-import com.botapeer.usecase.plantRecord.PlantRecordResponseDto;
 import com.botapeer.util.ValidationUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -48,7 +48,7 @@ public class UserUsecase implements IUserUsecase {
 	private final PasswordEncoder passwordEncoder;
 	private final MessageSource messageSource;
 	private final IPlantRecordService plantRecordService;
-	private final ILabelService labelService;
+	private final IPlaceService placeService;
 	private final IPostService postService;
 	private final ValidationUtils validation;
 
@@ -174,13 +174,12 @@ public class UserUsecase implements IUserUsecase {
 		try {
 			Integer numUserId = Integer.parseInt(userId);
 			Collection<PlantRecord> plantRecords = userService.findPlantRecords((long) numUserId);
-
 			for (PlantRecord p : plantRecords) {
-				Collection<Label> labels = labelService.findById(p.getId());
-				p.setLabels(labels);
-
 				Collection<Post> posts = postService.findByPlantRecordId(p.getId());
 				p.setPosts(posts);
+
+				Optional<Place> place = placeService.findById((long) p.getPlace().getId());
+				p.setPlace(place.get());
 			}
 
 			Collection<PlantRecordResponse> response = PlantRecordResponseDto.toResponse(plantRecords);

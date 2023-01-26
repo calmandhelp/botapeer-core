@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
+import com.botapeer.domain.model.place.Place;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.text.Title;
 import com.botapeer.infrastructure.entity.PlantRecordEntity;
@@ -42,7 +43,9 @@ public class PlantRecordRepositoryDto {
 			model.setUpdatedAt(entity.getUpdatedAt());
 			model.setEndDate(entity.getEndDate());
 			model.setUserId(entity.getUserId());
-			model.setLabels(entity.getLabels());
+			Place place = new Place();
+			place.setId(entity.getPlaceId());
+			model.setPlace(place);
 
 			plantRecordList.add(model);
 		}
@@ -55,10 +58,10 @@ public class PlantRecordRepositoryDto {
 		plantRecordEntity.setUserId(plantRecord.getUserId());
 		plantRecordEntity.setAlive(plantRecord.getAlive());
 		plantRecordEntity.setStatus(plantRecord.getStatus());
+		plantRecordEntity.setPlaceId(plantRecord.getPlace().getId());
 		Title title = plantRecord.getTitle();
 		String t = title.getTitle();
 		plantRecordEntity.setTitle(t);
-		plantRecordEntity.setLabels(plantRecord.getLabels());
 		return plantRecordEntity;
 	}
 }

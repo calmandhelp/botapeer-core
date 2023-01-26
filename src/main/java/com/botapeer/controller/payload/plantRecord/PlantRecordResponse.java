@@ -3,8 +3,8 @@ package com.botapeer.controller.payload.plantRecord;
 import java.time.LocalDate;
 import java.util.Collection;
 
-import com.botapeer.controller.payload.label.LabelResponse;
 import com.botapeer.controller.payload.post.PostResponse;
+import com.botapeer.domain.model.place.Place;
 
 import lombok.Data;
 
@@ -22,7 +22,7 @@ public class PlantRecordResponse {
 
 	private LocalDate updatedAt;
 
-	private Collection<LabelResponse> labels;
+	private Place place;
 
 	private Collection<PostResponse> posts;
 

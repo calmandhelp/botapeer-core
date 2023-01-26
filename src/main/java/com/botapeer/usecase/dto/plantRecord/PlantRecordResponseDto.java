@@ -1,13 +1,11 @@
-package com.botapeer.usecase.plantRecord;
+package com.botapeer.usecase.dto.plantRecord;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-import com.botapeer.controller.payload.label.LabelResponse;
 import com.botapeer.controller.payload.plantRecord.PlantRecordResponse;
 import com.botapeer.controller.payload.post.PostResponse;
-import com.botapeer.domain.model.label.Label;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.post.Post;
 import com.botapeer.domain.model.text.Article;
@@ -25,13 +23,7 @@ public class PlantRecordResponseDto {
 			response.setCreatedAt(model.get().getCreatedAt());
 			response.setEndDate(model.get().getEndDate());
 			response.setUpdatedAt(model.get().getUpdatedAt());
-
-			Collection<LabelResponse> labels = new ArrayList<>();
-			for (Label label : model.get().getLabels()) {
-				LabelResponse labelResponse = new LabelResponse(label.getName());
-				labels.add(labelResponse);
-			}
-			response.setLabels(labels);
+			response.setPlace(model.get().getPlace());
 
 			Collection<PostResponse> posts = new ArrayList<>();
 			for (Post postModel : model.get().getPosts()) {
@@ -69,13 +61,7 @@ public class PlantRecordResponseDto {
 			Title title = model.getTitle();
 			r.setTitle(title.getTitle());
 			r.setUpdatedAt(model.getUpdatedAt());
-			Collection<Label> labels = model.getLabels();
-			Collection<LabelResponse> labelResponses = new ArrayList<>();
-			for (Label l : labels) {
-				LabelResponse labelResponse = new LabelResponse(l.getName());
-				labelResponses.add(labelResponse);
-			}
-			r.setLabels(labelResponses);
+			r.setPlace(model.getPlace());
 
 			Collection<Post> posts = model.getPosts();
 			Collection<PostResponse> postResponses = new ArrayList<>();

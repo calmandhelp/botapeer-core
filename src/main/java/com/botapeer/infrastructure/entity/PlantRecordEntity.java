@@ -1,13 +1,10 @@
 package com.botapeer.infrastructure.entity;
 
 import java.time.LocalDate;
-import java.util.Collection;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-
-import com.botapeer.domain.model.label.Label;
 
 import lombok.Data;
 
@@ -23,7 +20,7 @@ public class PlantRecordEntity {
 
 	private String title;
 
-	private Collection<Label> labels;
+	private Long placeId;
 
 	private Integer status;
 
