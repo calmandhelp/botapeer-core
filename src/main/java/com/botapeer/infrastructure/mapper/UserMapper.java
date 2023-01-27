@@ -25,7 +25,8 @@ public interface UserMapper {
 			+ "email = #{email}, "
 			+ "status = #{status}, "
 			+ "profile_image = #{profileImage}, "
-			+ "cover_image = #{coverImage} "
+			+ "cover_image = #{coverImage} , "
+			+ "description = #{description} "
 			+ "WHERE id = #{id}")
 	boolean update(UserEntity user);
 
