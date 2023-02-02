@@ -15,11 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.botapeer.security.JwtAuthenticationEntryPoint;
 import com.botapeer.security.JwtAuthenticationFilter;
-import com.botapeer.security.LogoutSuccessHandler;
-import com.botapeer.security.oauth2.CustomOAuth2UserService;
 import com.botapeer.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.botapeer.security.oauth2.OAuth2AuthenticationFailureHandler;
-import com.botapeer.security.oauth2.OAuth2AuthenticationSuccessHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,10 +25,10 @@ public class SecurityConfig {
 
 	private final JwtAuthenticationEntryPoint unauthorizedHandler;
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
-	private final CustomOAuth2UserService oauthUserService;
-	private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-	private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
-	private final LogoutSuccessHandler logoutSuccessHandler;
+	//	private final CustomOAuth2UserService oauthUserService;
+	//	private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+	//	private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+	//	private final LogoutSuccessHandler logoutSuccessHandler;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -50,20 +46,20 @@ public class SecurityConfig {
 						.mvcMatchers(HttpMethod.GET, "/api/**").permitAll()
 						.mvcMatchers("/oauth2/**").permitAll()
 						.mvcMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-						.anyRequest().authenticated())
-				.oauth2Login()
-				.authorizationEndpoint()
-				.authorizationRequestRepository(cookieAuthorizationRequestRepository())
-				.and()
-				.userInfoEndpoint()
-				.userService(oauthUserService)
-				.and()
-				.successHandler(oAuth2AuthenticationSuccessHandler)
-				.failureHandler(oAuth2AuthenticationFailureHandler)
-				.and()
-				.logout(logout -> logout
-						.logoutUrl("/api/logout")
-						.logoutSuccessHandler(logoutSuccessHandler));
+						.anyRequest().authenticated());
+		//				.oauth2Login()
+		//				.authorizationEndpoint()
+		//				.authorizationRequestRepository(cookieAuthorizationRequestRepository())
+		//				.and()
+		//				.userInfoEndpoint()
+		//				.userService(oauthUserService)
+		//				.and()
+		//				.successHandler(oAuth2AuthenticationSuccessHandler)
+		//				.failureHandler(oAuth2AuthenticationFailureHandler)
+		//				.and()
+		//				.logout(logout -> logout
+		//						.logoutUrl("/api/logout")
+		//						.logoutSuccessHandler(logoutSuccessHandler))
 		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 		http.cors();
 		return http.build();

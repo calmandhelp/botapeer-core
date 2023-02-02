@@ -192,7 +192,7 @@ public class UserUsecase implements IUserUsecase {
 			fileUploadForm.setCreateAt(LocalDateTime.now());
 			try {
 				logger.info("image: " + image.getOriginalFilename());
-				String fileName = fileUploadService.fileUpload(fileUploadForm, "botapeer.com/images");
+				String fileName = fileUploadService.fileUpload(fileUploadForm, "image.botapeer.com/images");
 				return fileName;
 			} catch (IOException e) {
 				// TODO 自動生成された catch ブロック
