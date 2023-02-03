@@ -11,12 +11,11 @@ erDiagram
     posts ||--o{ comments : has
     comments ||--o{ likes : has
     comments ||--o{ comments : has
-    l_activity_types ||--o{ activities : types
+    l_activity_types ||--o{ s_activity_types : has
     s_activity_types ||--o{ activities : types
     plant_records ||--o{ activities : has     
     plant_records ||--o{ posts : has
-    plant_records ||--o{ comments : has
-    plant_records ||--o{ places : has
+    places ||--o{ plant_records : has
     activity_records ||--o{ goodjobs : has
     activity_records ||--o{ activities : has
     activity_records ||--o{ comments : has
@@ -74,7 +73,6 @@ erDiagram
     }
     comments {
         int id PK
-        int plant_record_id FK
         int post_id FK
         int user_id FK
         int comment_id FK
@@ -96,9 +94,8 @@ erDiagram
         int id PK
         int plant_record_id FK
         int activity_record_id FK
-        int l_activity_types
-        int s_activity_types
-        int status
+        int s_activity_types_id FK
+        int status     
         datetime created_at
         datetime updated_at
     }
@@ -116,6 +113,7 @@ erDiagram
     }
     s_activity_types {
         int id PK
+        int l_activity_type_id FK
         string name
     }
 ```
