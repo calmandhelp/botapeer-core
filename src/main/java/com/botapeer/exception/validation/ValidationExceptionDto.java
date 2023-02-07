@@ -1,26 +1,25 @@
 package com.botapeer.exception.validation;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import com.botapeer.constants.ResponseConstants;
+import com.botapeer.exception.ErrorMessages;
 
-public class ResponseDto {
+public class ValidationExceptionDto {
 
-	private List<HashMap<String, String>> responseList;
+	private ErrorMessages errorMessages;
 
-	public List<HashMap<String, String>> ValidationErrorToResponse(ErrorMessages errorMessages) {
-		this.responseList = new ArrayList<>();
+	public ErrorMessages ValidationCodeConverter(ErrorMessages errorMessages) {
+		this.errorMessages = new ErrorMessages();
 		for (int i = 0; i < errorMessages.getMessages().size(); i++) {
 			HashMap<String, String> map = new HashMap<>();
 			map.put(ResponseConstants.ERRORS_CODE_KEY,
 					validationToResponse(errorMessages.getMessages().get(i).get(ResponseConstants.ERRORS_CODE_KEY)));
 			map.put(ResponseConstants.ERRORS_MESSAGE_KEY,
 					errorMessages.getMessages().get(i).get(ResponseConstants.ERRORS_MESSAGE_KEY));
-			this.responseList.add(map);
+			this.errorMessages.getMessages().add(map);
 		}
-		return this.responseList;
+		return this.errorMessages;
 	}
 
 	public String validationToResponse(String code) {

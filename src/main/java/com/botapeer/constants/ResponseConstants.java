@@ -16,6 +16,9 @@ public final class ResponseConstants {
 	public static final String SIZE_VALIDATION = "Size";
 	public static final String SIZE_VALIDATION_CODE = "1005";
 
+	public static final String NOTFOUND_MESSAGE = "ユーザーは存在しません";
+	public static final String NOTFOUND_CODE = "1011";
+
 	public static final String ERRORS_CODE_KEY = "code";
 	public static final String ERRORS_MESSAGE_KEY = "message";
 

@@ -12,7 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import com.botapeer.constants.ResponseConstants;
-import com.botapeer.exception.validation.ErrorMessages;
+import com.botapeer.exception.ErrorMessages;
 import com.botapeer.exception.validation.ValidationException;
 
 import lombok.AllArgsConstructor;

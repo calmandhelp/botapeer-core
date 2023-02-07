@@ -1,4 +1,4 @@
-package com.botapeer.exception.validation;
+package com.botapeer.exception.data;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -11,11 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class ValidationException extends RuntimeException {
-
+public class NotFoundException extends RuntimeException {
 	private ErrorMessages errorMessages;
-
-	public ValidationException(ErrorMessages errorMessages) {
-		this.errorMessages = errorMessages;
-	}
 }
