@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+@ResponseStatus(HttpStatus.BAD_REQUEST)
 public class ValidationException extends RuntimeException {
 
 	private ErrorMessages errorMessages;

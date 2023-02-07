@@ -12,13 +12,13 @@ public interface IUserService {
 
 	public Collection<User> findUsers(String username);
 
+	public Integer create(User user, String encryptedPassword);
+
 	public boolean update(User user);
 
 	public boolean updatePassword(UpdatePasswordRequest request);
 
 	public boolean delete(Long userId);
-
-	public boolean create(User user);
 
 	public Optional<User> findByUserNameOrEmail(String usernameOrEmail);
 

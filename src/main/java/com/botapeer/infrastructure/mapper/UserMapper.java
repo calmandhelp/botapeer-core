@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -34,6 +35,7 @@ public interface UserMapper {
 			+ "WHERE id = #{userId}")
 	boolean delete(Long userId);
 
+	@Options(useGeneratedKeys = true, keyProperty = "user.id", keyColumn = "id")
 	@Insert("INSERT INTO users"
 			+ "( "
 			+ "name, "
@@ -41,18 +43,18 @@ public interface UserMapper {
 			+ "password, "
 			+ "status, "
 			+ "updated_at, "
-			+ "created_at, "
+			+ "created_at "
 			+ ") "
 			+ "VALUES "
 			+ "( "
-			+ "#{name}, "
-			+ "#{email}, "
-			+ "#{password}, "
-			+ "#{status}, "
+			+ "#{user.name}, "
+			+ "#{user.email}, "
+			+ "#{encryptedPassword}, "
+			+ "#{user.status}, "
 			+ "current_timestamp, "
 			+ "current_timestamp "
 			+ ")")
-	boolean create(UserEntity user);
+	boolean create(UserEntity user, String encryptedPassword);
 
 	@Select("SELECT * from users WHERE email = #{usernameOrEmail} OR name = #{usernameOrEmail}")
 	Optional<UserEntity> findUserByNameOrEmail(String usernameOrEmail);

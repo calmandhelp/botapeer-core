@@ -11,13 +11,13 @@ public interface IUserRepository {
 
 	public Collection<User> findUsers(String name);
 
+	public Integer create(User user, String encryptedPassword);
+
 	public boolean update(User user);
 
 	public boolean updatePassword(UpdatePasswordRequest request);
 
 	public boolean delete(Long userId);
-
-	public boolean create(User user);
 
 	public Optional<User> findUserByNameOrEmail(String usernameOrEmail);
 

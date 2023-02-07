@@ -17,9 +17,9 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleValidationException(ValidationException ex, WebRequest request) {
 		ResponseDto dto = new ResponseDto();
 		List<HashMap<String, String>> response = dto.ValidationErrorToResponse(ex.getErrorMessages());
-		ResponseError re = new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR.value(), response);
+		ResponseError re = new ResponseError(HttpStatus.BAD_REQUEST.value(), response);
 
-		return super.handleExceptionInternal(ex, re, null, HttpStatus.INTERNAL_SERVER_ERROR, request);
+		return super.handleExceptionInternal(ex, re, null, HttpStatus.BAD_REQUEST, request);
 	}
 
 }

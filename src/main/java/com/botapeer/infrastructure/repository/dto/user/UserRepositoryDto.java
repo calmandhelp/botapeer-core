@@ -5,10 +5,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import com.botapeer.infrastructure.entity.UserEntity;
 import com.botapeer.domain.model.user.Password;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.model.user.UserName;
+import com.botapeer.infrastructure.entity.UserEntity;
 
 public class UserRepositoryDto {
 	public static Optional<User> toModel(Optional<UserEntity> user) {
@@ -66,8 +66,8 @@ public class UserRepositoryDto {
 
 		UserName userName = user.getName();
 		String strUserName = userName.getName();
-
 		u.setName(strUserName);
+
 		u.setProfileImage(user.getProfileImage());
 		u.setCoverImage(user.getCoverImage());
 		u.setStatus(user.getStatus());

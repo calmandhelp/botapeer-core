@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.botapeer.controller.payload.auth.CreateUserRequest;
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 import com.botapeer.controller.payload.user.UpdateUserRequest;
 import com.botapeer.controller.payload.user.UserResponse;
@@ -15,6 +16,8 @@ public interface IUserUsecase {
 	public Optional<UserResponse> findById(String userId);
 
 	public Collection<UserResponse> findUsers(String name);
+
+	public Optional<UserResponse> create(CreateUserRequest request, BindingResult result);
 
 	public Optional<UserResponse> update(Principal principal, UpdateUserRequest user, MultipartFile coverImage,
 			MultipartFile profileImage,

@@ -17,15 +17,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.botapeer.controller.payload.auth.CreateUserRequest;
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 import com.botapeer.controller.payload.user.UpdateUserRequest;
 import com.botapeer.controller.payload.user.UserResponse;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
+import com.botapeer.domain.model.user.Password;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.service.FileUploadService;
-import com.botapeer.domain.service.interfaces.IPlaceService;
 import com.botapeer.domain.service.interfaces.IPlantRecordService;
-import com.botapeer.domain.service.interfaces.IPostService;
 import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.s3.FileUploadForm;
 import com.botapeer.usecase.dto.user.UpdateUserRequestDto;
@@ -41,11 +41,9 @@ public class UserUsecase implements IUserUsecase {
 
 	private final IUserService userService;
 	private final FileUploadService fileUploadService;
-	private final PasswordEncoder passwordEncoder;
 	private final MessageSource messageSource;
 	private final IPlantRecordService plantRecordService;
-	private final IPlaceService placeService;
-	private final IPostService postService;
+	private final PasswordEncoder passwordEncoder;
 	private final ValidationUtils validation;
 
 	Logger logger = LoggerFactory.getLogger(UserUsecase.class);
@@ -70,6 +68,23 @@ public class UserUsecase implements IUserUsecase {
 	public Collection<UserResponse> findUsers(String name) {
 		Collection<User> user = userService.findUsers(name);
 		Collection<UserResponse> r = UserResponseDto.toResponse(user);
+		return r;
+	}
+
+	@Override
+	public Optional<UserResponse> create(CreateUserRequest request, BindingResult result) {
+		validation.validation(result);
+
+		User u = UpdateUserRequestDto.toModel(request);
+
+		Password password = new Password(request.getPassword());
+
+		String encryptedPassword = passwordEncoder.encode(password.getPassword());
+
+		int userId = userService.create(u, encryptedPassword);
+		Optional<User> user = userService.findById((long) userId);
+
+		Optional<UserResponse> r = UserResponseDto.toResponse(user);
 		return r;
 	}
 

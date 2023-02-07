@@ -33,6 +33,13 @@ public class UserRepositoryImpl implements IUserRepository {
 	}
 
 	@Override
+	public Integer create(User user, String encryptedPassword) {
+		UserEntity userEntity = UserRepositoryDto.toEntity(user);
+		userMapper.create(userEntity, encryptedPassword);
+		return userEntity.getId();
+	}
+
+	@Override
 	public boolean update(User user) {
 		UserEntity userEntity = UserRepositoryDto.toEntity(user);
 		return this.userMapper.update(userEntity);
@@ -47,12 +54,6 @@ public class UserRepositoryImpl implements IUserRepository {
 	@Override
 	public boolean delete(Long userId) {
 		return this.userMapper.delete(userId);
-	}
-
-	@Override
-	public boolean create(User user) {
-		UserEntity u = UserRepositoryDto.toEntity(user);
-		return this.userMapper.create(u);
 	}
 
 	public Optional<User> findUserByNameOrEmail(String usernameOrEmail) {

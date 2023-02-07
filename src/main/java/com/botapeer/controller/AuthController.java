@@ -1,5 +1,7 @@
 package com.botapeer.controller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -7,17 +9,19 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.botapeer.controller.payload.auth.CreateUserRequest;
 import com.botapeer.controller.payload.auth.JwtAuthenticationResponse;
 import com.botapeer.controller.payload.auth.LoginRequest;
-import com.botapeer.domain.service.interfaces.IUserService;
+import com.botapeer.controller.payload.user.UserResponse;
 import com.botapeer.security.JwtTokenProvider;
 import com.botapeer.usecase.interfaces.IUserUsecase;
-import com.botapeer.util.ValidationUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,9 +32,7 @@ public class AuthController {
 
 	private final AuthenticationManager authenticationManager;
 	private final JwtTokenProvider jwtTokenProvider;
-	private final IUserService userService;
 	private final IUserUsecase userUsecase;
-	private final ValidationUtils validationUtils;
 
 	@PostMapping("/signin")
 	public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -43,16 +45,12 @@ public class AuthController {
 		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
 	}
 
-	//	@PostMapping("/signup")
-	//	public Optional<UserResponse> createUser(@Validated @RequestBody UserRequest user, BindingResult result) {
-	//
-	//		validationUtils.validation(result);
-	//
-	//		if (!userUsecase.create(user)) {
-	//			throw new Error();
-	//		}
-	//
-	//		return null;
-	//	}
+	@PostMapping("/signup")
+	public Optional<UserResponse> createUser(@Validated @RequestBody CreateUserRequest request, BindingResult result) {
+
+		Optional<UserResponse> response = userUsecase.create(request, result);
+
+		return response;
+	}
 
 }

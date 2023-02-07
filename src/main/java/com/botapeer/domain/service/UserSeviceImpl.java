@@ -3,12 +3,10 @@ package com.botapeer.domain.service;
 import java.util.Collection;
 import java.util.Optional;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 import com.botapeer.domain.model.user.User;
-import com.botapeer.domain.repository.IPlantRecordRepository;
 import com.botapeer.domain.repository.IUserRepository;
 import com.botapeer.domain.service.interfaces.IUserService;
 
@@ -18,10 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserSeviceImpl implements IUserService {
 
-	private final PasswordEncoder passwordEncoder;
-
 	private final IUserRepository userRepository;
-	private final IPlantRecordRepository plantRecordRepository;
 
 	@Override
 	public Optional<User> findById(Long userId) {
@@ -31,6 +26,12 @@ public class UserSeviceImpl implements IUserService {
 	@Override
 	public Collection<User> findUsers(String name) {
 		return this.userRepository.findUsers(name);
+	}
+
+	@Override
+	public Integer create(User user, String encryptedPassword) {
+		user.setStatus(2);
+		return this.userRepository.create(user, encryptedPassword);
 	}
 
 	@Override
@@ -55,11 +56,6 @@ public class UserSeviceImpl implements IUserService {
 	@Override
 	public boolean delete(Long userId) {
 		return userRepository.delete(userId);
-	}
-
-	@Override
-	public boolean create(User user) {
-		return userRepository.create(user);
 	}
 
 	@Override
