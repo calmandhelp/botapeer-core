@@ -12,8 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import com.botapeer.constants.ResponseConstants;
-import com.botapeer.controller.exception.validation.ErrorMessages;
-import com.botapeer.controller.exception.validation.ValidationException;
+import com.botapeer.exception.validation.ErrorMessages;
+import com.botapeer.exception.validation.ValidationException;
 
 import lombok.AllArgsConstructor;
 
@@ -35,7 +35,6 @@ public class ValidationUtils {
 
 						if (e instanceof FieldError) {
 							var fieldError = (FieldError) e;
-							System.out.println(e.getCode());
 							errorsMap.put(ResponseConstants.ERRORS_CODE_KEY, e.getCode());
 							errorsMap.put(ResponseConstants.ERRORS_MESSAGE_KEY,
 									messageSource.getMessage(e, Locale.getDefault()));

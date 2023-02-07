@@ -1,4 +1,4 @@
-package com.botapeer.controller.exception.validation;
+package com.botapeer.exception.validation;
 
 import java.util.HashMap;
 import java.util.List;

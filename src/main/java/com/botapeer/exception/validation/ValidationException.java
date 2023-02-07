@@ -1,4 +1,4 @@
-package com.botapeer.controller.exception.validation;
+package com.botapeer.exception.validation;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
