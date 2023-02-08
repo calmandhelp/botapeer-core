@@ -17,9 +17,9 @@ public class DataExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleValidationException(NotFoundException ex, WebRequest request) {
 		DataExceptionDto dto = new DataExceptionDto();
 		ErrorMessages errorMessages = dto.NotFoundErrorToResponse(ex.getErrorMessages());
-		ResponseError re = new ResponseError(HttpStatus.BAD_REQUEST.value(), errorMessages.getMessages());
+		ResponseError re = new ResponseError(HttpStatus.NOT_FOUND.value(), errorMessages.getMessages());
 
-		return super.handleExceptionInternal(ex, re, null, HttpStatus.BAD_REQUEST, request);
+		return super.handleExceptionInternal(ex, re, null, HttpStatus.NOT_FOUND, request);
 	}
 
 }
