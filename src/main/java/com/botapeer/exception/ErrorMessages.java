@@ -9,10 +9,10 @@ import lombok.Data;
 @Data
 public class ErrorMessages {
 
-	private List<HashMap<String, String>> messages;
+	private List<HashMap<String, Object>> messages;
 
 	public ErrorMessages() {
-		this.messages = new ArrayList<HashMap<String, String>>();
+		this.messages = new ArrayList<HashMap<String, Object>>();
 	}
 
 }

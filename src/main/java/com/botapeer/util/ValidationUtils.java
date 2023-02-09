@@ -25,12 +25,12 @@ public class ValidationUtils {
 
 	public void validation(BindingResult result) {
 		if (result.hasErrors()) {
-			List<HashMap<String, String>> list = new ArrayList<>();
+			List<HashMap<String, Object>> list = new ArrayList<>();
 
 			result.getAllErrors()
 					.stream()
 					.map(e -> {
-						HashMap<String, String> errorsMap = new HashMap<>();
+						HashMap<String, Object> errorsMap = new HashMap<>();
 						var defaultMessage = e.getDefaultMessage();
 
 						if (e instanceof FieldError) {

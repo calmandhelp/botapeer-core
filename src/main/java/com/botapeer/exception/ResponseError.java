@@ -8,9 +8,9 @@ import lombok.Value;
 @Value
 public class ResponseError {
 	private int status;
-	private List<HashMap<String, String>> errors;
+	private List<HashMap<String, Object>> errors;
 
-	public ResponseError(int status, List<HashMap<String, String>> errors) {
+	public ResponseError(int status, List<HashMap<String, Object>> errors) {
 		this.status = status;
 		this.errors = errors;
 	}
