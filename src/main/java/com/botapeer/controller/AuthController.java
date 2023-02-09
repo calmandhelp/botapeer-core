@@ -23,8 +23,6 @@ import com.botapeer.controller.payload.user.UserResponse;
 import com.botapeer.security.JwtTokenProvider;
 import com.botapeer.usecase.interfaces.IUserUsecase;
 
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -48,11 +46,6 @@ public class AuthController {
 	}
 
 	@PostMapping("/signup")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "OK"),
-			@ApiResponse(code = 401, message = "Unauthorized"),
-			@ApiResponse(code = 400, message = "Bad Request"),
-	})
 	public Optional<UserResponse> createUser(@Validated @RequestBody CreateUserRequest request, BindingResult result) {
 
 		Optional<UserResponse> response = userUsecase.create(request, result);
