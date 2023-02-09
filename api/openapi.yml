@@ -1,0 +1,101 @@
+openapi: 3.0.0
+info:
+  title: Botapeer API
+  description: Botapeer API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081
+  - url: http://api.botapeer.com
+paths:
+  '/api/users':
+    get:
+      operationId: get-users
+      summary: User API
+      description: User一覧を取得
+      parameters:
+        - in: query
+          name: username
+          description: ユーザー名
+          required: false
+          schema:
+            type: string
+            example: taro
+      tags:
+        - User
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: 400(Bad Request)
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/ErrorResponse'
+          headers:
+            http_status:
+              description: HTTPステータス
+              schema:
+                type: integer
+components:
+  schemas:
+    # BookRequest:
+    #   required:
+    #   - isbn
+    #   - title
+    #   - price
+    #   type: object
+    #   properties:
+    #     isbn:
+    #       type: string
+    #       example: 978-4621303252
+    #     title:
+    #       type: string
+    #       example: Effective Java 第3版
+    #     price:
+    #       format: int32
+    #       type: integer
+    #       example: 4400
+    #     tags:
+    #       type: array
+    #       items:
+    #         type: string
+    #       example:
+    #       - java
+    #       - programming
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        status:
+          type: integer
+        description:
+          type: string
+        profileImage:
+          type: string
+        coverImage:
+          type: string
+    ErrorResponse:
+      properties:
+        status:
+          type: integer
+        errors:
+          $ref: '#/components/schemas/Error'
+    Error:
+        type: array
+        items:
+          properties:
+            code:
+              type: integer
+            message:
+              type: string

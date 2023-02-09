@@ -12,6 +12,7 @@ public class CreateUserRequest {
 	private String name;
 
 	@Email
+	@NotBlank
 	private String email;
 
 	@NotBlank

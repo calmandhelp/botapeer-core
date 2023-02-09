@@ -42,7 +42,8 @@ public class SecurityConfig {
 				.and()
 				.authorizeHttpRequests(authz -> authz
 						.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-						.mvcMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+						.mvcMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v2/api-docs/**", "/swagger-resources/**")
+						.permitAll()
 						.mvcMatchers(HttpMethod.GET, "/api/**").permitAll()
 						.mvcMatchers("/oauth2/**").permitAll()
 						.mvcMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
