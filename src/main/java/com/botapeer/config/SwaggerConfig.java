@@ -1,16 +1,13 @@
 package com.botapeer.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-
-import com.fasterxml.classmate.TypeResolver;
 
 @Configuration
 //@EnableSwagger2
 public class SwaggerConfig {
 
-	@Autowired
-	private TypeResolver typeResolver;
+	//	@Autowired
+	//	private TypeResolver typeResolver;
 
 	//	private List<Response> ErrorResponsneWithAuth = new ArrayList<>() {
 	//		{
