@@ -7,7 +7,7 @@
 		<version>2.7.6</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
+	<groupId>com.botapeer</groupId>
 	<artifactId>botapeer-core</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>botapeer-core</name>
@@ -120,8 +120,16 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>openapi-spring</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 
+	<!--modules>
+		<module>botapeer-openapi/spring</module>
+	</modules-->
 	<build>
 		<plugins>
 			<plugin>
@@ -138,5 +146,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

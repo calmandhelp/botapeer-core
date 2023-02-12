@@ -2,10 +2,16 @@ FROM eclipse-temurin:11-jdk-focal
 RUN apt-get update  \
  && apt-get install maven -y \
  && apt-get install -y vim
- #&& apt-get install -y locales
-#RUN localedef -i ja_JP -f UTF-8 ja_JP.UTF-8
-#RUN echo 'LANG="ja_JP.UTF-8"' >  /etc/locale.conf
-#ENV LANG ja_JP.UTF-8
 WORKDIR /app
+COPY pom.xml /app
+COPY botapeer-openapi /app/botapeer-openapi
+RUN cd botapeer-openapi/spring && \
+mvn clean package && \
+mvn install:install-file -Dfile=target/openapi-spring-1.0.0.jar \
+-DgroupId=org.openapitools \
+-DartifactId=openapi-spring \
+-Dversion=1.0.0 \
+-Dpackaging=jar \
+-DlocalRepositoryPath=/root/.m2/repository
 COPY . /app
 CMD ["./mvnw", "spring-boot:run"]

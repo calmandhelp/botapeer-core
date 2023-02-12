@@ -22,12 +22,13 @@ import com.botapeer.controller.payload.user.UpdateUserRequest;
 import com.botapeer.controller.payload.user.UserResponse;
 import com.botapeer.usecase.interfaces.IUserUsecase;
 
+import api.UsersApi;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-public class UserController {
+public class UserController implements UsersApi {
 
 	private final IUserUsecase userUsecase;
 
