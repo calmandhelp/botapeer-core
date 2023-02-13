@@ -6,7 +6,6 @@ WORKDIR /app
 COPY pom.xml /app
 COPY botapeer-openapi /app/botapeer-openapi
 RUN cd botapeer-openapi/spring && \
-mvn clean package && \
 mvn install:install-file -Dfile=target/openapi-spring-1.0.0.jar \
 -DgroupId=org.openapitools \
 -DartifactId=openapi-spring \
