@@ -92,7 +92,6 @@ public class UserController implements UsersApi {
 	@Override
 	public ResponseEntity<User> updateUser(String arg0, @Valid UpdateUserFormData arg1, MultipartFile arg2,
 			MultipartFile arg3) {
-		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
 
