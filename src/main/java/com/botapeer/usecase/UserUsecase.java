@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.botapeer.controller.payload.auth.CreateUserRequest;
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 import com.botapeer.controller.payload.user.UpdateUserRequest;
-import com.botapeer.controller.payload.user.UserResponse;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.user.Password;
 import com.botapeer.domain.model.user.User;
@@ -53,11 +52,11 @@ public class UserUsecase implements IUserUsecase {
 	private String imagePath;
 
 	@Override
-	public Optional<UserResponse> findById(String userId) {
+	public Optional<model.User> findById(String userId) {
 		try {
 			int id = Integer.parseInt(userId);
 			Optional<User> user = userService.findById((long) id);
-			Optional<UserResponse> r = UserResponseDto.toResponse(user);
+			Optional<model.User> r = UserResponseDto.toResponse(user);
 			return r;
 		} catch (NumberFormatException e) {
 			logger.error(e.getMessage(), e);
@@ -66,17 +65,17 @@ public class UserUsecase implements IUserUsecase {
 	}
 
 	@Override
-	public Collection<UserResponse> findUsers(String name) {
+	public Collection<model.User> findUsers(String name) {
 		Collection<User> user = userService.findUsers(name);
 		if (user.isEmpty()) {
 			throw new NotFoundException();
 		}
-		Collection<UserResponse> r = UserResponseDto.toResponse(user);
+		Collection<model.User> r = UserResponseDto.toResponse(user);
 		return r;
 	}
 
 	@Override
-	public Optional<UserResponse> create(CreateUserRequest request, BindingResult result) {
+	public Optional<model.User> create(CreateUserRequest request, BindingResult result) {
 		validation.validation(result);
 
 		User u = UpdateUserRequestDto.toModel(request);
@@ -88,12 +87,12 @@ public class UserUsecase implements IUserUsecase {
 		int userId = userService.create(u, encryptedPassword);
 		Optional<User> user = userService.findById((long) userId);
 
-		Optional<UserResponse> r = UserResponseDto.toResponse(user);
+		Optional<model.User> r = UserResponseDto.toResponse(user);
 		return r;
 	}
 
 	@Override
-	public Optional<UserResponse> update(
+	public Optional<model.User> update(
 			Principal principal,
 			UpdateUserRequest request,
 			MultipartFile profileImage,
@@ -137,12 +136,12 @@ public class UserUsecase implements IUserUsecase {
 
 		Optional<User> userModel = userService.findById((long) targetUser.get().getId());
 
-		Optional<UserResponse> r = UserResponseDto.toResponse(userModel);
+		Optional<model.User> r = UserResponseDto.toResponse(userModel);
 		return r;
 	}
 
 	@Override
-	public Optional<UserResponse> updatePassword(Principal principal, UpdatePasswordRequest request,
+	public Optional<model.User> updatePassword(Principal principal, UpdatePasswordRequest request,
 			BindingResult result) {
 
 		validation.validation(result);
@@ -154,7 +153,7 @@ public class UserUsecase implements IUserUsecase {
 		String name = principal.getName();
 		Optional<User> user = userService.findByName(name);
 
-		Optional<UserResponse> r = UserResponseDto.toResponse(user);
+		Optional<model.User> r = UserResponseDto.toResponse(user);
 
 		return r;
 	}
@@ -172,20 +171,20 @@ public class UserUsecase implements IUserUsecase {
 	//	}
 
 	@Override
-	public Optional<UserResponse> findByUserNameOrEmail(String usernameOrEmail) {
+	public Optional<model.User> findByUserNameOrEmail(String usernameOrEmail) {
 		// TODO 自動生成されたメソッド・スタブ
 		return Optional.empty();
 	}
 
 	@Override
-	public Optional<UserResponse> findByEmail(String email) {
+	public Optional<model.User> findByEmail(String email) {
 		Optional<User> user = userService.findByEmail(email);
-		Optional<UserResponse> r = UserResponseDto.toResponse(user);
+		Optional<model.User> r = UserResponseDto.toResponse(user);
 		return r;
 	}
 
 	@Override
-	public Optional<UserResponse> findByPlantRecordId(String plantRecordId) {
+	public Optional<model.User> findByPlantRecordId(String plantRecordId) {
 		try {
 			int id = Integer.parseInt(plantRecordId);
 
@@ -195,7 +194,7 @@ public class UserUsecase implements IUserUsecase {
 
 			Optional<User> user = userService.findById((long) userId);
 
-			Optional<UserResponse> r = UserResponseDto.toResponse(user);
+			Optional<model.User> r = UserResponseDto.toResponse(user);
 
 			return r;
 		} catch (NumberFormatException e) {

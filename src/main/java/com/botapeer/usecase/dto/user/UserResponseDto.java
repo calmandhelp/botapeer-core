@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-import com.botapeer.controller.payload.user.UserResponse;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.model.user.UserName;
 
 public class UserResponseDto {
-	public static Optional<UserResponse> toResponse(Optional<User> user) {
+	public static Optional<model.User> toResponse(Optional<User> user) {
 		if (user.isPresent()) {
-			UserResponse response = new UserResponse();
+			model.User response = new model.User();
 			UserName userName = user.get().getName();
 			response.setName(userName.getName());
 			response.setEmail(user.get().getEmail());
@@ -25,12 +24,12 @@ public class UserResponseDto {
 		return null;
 	}
 
-	public static Collection<UserResponse> toResponse(Collection<User> users) {
+	public static Collection<model.User> toResponse(Collection<User> users) {
 
-		Collection<UserResponse> responses = new ArrayList<UserResponse>();
+		Collection<model.User> responses = new ArrayList<>();
 
 		for (User user : users) {
-			UserResponse r = new UserResponse();
+			model.User r = new model.User();
 			r.setId(user.getId());
 			r.setEmail(user.getEmail());
 

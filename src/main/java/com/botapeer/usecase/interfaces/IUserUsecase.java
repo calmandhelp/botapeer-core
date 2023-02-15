@@ -10,29 +10,30 @@ import org.springframework.web.multipart.MultipartFile;
 import com.botapeer.controller.payload.auth.CreateUserRequest;
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 import com.botapeer.controller.payload.user.UpdateUserRequest;
-import com.botapeer.controller.payload.user.UserResponse;
+
+import model.User;
 
 public interface IUserUsecase {
-	public Optional<UserResponse> findById(String userId);
+	public Optional<User> findById(String userId);
 
-	public Collection<UserResponse> findUsers(String name);
+	public Collection<User> findUsers(String name);
 
-	public Optional<UserResponse> create(CreateUserRequest request, BindingResult result);
+	public Optional<User> create(CreateUserRequest request, BindingResult result);
 
-	public Optional<UserResponse> update(Principal principal, UpdateUserRequest user, MultipartFile coverImage,
+	public Optional<User> update(Principal principal, UpdateUserRequest user, MultipartFile coverImage,
 			MultipartFile profileImage,
 			BindingResult result);
 
-	public Optional<UserResponse> updatePassword(Principal principal, UpdatePasswordRequest request,
+	public Optional<User> updatePassword(Principal principal, UpdatePasswordRequest request,
 			BindingResult result);
 
 	public void delete(String userId);
 
 	//	public boolean create(UserRequest user);
 
-	public Optional<UserResponse> findByUserNameOrEmail(String usernameOrEmail);
+	public Optional<User> findByUserNameOrEmail(String usernameOrEmail);
 
-	public Optional<UserResponse> findByEmail(String email);
+	public Optional<User> findByEmail(String email);
 
-	public Optional<UserResponse> findByPlantRecordId(String plantRecordId);
+	public Optional<User> findByPlantRecordId(String plantRecordId);
 }

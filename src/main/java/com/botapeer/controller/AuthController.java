@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.botapeer.controller.payload.auth.CreateUserRequest;
 import com.botapeer.controller.payload.auth.JwtAuthenticationResponse;
 import com.botapeer.controller.payload.auth.LoginRequest;
-import com.botapeer.controller.payload.user.UserResponse;
 import com.botapeer.security.JwtTokenProvider;
 import com.botapeer.usecase.interfaces.IUserUsecase;
 
 import lombok.RequiredArgsConstructor;
+import model.User;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -46,9 +46,9 @@ public class AuthController {
 	}
 
 	@PostMapping("/signup")
-	public Optional<UserResponse> createUser(@Validated @RequestBody CreateUserRequest request, BindingResult result) {
+	public Optional<User> createUser(@Validated @RequestBody CreateUserRequest request, BindingResult result) {
 
-		Optional<UserResponse> response = userUsecase.create(request, result);
+		Optional<User> response = userUsecase.create(request, result);
 
 		return response;
 	}
