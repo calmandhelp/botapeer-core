@@ -3,12 +3,12 @@ package com.botapeer.usecase.dto.user;
 import org.springframework.stereotype.Component;
 
 import com.botapeer.controller.payload.auth.CreateUserRequest;
-import com.botapeer.controller.payload.user.UpdateUserRequest;
 import com.botapeer.domain.model.user.Password;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.model.user.UserName;
 
 import lombok.RequiredArgsConstructor;
+import model.UpdateUserFormData;
 
 @Component
 @RequiredArgsConstructor
@@ -25,12 +25,12 @@ public class UpdateUserRequestDto {
 		return user;
 	}
 
-	public static User toModel(UpdateUserRequest request) {
+	public static User toModel(UpdateUserFormData request) {
 		User user = new User();
+		System.out.println("name: " + request.getName());
 		UserName userName = new UserName(request.getName());
 		user.setName(userName);
 		user.setEmail(request.getEmail());
-		user.setStatus(request.getStatus());
 		user.setDescription(request.getDescription());
 		return user;
 	}

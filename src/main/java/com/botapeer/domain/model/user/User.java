@@ -13,6 +13,7 @@ public class User {
 	private UserName name;
 
 	@Email
+	@NotBlank
 	private String email;
 
 	private Password password;

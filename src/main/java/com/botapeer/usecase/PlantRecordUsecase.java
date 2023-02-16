@@ -74,7 +74,7 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 	public Optional<PlantRecordResponse> create(CreatePlantRecordRequest request, BindingResult result,
 			Principal principal) {
 
-		validation.validation(result);
+		//		validation.validation(result);
 
 		PlantRecord plantRecord = CreatePlantRecordRequestDto.toModel(request);
 

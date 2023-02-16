@@ -24,7 +24,6 @@ public interface UserMapper {
 			+ "SET "
 			+ "name = #{name}, "
 			+ "email = #{email}, "
-			+ "status = #{status}, "
 			+ "profile_image = #{profileImage}, "
 			+ "cover_image = #{coverImage} , "
 			+ "description = #{description} "

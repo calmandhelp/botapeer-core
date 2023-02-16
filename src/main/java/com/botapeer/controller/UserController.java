@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
-import com.botapeer.controller.payload.user.UpdateUserRequest;
 import com.botapeer.usecase.interfaces.IUserUsecase;
 
 import api.UsersApi;
@@ -40,6 +39,7 @@ public class UserController implements UsersApi {
 	private final IUserUsecase userUsecase;
 
 	@GetMapping("/users")
+	@Override
 	public ResponseEntity<List<User>> getUsersOrGetUserByName(@RequestParam(required = false) String username) {
 		Collection<User> u = userUsecase.findUsers(username);
 		List<User> userList = new ArrayList<>(u);
@@ -47,20 +47,33 @@ public class UserController implements UsersApi {
 	}
 
 	@GetMapping("/users/{userId}")
+	@Override
 	public ResponseEntity<User> findUserById(@PathVariable String userId) {
 		Optional<User> u = userUsecase.findById(userId);
 		return new ResponseEntity<>(u.get(), HttpStatus.OK);
 	}
 
+	//	@PostMapping("/users/{userId}")
+	//	@Override
+	//	public ResponseEntity<User> updateUser(Principal principal,
+	//			@RequestPart("formData") @Validated UpdateUserRequest user,
+	//			BindingResult result,
+	//			@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
+	//			@RequestPart(value = "coverImage", required = false) MultipartFile coverImage) {
+	//		Optional<User> r = userUsecase.update(principal, user, profileImage, coverImage, result);
+	//
+	//		return r;
+	//	}
+
 	@PostMapping("/users/{userId}")
-	public Optional<User> updateUser(Principal principal,
-			@RequestPart("formData") @Validated UpdateUserRequest user,
-			BindingResult result,
+	@Override
+	public ResponseEntity<User> updateUser(@PathVariable("userId") String userId, @Valid UpdateUserFormData user,
 			@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
 			@RequestPart(value = "coverImage", required = false) MultipartFile coverImage) {
-		Optional<User> r = userUsecase.update(principal, user, profileImage, coverImage, result);
 
-		return r;
+		Optional<User> u = userUsecase.update(user, profileImage, coverImage);
+
+		return new ResponseEntity<>(u.get(), HttpStatus.OK);
 	}
 
 	@PostMapping("/users/{userId}/password")
@@ -87,12 +100,6 @@ public class UserController implements UsersApi {
 	public Optional<User> findByPlantRecordId(@PathVariable String plantRecordId) {
 		Optional<User> response = userUsecase.findByPlantRecordId(plantRecordId);
 		return response;
-	}
-
-	@Override
-	public ResponseEntity<User> updateUser(String arg0, @Valid UpdateUserFormData arg1, MultipartFile arg2,
-			MultipartFile arg3) {
-		return null;
 	}
 
 }

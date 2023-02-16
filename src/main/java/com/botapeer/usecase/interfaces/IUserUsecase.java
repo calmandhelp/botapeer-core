@@ -9,8 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.controller.payload.auth.CreateUserRequest;
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
-import com.botapeer.controller.payload.user.UpdateUserRequest;
 
+import model.UpdateUserFormData;
 import model.User;
 
 public interface IUserUsecase {
@@ -20,9 +20,8 @@ public interface IUserUsecase {
 
 	public Optional<User> create(CreateUserRequest request, BindingResult result);
 
-	public Optional<User> update(Principal principal, UpdateUserRequest user, MultipartFile coverImage,
-			MultipartFile profileImage,
-			BindingResult result);
+	public Optional<User> update(UpdateUserFormData user, MultipartFile coverImage,
+			MultipartFile profileImage);
 
 	public Optional<User> updatePassword(Principal principal, UpdatePasswordRequest request,
 			BindingResult result);

@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -19,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.controller.payload.auth.CreateUserRequest;
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
-import com.botapeer.controller.payload.user.UpdateUserRequest;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.user.Password;
 import com.botapeer.domain.model.user.User;
@@ -34,6 +35,7 @@ import com.botapeer.usecase.interfaces.IUserUsecase;
 import com.botapeer.util.ValidationUtils;
 
 import lombok.RequiredArgsConstructor;
+import model.UpdateUserFormData;
 
 @Component
 @RequiredArgsConstructor
@@ -76,7 +78,7 @@ public class UserUsecase implements IUserUsecase {
 
 	@Override
 	public Optional<model.User> create(CreateUserRequest request, BindingResult result) {
-		validation.validation(result);
+		//		validation.validation(result);
 
 		User u = UpdateUserRequestDto.toModel(request);
 
@@ -93,22 +95,16 @@ public class UserUsecase implements IUserUsecase {
 
 	@Override
 	public Optional<model.User> update(
-			Principal principal,
-			UpdateUserRequest request,
+			UpdateUserFormData formData,
 			MultipartFile profileImage,
-			MultipartFile coverImage,
-			BindingResult result) {
+			MultipartFile coverImage) {
 
-		validation.validation(result);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		String name = principal.getName();
+		String name = auth.getName();
 		Optional<User> targetUser = userService.findByName(name);
 
-		if (request.getStatus() == null) {
-			request.setStatus(targetUser.get().getStatus());
-		}
-
-		User u = UpdateUserRequestDto.toModel(request);
+		User u = UpdateUserRequestDto.toModel(formData);
 
 		u.setId(targetUser.get().getId());
 
@@ -144,7 +140,7 @@ public class UserUsecase implements IUserUsecase {
 	public Optional<model.User> updatePassword(Principal principal, UpdatePasswordRequest request,
 			BindingResult result) {
 
-		validation.validation(result);
+		//		validation.validation(result);
 
 		if (userService.updatePassword(request)) {
 			throw new Error();
