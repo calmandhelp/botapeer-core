@@ -27,7 +27,7 @@ import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.service.FileUploadService;
 import com.botapeer.domain.service.interfaces.IPlantRecordService;
 import com.botapeer.domain.service.interfaces.IUserService;
-import com.botapeer.exception.data.NotFoundException;
+import com.botapeer.exception.NotFoundException;
 import com.botapeer.s3.FileUploadForm;
 import com.botapeer.usecase.dto.user.UpdateUserRequestDto;
 import com.botapeer.usecase.dto.user.UserResponseDto;

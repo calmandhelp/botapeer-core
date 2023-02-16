@@ -18,8 +18,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.botapeer.constants.ResponseConstants;
-import com.botapeer.exception.data.NotFoundException;
-import com.botapeer.exception.validation.ValidationExceptionDto;
+import com.botapeer.exception.NotFoundException;
+import com.botapeer.exception.ValidationExceptionDto;
 
 import lombok.RequiredArgsConstructor;
 import model.ErrorInner;

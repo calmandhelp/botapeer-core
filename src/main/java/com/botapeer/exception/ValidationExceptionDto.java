@@ -1,4 +1,4 @@
-package com.botapeer.exception.validation;
+package com.botapeer.exception;
 
 import com.botapeer.constants.ResponseConstants;
 
