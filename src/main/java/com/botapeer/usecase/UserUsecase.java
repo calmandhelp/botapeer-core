@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.botapeer.constants.ResponseConstants;
 import com.botapeer.controller.payload.auth.CreateUserRequest;
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
@@ -70,7 +71,7 @@ public class UserUsecase implements IUserUsecase {
 	public Collection<model.User> findUsers(String name) {
 		Collection<User> user = userService.findUsers(name);
 		if (user.isEmpty()) {
-			throw new NotFoundException();
+			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
 		}
 		Collection<model.User> r = UserResponseDto.toResponse(user);
 		return r;
@@ -160,31 +161,15 @@ public class UserUsecase implements IUserUsecase {
 
 	}
 
-	//	@Override
-	//	public boolean create(UserRequest user) {
-	//
-	//		return false;
-	//	}
-
-	@Override
-	public Optional<model.User> findByUserNameOrEmail(String usernameOrEmail) {
-		// TODO 自動生成されたメソッド・スタブ
-		return Optional.empty();
-	}
-
-	@Override
-	public Optional<model.User> findByEmail(String email) {
-		Optional<User> user = userService.findByEmail(email);
-		Optional<model.User> r = UserResponseDto.toResponse(user);
-		return r;
-	}
-
 	@Override
 	public Optional<model.User> findByPlantRecordId(String plantRecordId) {
 		try {
 			int id = Integer.parseInt(plantRecordId);
 
 			Optional<PlantRecord> plantRecord = plantRecordService.findById(id);
+			if (ObjectUtils.isEmpty(plantRecord)) {
+				throw new NotFoundException(ResponseConstants.NOTFOUND_PLANT_RECORD_CODE);
+			}
 
 			int userId = plantRecord.get().getUserId();
 

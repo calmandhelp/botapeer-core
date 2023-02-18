@@ -13,7 +13,7 @@ INSERT INTO places(name) values("庭");
 INSERT INTO places(name) values("玄関");
 INSERT INTO places(name) values("その他");
 
-INSERT INTO plant_records(title, alive) values("バラの生育記録", 1);
+INSERT INTO plant_records(user_id, title, alive, place_id) values(1, "バラの生育記録", 1, 1);
 
 INSERT INTO posts(plant_record_id, title, article) values(1, "初めての投稿", "初めての投稿です。よろしくお願いします。");
 INSERT INTO posts(plant_record_id, title, article) values(1, "芽が出ました", "徐々に芽がでてきましたー");

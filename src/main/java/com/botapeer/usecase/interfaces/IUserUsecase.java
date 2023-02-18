@@ -28,11 +28,5 @@ public interface IUserUsecase {
 
 	public void delete(String userId);
 
-	//	public boolean create(UserRequest user);
-
-	public Optional<User> findByUserNameOrEmail(String usernameOrEmail);
-
-	public Optional<User> findByEmail(String email);
-
 	public Optional<User> findByPlantRecordId(String plantRecordId);
 }

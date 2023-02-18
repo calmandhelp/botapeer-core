@@ -38,35 +38,23 @@ public class UserController implements UsersApi {
 
 	private final IUserUsecase userUsecase;
 
-	@GetMapping("/users")
 	@Override
+	@GetMapping("/users")
 	public ResponseEntity<List<User>> getUsersOrGetUserByName(@RequestParam(required = false) String username) {
 		Collection<User> u = userUsecase.findUsers(username);
 		List<User> userList = new ArrayList<>(u);
 		return new ResponseEntity<>(userList, HttpStatus.OK);
 	}
 
-	@GetMapping("/users/{userId}")
 	@Override
+	@GetMapping("/users/{userId}")
 	public ResponseEntity<User> findUserById(@PathVariable String userId) {
 		Optional<User> u = userUsecase.findById(userId);
 		return new ResponseEntity<>(u.get(), HttpStatus.OK);
 	}
 
-	//	@PostMapping("/users/{userId}")
-	//	@Override
-	//	public ResponseEntity<User> updateUser(Principal principal,
-	//			@RequestPart("formData") @Validated UpdateUserRequest user,
-	//			BindingResult result,
-	//			@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
-	//			@RequestPart(value = "coverImage", required = false) MultipartFile coverImage) {
-	//		Optional<User> r = userUsecase.update(principal, user, profileImage, coverImage, result);
-	//
-	//		return r;
-	//	}
-
-	@PostMapping("/users/{userId}")
 	@Override
+	@PostMapping("/users/{userId}")
 	public ResponseEntity<User> updateUser(@PathVariable("userId") String userId, @Valid UpdateUserFormData user,
 			@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
 			@RequestPart(value = "coverImage", required = false) MultipartFile coverImage) {
@@ -90,16 +78,11 @@ public class UserController implements UsersApi {
 		return null;
 	}
 
-	@GetMapping("/users/findByEmail")
-	public Optional<User> findByEmail(@RequestParam String email) {
-		Optional<User> r = userUsecase.findByEmail(email);
-		return r;
-	}
-
+	@Override
 	@GetMapping("/users/plant_records/{plantRecordId}")
-	public Optional<User> findByPlantRecordId(@PathVariable String plantRecordId) {
-		Optional<User> response = userUsecase.findByPlantRecordId(plantRecordId);
-		return response;
+	public ResponseEntity<User> findUserByPlantRecordId(@PathVariable String plantRecordId) {
+		Optional<User> user = userUsecase.findByPlantRecordId(plantRecordId);
+		return new ResponseEntity<>(user.get(), HttpStatus.OK);
 	}
 
 }

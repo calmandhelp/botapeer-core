@@ -63,15 +63,22 @@ public class ExceptionHandlers extends ResponseEntityExceptionHandler {
 
 		re.setErrors(errors);
 
-		return super.handleExceptionInternal(ex, re, null, HttpStatus.BAD_REQUEST, request);
+		return super.handleExceptionInternal(ex, re, null, HttpStatus.METHOD_NOT_ALLOWED, request);
 	}
 
 	@ExceptionHandler(NotFoundException.class)
 	public ResponseEntity<Object> handleValidationException(NotFoundException ex, WebRequest request) {
 		List<ErrorInner> errors = new ArrayList<>();
 		ErrorInner errorInner = new ErrorInner();
-		errorInner.setCode(ResponseConstants.NOTFOUND_CODE);
-		errorInner.setMessage(ResponseConstants.NOTFOUND_MESSAGE);
+		switch (ex.getCode()) {
+		case ResponseConstants.NOTFOUND_USER_CODE:
+			errorInner.setCode(ResponseConstants.NOTFOUND_USER_CODE);
+			errorInner.setMessage(ResponseConstants.NOTFOUND_USER_MESSAGE);
+		case ResponseConstants.NOTFOUND_PLANT_RECORD_CODE:
+			errorInner.setCode(ResponseConstants.NOTFOUND_PLANT_RECORD_CODE);
+			errorInner.setMessage(ResponseConstants.NOTFOUND_PLANT_RECORD_MESSAGE);
+		}
+
 		errors.add(errorInner);
 		ErrorResponse re = new ErrorResponse();
 		re.setErrors(errors);
