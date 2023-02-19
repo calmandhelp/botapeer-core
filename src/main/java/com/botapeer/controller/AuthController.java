@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.botapeer.controller.payload.auth.CreateUserRequest;
-import com.botapeer.controller.payload.auth.JwtAuthenticationResponse;
-import com.botapeer.controller.payload.auth.LoginRequest;
 import com.botapeer.security.JwtTokenProvider;
 import com.botapeer.usecase.interfaces.IUserUsecase;
 
 import lombok.RequiredArgsConstructor;
+import model.JwtAuthenticationResponse;
+import model.SignInRequest;
 import model.User;
 
 @RestController
@@ -35,14 +35,17 @@ public class AuthController {
 	private final IUserUsecase userUsecase;
 
 	@PostMapping("/signin")
-	public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-		System.out.println("siginin");
+	public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
 		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsernameOrEmail(), loginRequest.getPassword()));
+				new UsernamePasswordAuthenticationToken(signInRequest.getUsernameOrEmail(),
+						signInRequest.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		String jwt = jwtTokenProvider.generateToken(authentication);
-		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+		JwtAuthenticationResponse response = new JwtAuthenticationResponse();
+		response.setAccessToken(jwt);
+		response.setTokenType("Bearer");
+		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping("/signup")
