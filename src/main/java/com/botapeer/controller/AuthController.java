@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.botapeer.controller.payload.auth.CreateUserRequest;
 import com.botapeer.security.JwtTokenProvider;
 import com.botapeer.usecase.interfaces.IUserUsecase;
 
 import lombok.RequiredArgsConstructor;
+import model.CreateUserRequest;
 import model.JwtAuthenticationResponse;
 import model.SignInRequest;
 import model.User;

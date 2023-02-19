@@ -7,9 +7,9 @@ import java.util.Optional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.botapeer.controller.payload.auth.CreateUserRequest;
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 
+import model.CreateUserRequest;
 import model.UpdateUserFormData;
 import model.User;
 

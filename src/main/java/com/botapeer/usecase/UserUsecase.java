@@ -20,7 +20,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.constants.ResponseConstants;
-import com.botapeer.controller.payload.auth.CreateUserRequest;
 import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.user.Password;
@@ -36,6 +35,7 @@ import com.botapeer.usecase.interfaces.IUserUsecase;
 import com.botapeer.util.ValidationUtils;
 
 import lombok.RequiredArgsConstructor;
+import model.CreateUserRequest;
 import model.UpdateUserFormData;
 
 @Component

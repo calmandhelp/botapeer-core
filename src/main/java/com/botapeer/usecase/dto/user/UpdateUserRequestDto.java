@@ -2,12 +2,12 @@ package com.botapeer.usecase.dto.user;
 
 import org.springframework.stereotype.Component;
 
-import com.botapeer.controller.payload.auth.CreateUserRequest;
 import com.botapeer.domain.model.user.Password;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.model.user.UserName;
 
 import lombok.RequiredArgsConstructor;
+import model.CreateUserRequest;
 import model.UpdateUserFormData;
 
 @Component
