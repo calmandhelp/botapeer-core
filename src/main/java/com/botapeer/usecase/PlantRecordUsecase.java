@@ -29,7 +29,6 @@ import com.botapeer.s3.FileUploadForm;
 import com.botapeer.usecase.dto.plantRecord.CreatePlantRecordRequestDto;
 import com.botapeer.usecase.dto.plantRecord.PlantRecordResponseDto;
 import com.botapeer.usecase.interfaces.IPlantRecordUsecase;
-import com.botapeer.util.ValidationUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,7 +41,6 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 	private final IUserService userService;
 	private final IPlaceService placeService;
 	private final IPostService postService;
-	private final ValidationUtils validation;
 
 	Logger logger = LoggerFactory.getLogger(PlantRecordUsecase.class);
 

@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,7 +55,7 @@ public class UserController implements UsersApi {
 	}
 
 	@Override
-	@PostMapping("/users/{userId}")
+	@PatchMapping("/users/{userId}")
 	public ResponseEntity<User> updateUser(@PathVariable("userId") String userId, @Valid UpdateUserFormData user,
 			@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
 			@RequestPart(value = "coverImage", required = false) MultipartFile coverImage) {
@@ -84,5 +85,4 @@ public class UserController implements UsersApi {
 		Optional<User> user = userUsecase.findByPlantRecordId(plantRecordId);
 		return new ResponseEntity<>(user.get(), HttpStatus.OK);
 	}
-
 }
