@@ -4,6 +4,8 @@ import java.security.Principal;
 import java.util.Collection;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,20 +18,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.botapeer.controller.payload.plantRecord.CreatePlantRecordRequest;
 import com.botapeer.usecase.interfaces.IPlantRecordUsecase;
 
+import api.PlantRecordsApi;
 import lombok.RequiredArgsConstructor;
 import model.PlantRecordResponse;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-public class PlantRecordController {
+public class PlantRecordController implements PlantRecordsApi {
 
 	private final IPlantRecordUsecase plantUsecase;
 
+	@Override
 	@GetMapping("/plant_records/{plantRecordId}")
-	public Optional<PlantRecordResponse> getPlantRecord(@PathVariable String plantRecordId) {
+	public ResponseEntity<PlantRecordResponse> getPlantRecordById(@PathVariable String plantRecordId) {
 		Optional<PlantRecordResponse> response = plantUsecase.findById(plantRecordId);
-		return response;
+		return new ResponseEntity<>(response.get(), HttpStatus.OK);
 	}
 
 	@PostMapping("/plant_records")
