@@ -6,7 +6,7 @@ import com.botapeer.domain.model.post.Post;
 
 public interface IPostService {
 
-	public Collection<Post> findByPlantRecordId(int plantRecordId);
+	public Collection<Post> findByPlantRecordId(Long plantRecordId);
 
 	//	public boolean create(Label label);
 

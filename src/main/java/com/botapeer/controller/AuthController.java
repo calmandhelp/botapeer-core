@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 import model.CreateUserRequest;
 import model.JwtAuthenticationResponse;
 import model.SignInRequest;
-import model.User;
+import model.UserResponse;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -49,9 +49,9 @@ public class AuthController {
 	}
 
 	@PostMapping("/signup")
-	public Optional<User> createUser(@Validated @RequestBody CreateUserRequest request, BindingResult result) {
+	public Optional<UserResponse> createUser(@Validated @RequestBody CreateUserRequest request, BindingResult result) {
 
-		Optional<User> response = userUsecase.create(request, result);
+		Optional<UserResponse> response = userUsecase.create(request, result);
 
 		return response;
 	}

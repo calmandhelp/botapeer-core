@@ -1,7 +1,6 @@
 package com.botapeer.usecase;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
@@ -20,7 +19,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.constants.ResponseConstants;
-import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.user.Password;
 import com.botapeer.domain.model.user.User;
@@ -37,6 +35,7 @@ import com.botapeer.util.ValidationUtils;
 import lombok.RequiredArgsConstructor;
 import model.CreateUserRequest;
 import model.UpdateUserFormData;
+import model.UserResponse;
 
 @Component
 @RequiredArgsConstructor
@@ -55,11 +54,11 @@ public class UserUsecase implements IUserUsecase {
 	private String imagePath;
 
 	@Override
-	public Optional<model.User> findById(String userId) {
+	public Optional<UserResponse> findById(String userId) {
 		try {
 			int id = Integer.parseInt(userId);
 			Optional<User> user = userService.findById((long) id);
-			Optional<model.User> r = UserResponseDto.toResponse(user);
+			Optional<UserResponse> r = UserResponseDto.toResponse(user);
 			return r;
 		} catch (NumberFormatException e) {
 			logger.error(e.getMessage(), e);
@@ -68,17 +67,17 @@ public class UserUsecase implements IUserUsecase {
 	}
 
 	@Override
-	public Collection<model.User> findUsers(String name) {
+	public Collection<UserResponse> findUsers(String name) {
 		Collection<User> user = userService.findUsers(name);
 		if (user.isEmpty()) {
 			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
 		}
-		Collection<model.User> r = UserResponseDto.toResponse(user);
+		Collection<UserResponse> r = UserResponseDto.toResponse(user);
 		return r;
 	}
 
 	@Override
-	public Optional<model.User> create(CreateUserRequest request, BindingResult result) {
+	public Optional<UserResponse> create(CreateUserRequest request, BindingResult result) {
 		//		validation.validation(result);
 
 		User u = UpdateUserRequestDto.toModel(request);
@@ -90,12 +89,12 @@ public class UserUsecase implements IUserUsecase {
 		int userId = userService.create(u, encryptedPassword);
 		Optional<User> user = userService.findById((long) userId);
 
-		Optional<model.User> r = UserResponseDto.toResponse(user);
+		Optional<UserResponse> r = UserResponseDto.toResponse(user);
 		return r;
 	}
 
 	@Override
-	public Optional<model.User> update(
+	public Optional<UserResponse> update(
 			UpdateUserFormData formData,
 			MultipartFile profileImage,
 			MultipartFile coverImage) {
@@ -133,27 +132,27 @@ public class UserUsecase implements IUserUsecase {
 
 		Optional<User> userModel = userService.findById((long) targetUser.get().getId());
 
-		Optional<model.User> r = UserResponseDto.toResponse(userModel);
+		Optional<UserResponse> r = UserResponseDto.toResponse(userModel);
 		return r;
 	}
 
-	@Override
-	public Optional<model.User> updatePassword(Principal principal, UpdatePasswordRequest request,
-			BindingResult result) {
-
-		//		validation.validation(result);
-
-		if (userService.updatePassword(request)) {
-			throw new Error();
-		}
-
-		String name = principal.getName();
-		Optional<User> user = userService.findByName(name);
-
-		Optional<model.User> r = UserResponseDto.toResponse(user);
-
-		return r;
-	}
+	//	@Override
+	//	public Optional<model.User> updatePassword(Principal principal, UpdatePasswordRequest request,
+	//			BindingResult result) {
+	//
+	//		//		validation.validation(result);
+	//
+	//		if (userService.updatePassword(request)) {
+	//			throw new Error();
+	//		}
+	//
+	//		String name = principal.getName();
+	//		Optional<User> user = userService.findByName(name);
+	//
+	//		Optional<model.User> r = UserResponseDto.toResponse(user);
+	//
+	//		return r;
+	//	}
 
 	@Override
 	public void delete(String userId) {
@@ -162,9 +161,9 @@ public class UserUsecase implements IUserUsecase {
 	}
 
 	@Override
-	public Optional<model.User> findByPlantRecordId(String plantRecordId) {
+	public Optional<UserResponse> findByPlantRecordId(String plantRecordId) {
 		try {
-			int id = Integer.parseInt(plantRecordId);
+			Long id = Long.parseLong(plantRecordId);
 
 			Optional<PlantRecord> plantRecord = plantRecordService.findById(id);
 			if (ObjectUtils.isEmpty(plantRecord)) {
@@ -175,7 +174,7 @@ public class UserUsecase implements IUserUsecase {
 
 			Optional<User> user = userService.findById((long) userId);
 
-			Optional<model.User> r = UserResponseDto.toResponse(user);
+			Optional<UserResponse> r = UserResponseDto.toResponse(user);
 
 			return r;
 		} catch (NumberFormatException e) {

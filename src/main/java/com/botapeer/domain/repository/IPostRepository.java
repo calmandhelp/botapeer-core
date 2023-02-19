@@ -6,6 +6,6 @@ import com.botapeer.domain.model.post.Post;
 
 public interface IPostRepository {
 
-	Collection<Post> findByPlantRecordId(int plantRecordId);
-	
+	Collection<Post> findByPlantRecordId(Long plantRecordId);
+
 }

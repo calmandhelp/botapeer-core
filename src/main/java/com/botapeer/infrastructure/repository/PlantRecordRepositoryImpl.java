@@ -20,14 +20,14 @@ public class PlantRecordRepositoryImpl implements IPlantRecordRepository {
 	private final PlantRecordMapper plantRecordMapper;
 
 	@Override
-	public Optional<PlantRecord> findById(int id) {
+	public Optional<PlantRecord> findById(Long id) {
 		Optional<PlantRecordEntity> recordEntity = plantRecordMapper.findById(id);
 		Optional<PlantRecord> record = PlantRecordRepositoryDto.toModel(recordEntity);
 		return record;
 	}
 
 	@Override
-	public Integer create(PlantRecord plantRecord) {
+	public Long create(PlantRecord plantRecord) {
 		PlantRecordEntity entity = PlantRecordRepositoryDto.toEntity(plantRecord);
 		plantRecordMapper.create(entity);
 		return entity.getId();

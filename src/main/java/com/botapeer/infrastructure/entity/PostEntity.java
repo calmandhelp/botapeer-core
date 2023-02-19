@@ -1,6 +1,6 @@
 package com.botapeer.infrastructure.entity;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 
@@ -22,8 +22,8 @@ public class PostEntity {
 
 	Integer status;
 
-	Date created_at;
+	LocalDateTime createdAt;
 
-	Date updated_at;
+	LocalDateTime updatedAt;
 
 }

@@ -17,7 +17,7 @@ public class PostService implements IPostService {
 	private final IPostRepository postRepository;
 
 	@Override
-	public Collection<Post> findByPlantRecordId(int plantRecordId) {
+	public Collection<Post> findByPlantRecordId(Long plantRecordId) {
 		return postRepository.findByPlantRecordId(plantRecordId);
 	}
 

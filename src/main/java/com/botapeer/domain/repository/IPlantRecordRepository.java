@@ -6,9 +6,9 @@ import java.util.Optional;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 
 public interface IPlantRecordRepository {
-	public Optional<PlantRecord> findById(int plantId);
+	public Optional<PlantRecord> findById(Long plantId);
 
-	public Integer create(PlantRecord plantRecord);
+	public Long create(PlantRecord plantRecord);
 
 	public Collection<PlantRecord> findByUserId(Long userId);
 

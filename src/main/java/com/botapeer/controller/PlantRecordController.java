@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.botapeer.controller.payload.plantRecord.CreatePlantRecordRequest;
-import com.botapeer.controller.payload.plantRecord.PlantRecordResponse;
 import com.botapeer.usecase.interfaces.IPlantRecordUsecase;
 
 import lombok.RequiredArgsConstructor;
+import model.PlantRecordResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,10 +26,9 @@ public class PlantRecordController {
 
 	private final IPlantRecordUsecase plantUsecase;
 
-	@GetMapping("/plant_records/{plant_record_id}")
-	public Optional<PlantRecordResponse> getPlantRecord(@PathVariable String plant_record_id) {
-		Optional<PlantRecordResponse> response = plantUsecase.findById(plant_record_id);
-		System.out.println(response);
+	@GetMapping("/plant_records/{plantRecordId}")
+	public Optional<PlantRecordResponse> getPlantRecord(@PathVariable String plantRecordId) {
+		Optional<PlantRecordResponse> response = plantUsecase.findById(plantRecordId);
 		return response;
 	}
 

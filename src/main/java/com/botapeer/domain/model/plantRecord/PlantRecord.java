@@ -1,7 +1,8 @@
 package com.botapeer.domain.model.plantRecord;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Optional;
 
 import com.botapeer.domain.model.place.Place;
 import com.botapeer.domain.model.post.Post;
@@ -11,7 +12,7 @@ import lombok.Data;
 
 @Data
 public class PlantRecord {
-	private Integer id;
+	private Long id;
 
 	private Integer userId;
 
@@ -25,9 +26,9 @@ public class PlantRecord {
 
 	private Integer status;
 
-	private String endDate;
+	private Optional<LocalDateTime> endDate;
 
-	private LocalDate createdAt;
+	private LocalDateTime createdAt;
 
-	private LocalDate updatedAt;
+	private LocalDateTime updatedAt;
 }

@@ -15,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.controller.payload.plantRecord.CreatePlantRecordRequest;
-import com.botapeer.controller.payload.plantRecord.PlantRecordResponse;
 import com.botapeer.domain.model.place.Place;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.post.Post;
@@ -31,6 +30,7 @@ import com.botapeer.usecase.dto.plantRecord.PlantRecordResponseDto;
 import com.botapeer.usecase.interfaces.IPlantRecordUsecase;
 
 import lombok.RequiredArgsConstructor;
+import model.PlantRecordResponse;
 
 @Component
 @RequiredArgsConstructor
@@ -50,7 +50,7 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 	@Override
 	public Optional<PlantRecordResponse> findById(String plantRecordId) {
 		try {
-			int id = Integer.parseInt(plantRecordId);
+			Long id = Long.parseLong(plantRecordId);
 			Optional<PlantRecord> record = plantRecordService.findById(id);
 
 			Collection<Post> posts = postService.findByPlantRecordId(record.get().getId());

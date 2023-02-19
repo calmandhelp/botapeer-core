@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.repository.IUserRepository;
 import com.botapeer.infrastructure.entity.UserEntity;
@@ -45,11 +44,11 @@ public class UserRepositoryImpl implements IUserRepository {
 		return this.userMapper.update(userEntity);
 	}
 
-	@Override
-	public boolean updatePassword(UpdatePasswordRequest request) {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
-	}
+	//	@Override
+	//	public boolean updatePassword(UpdatePasswordRequest request) {
+	//		// TODO 自動生成されたメソッド・スタブ
+	//		return false;
+	//	}
 
 	@Override
 	public boolean delete(Long userId) {

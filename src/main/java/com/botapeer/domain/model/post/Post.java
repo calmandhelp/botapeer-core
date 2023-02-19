@@ -1,6 +1,6 @@
 package com.botapeer.domain.model.post;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.botapeer.domain.model.text.Article;
 import com.botapeer.domain.model.text.Title;
@@ -22,8 +22,8 @@ public class Post {
 
 	Integer status;
 
-	Date created_at;
+	LocalDateTime createdAt;
 
-	Date updated_at;
+	LocalDateTime updatedAt;
 
 }

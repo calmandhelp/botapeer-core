@@ -7,10 +7,12 @@ import java.util.Optional;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.model.user.UserName;
 
+import model.UserResponse;
+
 public class UserResponseDto {
-	public static Optional<model.User> toResponse(Optional<User> user) {
+	public static Optional<UserResponse> toResponse(Optional<User> user) {
 		if (user.isPresent()) {
-			model.User response = new model.User();
+			UserResponse response = new UserResponse();
 			UserName userName = user.get().getName();
 			response.setName(userName.getName());
 			response.setEmail(user.get().getEmail());
@@ -24,12 +26,12 @@ public class UserResponseDto {
 		return null;
 	}
 
-	public static Collection<model.User> toResponse(Collection<User> users) {
+	public static Collection<UserResponse> toResponse(Collection<User> users) {
 
-		Collection<model.User> responses = new ArrayList<>();
+		Collection<UserResponse> responses = new ArrayList<>();
 
 		for (User user : users) {
-			model.User r = new model.User();
+			UserResponse r = new UserResponse();
 			r.setId(user.getId());
 			r.setEmail(user.getEmail());
 

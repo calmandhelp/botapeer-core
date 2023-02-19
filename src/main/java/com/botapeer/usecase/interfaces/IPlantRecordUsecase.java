@@ -7,7 +7,8 @@ import java.util.Optional;
 import org.springframework.validation.BindingResult;
 
 import com.botapeer.controller.payload.plantRecord.CreatePlantRecordRequest;
-import com.botapeer.controller.payload.plantRecord.PlantRecordResponse;
+
+import model.PlantRecordResponse;
 
 public interface IPlantRecordUsecase {
 	public Optional<PlantRecordResponse> findById(String plantRecordId);

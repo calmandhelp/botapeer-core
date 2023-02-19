@@ -25,8 +25,8 @@ public class PostRepositoryDto {
 			model.setTitle(t);
 			model.setStatus(entity.getStatus());
 			model.setPlantRecordId(entity.getPlantRecordId());
-			model.setCreated_at(entity.getCreated_at());
-			model.setUpdated_at(entity.getUpdated_at());
+			model.setCreatedAt(entity.getCreatedAt());
+			model.setUpdatedAt(entity.getUpdatedAt());
 
 			modelList.add(model);
 		}

@@ -19,7 +19,7 @@ public class PlantRecordSeviceImpl implements IPlantRecordService {
 	private final IPlantRecordRepository plantRecordRepository;
 
 	@Override
-	public Optional<PlantRecord> findById(int plantId) {
+	public Optional<PlantRecord> findById(Long plantId) {
 		return this.plantRecordRepository.findById(plantId);
 	}
 
@@ -27,7 +27,7 @@ public class PlantRecordSeviceImpl implements IPlantRecordService {
 	@Transactional
 	public Optional<PlantRecord> create(PlantRecord plantRecord) {
 
-		int plantRecordId = plantRecordRepository.create(plantRecord);
+		Long plantRecordId = plantRecordRepository.create(plantRecord);
 
 		Optional<PlantRecord> resultRecord = plantRecordRepository.findById(plantRecordId);
 

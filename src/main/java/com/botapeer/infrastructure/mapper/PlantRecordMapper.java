@@ -13,7 +13,7 @@ import com.botapeer.infrastructure.entity.PlantRecordEntity;
 @Mapper
 public interface PlantRecordMapper {
 	@Select("SELECT * FROM plant_records WHERE id = #{id}")
-	Optional<PlantRecordEntity> findById(int id);
+	Optional<PlantRecordEntity> findById(Long id);
 
 	@Insert("INSERT INTO plant_records ( "
 			+ "user_id, "

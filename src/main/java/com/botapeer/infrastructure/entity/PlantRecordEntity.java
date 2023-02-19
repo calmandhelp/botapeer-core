@@ -1,6 +1,7 @@
 package com.botapeer.infrastructure.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +15,7 @@ public class PlantRecordEntity {
 
 	@javax.persistence.Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 
 	private Integer userId;
 
@@ -26,9 +27,9 @@ public class PlantRecordEntity {
 
 	private Integer alive;
 
-	private String endDate;
+	private Optional<LocalDateTime> endDate;
 
-	private LocalDate createdAt;
+	private LocalDateTime createdAt;
 
-	private LocalDate updatedAt;
+	private LocalDateTime updatedAt;
 }

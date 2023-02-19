@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.botapeer.controller.payload.user.UpdatePasswordRequest;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.repository.IUserRepository;
 import com.botapeer.domain.service.interfaces.IUserService;
@@ -39,19 +38,19 @@ public class UserSeviceImpl implements IUserService {
 		return this.userRepository.update(user);
 	}
 
-	@Override
-	public boolean updatePassword(UpdatePasswordRequest request) {
-
-		String currentPassword = request.getCurrentPassword();
-		String newPassword = request.getNewPassword();
-
-		if (newPassword.length() < 8
-				|| newPassword.length() < 20) {
-			throw new Error();
-		}
-
-		return userRepository.updatePassword(request);
-	}
+	//	@Override
+	//	public boolean updatePassword(UpdatePasswordRequest request) {
+	//
+	//		String currentPassword = request.getCurrentPassword();
+	//		String newPassword = request.getNewPassword();
+	//
+	//		if (newPassword.length() < 8
+	//				|| newPassword.length() < 20) {
+	//			throw new Error();
+	//		}
+	//
+	//		return userRepository.updatePassword(request);
+	//	}
 
 	@Override
 	public boolean delete(Long userId) {

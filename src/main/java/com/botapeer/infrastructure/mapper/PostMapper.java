@@ -11,7 +11,7 @@ import com.botapeer.infrastructure.entity.PostEntity;
 public interface PostMapper {
 
 	@Select("SELECT * FROM posts WHERE plant_record_id = #{id}")
-	Collection<PostEntity> findByPlantRecordId(int id);
+	Collection<PostEntity> findByPlantRecordId(Long id);
 
 	//	@Insert("INSERT INTO labels ( "
 	//			+ "name, "
