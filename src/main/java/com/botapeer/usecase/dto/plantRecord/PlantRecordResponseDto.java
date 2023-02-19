@@ -70,7 +70,9 @@ public class PlantRecordResponseDto {
 			r.setId(model.getId());
 			r.setAlive(model.getAlive());
 			r.setCreatedAt(model.getCreatedAt().atOffset(TimeZoneUtils.getZoneOffset()));
-			r.setEndDate(model.getEndDate().get().atOffset(TimeZoneUtils.getZoneOffset()));
+			if (model.getEndDate() != null) {
+				r.setEndDate(model.getEndDate().get().atOffset(TimeZoneUtils.getZoneOffset()));
+			}
 			Title title = model.getTitle();
 			r.setTitle(title.getTitle());
 			r.setUpdatedAt(model.getUpdatedAt().atOffset(TimeZoneUtils.getZoneOffset()));

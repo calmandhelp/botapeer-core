@@ -1,7 +1,6 @@
 package com.botapeer.usecase;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
@@ -10,11 +9,11 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.botapeer.controller.payload.plantRecord.CreatePlantRecordRequest;
 import com.botapeer.domain.model.place.Place;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.post.Post;
@@ -30,6 +29,7 @@ import com.botapeer.usecase.dto.plantRecord.PlantRecordResponseDto;
 import com.botapeer.usecase.interfaces.IPlantRecordUsecase;
 
 import lombok.RequiredArgsConstructor;
+import model.CreatePlantRecordRequest;
 import model.PlantRecordResponse;
 
 @Component
@@ -69,17 +69,16 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 	}
 
 	@Override
-	public Optional<PlantRecordResponse> create(CreatePlantRecordRequest request, BindingResult result,
-			Principal principal) {
-
-		//		validation.validation(result);
+	public Optional<PlantRecordResponse> create(CreatePlantRecordRequest request) {
 
 		PlantRecord plantRecord = CreatePlantRecordRequestDto.toModel(request);
 
 		plantRecord.setAlive(1);
 		plantRecord.setStatus(1);
 
-		String userName = principal.getName();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		String userName = auth.getName();
 		Optional<User> user = userService.findByName(userName);
 
 		plantRecord.setUserId(user.get().getId());

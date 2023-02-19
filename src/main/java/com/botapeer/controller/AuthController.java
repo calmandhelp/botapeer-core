@@ -9,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.botapeer.security.JwtTokenProvider;
 import com.botapeer.usecase.interfaces.IUserUsecase;
 
+import api.AuthApi;
 import lombok.RequiredArgsConstructor;
 import model.CreateUserRequest;
 import model.JwtAuthenticationResponse;
@@ -28,14 +28,15 @@ import model.UserResponse;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthApi {
 
 	private final AuthenticationManager authenticationManager;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final IUserUsecase userUsecase;
 
+	@Override
 	@PostMapping("/signin")
-	public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
+	public ResponseEntity<JwtAuthenticationResponse> signin(@Valid @RequestBody SignInRequest signInRequest) {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(signInRequest.getUsernameOrEmail(),
 						signInRequest.getPassword()));
@@ -48,12 +49,13 @@ public class AuthController {
 		return ResponseEntity.ok(response);
 	}
 
+	@Override
 	@PostMapping("/signup")
-	public Optional<UserResponse> createUser(@Validated @RequestBody CreateUserRequest request, BindingResult result) {
+	public ResponseEntity<UserResponse> createUser(@Validated @RequestBody CreateUserRequest request) {
 
-		Optional<UserResponse> response = userUsecase.create(request, result);
+		Optional<UserResponse> response = userUsecase.create(request);
 
-		return response;
+		return ResponseEntity.ok(response.get());
 	}
 
 }

@@ -123,7 +123,7 @@
 		<dependency>
 			<groupId>com.openapi.botapeer</groupId>
 			<artifactId>botapeer-openapi</artifactId>
-			<version>1.2.4</version>
+			<version>1.2.8</version>
 		</dependency>
 	</dependencies>
  

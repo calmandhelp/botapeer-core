@@ -15,7 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.constants.ResponseConstants;
@@ -77,8 +76,7 @@ public class UserUsecase implements IUserUsecase {
 	}
 
 	@Override
-	public Optional<UserResponse> create(CreateUserRequest request, BindingResult result) {
-		//		validation.validation(result);
+	public Optional<UserResponse> create(CreateUserRequest request) {
 
 		User u = UpdateUserRequestDto.toModel(request);
 

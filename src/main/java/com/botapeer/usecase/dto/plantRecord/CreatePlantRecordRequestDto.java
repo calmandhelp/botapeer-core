@@ -2,11 +2,11 @@ package com.botapeer.usecase.dto.plantRecord;
 
 import org.springframework.stereotype.Component;
 
-import com.botapeer.controller.payload.plantRecord.CreatePlantRecordRequest;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.text.Title;
 
 import lombok.RequiredArgsConstructor;
+import model.CreatePlantRecordRequest;
 
 @Component
 @RequiredArgsConstructor

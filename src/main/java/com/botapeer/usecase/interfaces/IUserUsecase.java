@@ -3,7 +3,6 @@ package com.botapeer.usecase.interfaces;
 import java.util.Collection;
 import java.util.Optional;
 
-import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import model.CreateUserRequest;
@@ -15,7 +14,7 @@ public interface IUserUsecase {
 
 	public Collection<UserResponse> findUsers(String name);
 
-	public Optional<UserResponse> create(CreateUserRequest request, BindingResult result);
+	public Optional<UserResponse> create(CreateUserRequest request);
 
 	public Optional<UserResponse> update(UpdateUserFormData user, MultipartFile coverImage,
 			MultipartFile profileImage);
