@@ -2,6 +2,7 @@ package com.botapeer.infrastructure.repository.dto.post;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 import com.botapeer.domain.model.post.Post;
 import com.botapeer.domain.model.text.Article;
@@ -32,6 +33,37 @@ public class PostRepositoryDto {
 		}
 
 		return modelList;
+	}
+
+	public static Optional<Post> toModel(Optional<PostEntity> entity) {
+		if (entity.isPresent()) {
+			Post model = new Post();
+			PostEntity e = entity.get();
+			model.setId(e.getId());
+			Article article = new Article(e.getArticle());
+			model.setArticle(article);
+			model.setImageUrl(e.getImageUrl());
+			Title title = new Title(e.getTitle());
+			model.setTitle(title);
+			model.setPlantRecordId(e.getPlantRecordId());
+			model.setStatus(e.getStatus());
+			model.setCreatedAt(e.getCreatedAt());
+			model.setUpdatedAt(e.getCreatedAt());
+			return Optional.ofNullable(model);
+		}
+		return null;
+	}
+
+	public static PostEntity toEntity(Post model) {
+		PostEntity entity = new PostEntity();
+		entity.setImageUrl(model.getImageUrl());
+		entity.setPlantRecordId(model.getPlantRecordId());
+		entity.setStatus(model.getStatus());
+		Title title = model.getTitle();
+		entity.setTitle(title.getTitle());
+		Article article = model.getArticle();
+		entity.setArticle(article.getArticle());
+		return entity;
 	}
 
 	// [TODO] 作りかけ	

@@ -1,7 +1,5 @@
 package com.botapeer.usecase;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -10,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,15 +18,13 @@ import com.botapeer.constants.ResponseConstants;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.user.Password;
 import com.botapeer.domain.model.user.User;
-import com.botapeer.domain.service.FileUploadService;
 import com.botapeer.domain.service.interfaces.IPlantRecordService;
 import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.exception.NotFoundException;
-import com.botapeer.s3.FileUploadForm;
 import com.botapeer.usecase.dto.user.UpdateUserRequestDto;
 import com.botapeer.usecase.dto.user.UserResponseDto;
 import com.botapeer.usecase.interfaces.IUserUsecase;
-import com.botapeer.util.ValidationUtils;
+import com.botapeer.util.ImageUtils;
 
 import lombok.RequiredArgsConstructor;
 import model.CreateUserRequest;
@@ -41,16 +36,15 @@ import model.UserResponse;
 public class UserUsecase implements IUserUsecase {
 
 	private final IUserService userService;
-	private final FileUploadService fileUploadService;
-	private final MessageSource messageSource;
+
 	private final IPlantRecordService plantRecordService;
 	private final PasswordEncoder passwordEncoder;
-	private final ValidationUtils validation;
-
-	Logger logger = LoggerFactory.getLogger(UserUsecase.class);
+	private final ImageUtils imageUtils;
 
 	@Value(value = "${imagePath}")
 	private String imagePath;
+
+	Logger logger = LoggerFactory.getLogger(UserUsecase.class);
 
 	@Override
 	public Optional<UserResponse> findById(String userId) {
@@ -106,19 +100,17 @@ public class UserUsecase implements IUserUsecase {
 
 		u.setId(targetUser.get().getId());
 
-		String coverImageName = uploadImage(coverImage);
+		String coverImageName = imageUtils.uploadImage(coverImage);
 		if (StringUtils.isEmpty(coverImageName)) {
 			u.setCoverImage(targetUser.get().getCoverImage());
 		} else {
-			logger.info("coverImageName: " + coverImageName);
 			u.setCoverImage(imagePath + coverImageName);
 		}
 
-		String profileImageName = uploadImage(profileImage);
+		String profileImageName = imageUtils.uploadImage(profileImage);
 		if (StringUtils.isEmpty(profileImageName)) {
 			u.setProfileImage(targetUser.get().getProfileImage());
 		} else {
-			logger.info("profileImageName: " + profileImageName);
 			u.setProfileImage(imagePath + profileImageName);
 		}
 
@@ -181,20 +173,4 @@ public class UserUsecase implements IUserUsecase {
 		return null;
 	}
 
-	public String uploadImage(MultipartFile image) {
-		if (!ObjectUtils.isEmpty(image)) {
-			FileUploadForm fileUploadForm = new FileUploadForm();
-			fileUploadForm.setMultipartFile(image);
-			fileUploadForm.setCreateAt(LocalDateTime.now());
-			try {
-				logger.info("image: " + image.getOriginalFilename());
-				String fileName = fileUploadService.fileUpload(fileUploadForm, "image.botapeer.com/images");
-				return fileName;
-			} catch (IOException e) {
-				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
 }

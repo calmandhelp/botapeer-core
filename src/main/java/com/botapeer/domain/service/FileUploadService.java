@@ -24,7 +24,7 @@ public class FileUploadService {
 
 	public String fileUpload(FileUploadForm fileUploadForm, String s3PathName)
 			throws IOException {
-		DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
+		DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
 		String extension = FilenameUtils.getExtension(fileUploadForm.getMultipartFile().getOriginalFilename())
 				.toLowerCase();
 		String fileName = fileUploadForm.getCreateAt().format(fm) + "_" + UUID.randomUUID() + "." + extension;

@@ -1,11 +1,8 @@
 package com.botapeer.usecase;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,29 +15,32 @@ import com.botapeer.domain.model.place.Place;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 import com.botapeer.domain.model.post.Post;
 import com.botapeer.domain.model.user.User;
-import com.botapeer.domain.service.FileUploadService;
 import com.botapeer.domain.service.interfaces.IPlaceService;
 import com.botapeer.domain.service.interfaces.IPlantRecordService;
 import com.botapeer.domain.service.interfaces.IPostService;
 import com.botapeer.domain.service.interfaces.IUserService;
-import com.botapeer.s3.FileUploadForm;
 import com.botapeer.usecase.dto.plantRecord.CreatePlantRecordRequestDto;
+import com.botapeer.usecase.dto.plantRecord.CreatePostFormDataDto;
 import com.botapeer.usecase.dto.plantRecord.PlantRecordResponseDto;
+import com.botapeer.usecase.dto.post.PostResponseDto;
 import com.botapeer.usecase.interfaces.IPlantRecordUsecase;
+import com.botapeer.util.ImageUtils;
 
 import lombok.RequiredArgsConstructor;
 import model.CreatePlantRecordRequest;
+import model.CreatePostFormData;
 import model.PlantRecordResponse;
+import model.PostResponse;
 
 @Component
 @RequiredArgsConstructor
 public class PlantRecordUsecase implements IPlantRecordUsecase {
 
 	private final IPlantRecordService plantRecordService;
-	private final FileUploadService fileUploadService;
 	private final IUserService userService;
 	private final IPlaceService placeService;
 	private final IPostService postService;
+	private final ImageUtils imageUtils;
 
 	Logger logger = LoggerFactory.getLogger(PlantRecordUsecase.class);
 
@@ -118,21 +118,26 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 		return null;
 	}
 
-	public String uploadImage(MultipartFile image) {
-		if (!ObjectUtils.isEmpty(image)) {
-			FileUploadForm fileUploadForm = new FileUploadForm();
-			fileUploadForm.setMultipartFile(image);
-			fileUploadForm.setCreateAt(LocalDateTime.now());
-			try {
-				System.out.println("image: " + image.getOriginalFilename());
-				String fileName = fileUploadService.fileUpload(fileUploadForm, "botapeer.com/images");
-				return fileName;
-			} catch (IOException e) {
-				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
-			}
-		}
-		return null;
+	@Override
+	public Optional<PostResponse> createPost(String plantRecordId, MultipartFile image, CreatePostFormData formData) {
+
+		Long plantRecordIdL = Long.parseLong(plantRecordId);
+
+		String fileName = imageUtils.uploadImage(image);
+		Post post = CreatePostFormDataDto.toModel(formData);
+		post.setImageUrl(imagePath + fileName);
+		post.setStatus(1);
+		post.setPlantRecordId(plantRecordIdL);
+		Optional<Post> p = postService.create(post);
+		Optional<PostResponse> response = PostResponseDto.toResponse(p);
+		return response;
+	}
+
+	@Override
+	public Optional<PostResponse> getPostByIdAndPostId(String id, String postId) {
+		Optional<Post> p = postService.getPostByIdAndPostId(id, postId);
+		Optional<PostResponse> response = PostResponseDto.toResponse(p);
+		return response;
 	}
 
 }

@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,10 +57,19 @@ public class PlantRecordController implements PlantRecordsApi {
 	}
 
 	@Override
-	public ResponseEntity<PostResponse> createPost(String paramString, MultipartFile paramMultipartFile,
-			@Valid CreatePostFormData paramCreatePostFormData) {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+	@PostMapping("/plant_records/{plantRecordId}/posts")
+	public ResponseEntity<PostResponse> createPost(@PathVariable String plantRecordId,
+			@RequestPart(value = "image", required = true) MultipartFile image,
+			@RequestPart(value = "formData", required = false) CreatePostFormData formData) {
+		Optional<PostResponse> response = plantUsecase.createPost(plantRecordId, image, formData);
+		return new ResponseEntity<>(response.get(), HttpStatus.OK);
+	}
+
+	@Override
+	@GetMapping("/plant_records/{plantRecordId}/posts/{postId}")
+	public ResponseEntity<PostResponse> getPostById(@PathVariable String plantRecordId, @PathVariable String postId) {
+		Optional<PostResponse> response = plantUsecase.getPostByIdAndPostId(plantRecordId, postId);
+		return new ResponseEntity<>(response.get(), HttpStatus.OK);
 	}
 
 }
