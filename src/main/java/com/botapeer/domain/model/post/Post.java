@@ -12,13 +12,13 @@ public class Post {
 
 	private Long id;
 
-	private Integer plantRecordId;
+	private Long plantRecordId;
 
 	Title title;
 
 	Article article;
 
-	String image_url;
+	String imageUrl;
 
 	Integer status;
 

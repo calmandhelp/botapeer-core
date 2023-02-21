@@ -6,21 +6,22 @@ import org.springframework.stereotype.Component;
 
 import com.botapeer.domain.model.place.Place;
 import com.botapeer.domain.service.interfaces.IPlaceService;
+import com.botapeer.usecase.dto.place.PlaceResponseDto;
 import com.botapeer.usecase.interfaces.IPlaceUsecase;
-import com.botapeer.util.ValidationUtils;
 
 import lombok.RequiredArgsConstructor;
+import model.PlaceResponse;
 
 @Component
 @RequiredArgsConstructor
 public class PlaceUsecase implements IPlaceUsecase {
 
 	private final IPlaceService placeService;
-	private final ValidationUtils validation;
 
 	@Override
-	public Collection<Place> findAll() {
-		return placeService.findAll();
+	public Collection<PlaceResponse> findAll() {
+		Collection<Place> places = placeService.findAll();
+		return PlaceResponseDto.toResponse(places);
 	}
 
 }

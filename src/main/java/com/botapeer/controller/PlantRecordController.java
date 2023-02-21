@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,13 +16,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.usecase.interfaces.IPlantRecordUsecase;
 
 import api.PlantRecordsApi;
 import lombok.RequiredArgsConstructor;
 import model.CreatePlantRecordRequest;
+import model.CreatePostFormData;
 import model.PlantRecordResponse;
+import model.PostResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -50,6 +55,13 @@ public class PlantRecordController implements PlantRecordsApi {
 		Collection<PlantRecordResponse> response = plantUsecase.findByUserId(userId);
 		List<PlantRecordResponse> list = new ArrayList<>(response);
 		return new ResponseEntity<>(list, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<PostResponse> createPost(String paramString, MultipartFile paramMultipartFile,
+			@Valid CreatePostFormData paramCreatePostFormData) {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
 	}
 
 }

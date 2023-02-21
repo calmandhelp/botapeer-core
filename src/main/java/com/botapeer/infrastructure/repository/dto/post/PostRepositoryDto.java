@@ -19,7 +19,7 @@ public class PostRepositoryDto {
 			model.setId((long) entity.getId());
 			Article article = new Article(entity.getArticle());
 			model.setArticle(article);
-			model.setImage_url(entity.getImage_url());
+			model.setImageUrl(entity.getImageUrl());
 			String title = entity.getTitle();
 			Title t = new Title(title);
 			model.setTitle(t);

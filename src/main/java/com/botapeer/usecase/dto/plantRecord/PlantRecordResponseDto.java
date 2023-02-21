@@ -47,7 +47,7 @@ public class PlantRecordResponseDto {
 				postResponse.setArticle(article.getArticle());
 				postResponse.setCreatedAt(postModel.getCreatedAt().atOffset(TimeZoneUtils.getZoneOffset()));
 				postResponse.setUpdatedAt(postModel.getUpdatedAt().atOffset(TimeZoneUtils.getZoneOffset()));
-				postResponse.setImageUrl(postModel.getImage_url());
+				postResponse.setImageUrl(postModel.getImageUrl());
 				postResponse.setStatus(postModel.getStatus());
 				Title postTitle = postModel.getTitle();
 				String PostT = postTitle.getTitle();
@@ -91,7 +91,7 @@ public class PlantRecordResponseDto {
 				postResponse.setArticle(a);
 				postResponse.setCreatedAt(p.getCreatedAt().atOffset(TimeZoneUtils.getZoneOffset()));
 				postResponse.setUpdatedAt(p.getUpdatedAt().atOffset(TimeZoneUtils.getZoneOffset()));
-				postResponse.setImageUrl(p.getImage_url());
+				postResponse.setImageUrl(p.getImageUrl());
 				postResponse.setPlantRecordId(p.getPlantRecordId());
 				postResponse.setStatus(p.getStatus());
 				Title postTitle = p.getTitle();

@@ -2,10 +2,10 @@ package com.botapeer.usecase.interfaces;
 
 import java.util.Collection;
 
-import com.botapeer.domain.model.place.Place;
+import model.PlaceResponse;
 
 public interface IPlaceUsecase {
-	public Collection<Place> findAll();
+	public Collection<PlaceResponse> findAll();
 	//
 	//	public Optional<PlantRecordResponse> update(Principal principal, CreatePlantRecordRequest user, MultipartFile coverImage,
 	//			MultipartFile profileImage,

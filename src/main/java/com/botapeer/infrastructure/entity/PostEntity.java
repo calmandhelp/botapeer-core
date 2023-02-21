@@ -12,13 +12,13 @@ public class PostEntity {
 
 	private Long id;
 
-	private Integer plantRecordId;
+	private Long plantRecordId;
 
 	String title;
 
 	String article;
 
-	String image_url;
+	String imageUrl;
 
 	Integer status;
 
