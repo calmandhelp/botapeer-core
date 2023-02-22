@@ -61,9 +61,9 @@ public class UserController implements UsersApi {
 	}
 
 	@DeleteMapping("/users/{userId}")
-	public ResponseEntity<UserResponse> deleteUser(@PathVariable String userId) {
+	public ResponseEntity<Void> deleteUser(@PathVariable String userId) {
 		userUsecase.delete(userId);
-		return null;
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override

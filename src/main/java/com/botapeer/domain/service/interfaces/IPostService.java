@@ -11,7 +11,9 @@ public interface IPostService {
 
 	public Optional<Post> create(Post post);
 
-	public Optional<Post> getPostByIdAndPostId(String id, String postId);
+	public Optional<Post> getPostByIdAndPlantRecordId(String id, String postId);
+
+	public boolean delete(String id, String postId);
 
 	//	public Collection<PlantRecordEntity> findByUserId(int userId);
 	//

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.domain.model.place.Place;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
@@ -20,17 +19,13 @@ import com.botapeer.domain.service.interfaces.IPlantRecordService;
 import com.botapeer.domain.service.interfaces.IPostService;
 import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.usecase.dto.plantRecord.CreatePlantRecordRequestDto;
-import com.botapeer.usecase.dto.plantRecord.CreatePostFormDataDto;
 import com.botapeer.usecase.dto.plantRecord.PlantRecordResponseDto;
-import com.botapeer.usecase.dto.post.PostResponseDto;
 import com.botapeer.usecase.interfaces.IPlantRecordUsecase;
 import com.botapeer.util.ImageUtils;
 
 import lombok.RequiredArgsConstructor;
 import model.CreatePlantRecordRequest;
-import model.CreatePostFormData;
 import model.PlantRecordResponse;
-import model.PostResponse;
 
 @Component
 @RequiredArgsConstructor
@@ -116,28 +111,6 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 			logger.error(ex.getMessage());
 		}
 		return null;
-	}
-
-	@Override
-	public Optional<PostResponse> createPost(String plantRecordId, MultipartFile image, CreatePostFormData formData) {
-
-		Long plantRecordIdL = Long.parseLong(plantRecordId);
-
-		String fileName = imageUtils.uploadImage(image);
-		Post post = CreatePostFormDataDto.toModel(formData);
-		post.setImageUrl(imagePath + fileName);
-		post.setStatus(1);
-		post.setPlantRecordId(plantRecordIdL);
-		Optional<Post> p = postService.create(post);
-		Optional<PostResponse> response = PostResponseDto.toResponse(p);
-		return response;
-	}
-
-	@Override
-	public Optional<PostResponse> getPostByIdAndPostId(String id, String postId) {
-		Optional<Post> p = postService.getPostByIdAndPostId(id, postId);
-		Optional<PostResponse> response = PostResponseDto.toResponse(p);
-		return response;
 	}
 
 }

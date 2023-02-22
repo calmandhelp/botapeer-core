@@ -13,6 +13,8 @@ public interface IPostRepository {
 
 	Long create(Post post);
 
-	Optional<Post> getPostByIdAndPostId(String plantRecordId, String postId);
+	Optional<Post> getPostByIdAndPlantRecordId(String plantRecordId, String postId);
+
+	boolean delete(String plantRecordId, String postId);
 
 }

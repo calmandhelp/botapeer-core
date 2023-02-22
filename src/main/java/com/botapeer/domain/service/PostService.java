@@ -30,8 +30,13 @@ public class PostService implements IPostService {
 	}
 
 	@Override
-	public Optional<Post> getPostByIdAndPostId(String id, String postId) {
-		return postRepository.getPostByIdAndPostId(id, postId);
+	public Optional<Post> getPostByIdAndPlantRecordId(String id, String postId) {
+		return postRepository.getPostByIdAndPlantRecordId(id, postId);
+	}
+
+	@Override
+	public boolean delete(String id, String postId) {
+		return postRepository.delete(id, postId);
 	}
 
 }

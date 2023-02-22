@@ -3,6 +3,7 @@ package com.botapeer.infrastructure.mapper;
 import java.util.Collection;
 import java.util.Optional;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -43,5 +44,10 @@ public interface PostMapper {
 	@Select("SELECT * FROM posts WHERE "
 			+ "plant_record_id = #{plantRecordId} AND "
 			+ "id = #{postId}")
-	Optional<PostEntity> getPostByIdAndPostId(String plantRecordId, String postId);
+	Optional<PostEntity> getPostByIdAndPlantRecordId(String plantRecordId, String postId);
+
+	@Delete("DELETE FROM posts WHERE "
+			+ "plant_record_id = #{plantRecordId} AND "
+			+ "id = #{postId}")
+	boolean delete(String plantRecordId, String postId);
 }
