@@ -21,7 +21,6 @@ import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.usecase.dto.plantRecord.CreatePlantRecordRequestDto;
 import com.botapeer.usecase.dto.plantRecord.PlantRecordResponseDto;
 import com.botapeer.usecase.interfaces.IPlantRecordUsecase;
-import com.botapeer.util.ImageUtils;
 
 import lombok.RequiredArgsConstructor;
 import model.CreatePlantRecordRequest;
@@ -35,7 +34,6 @@ public class PlantRecordUsecase implements IPlantRecordUsecase {
 	private final IUserService userService;
 	private final IPlaceService placeService;
 	private final IPostService postService;
-	private final ImageUtils imageUtils;
 
 	Logger logger = LoggerFactory.getLogger(PlantRecordUsecase.class);
 

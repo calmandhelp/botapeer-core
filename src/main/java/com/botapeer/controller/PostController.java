@@ -19,7 +19,6 @@ import com.botapeer.usecase.interfaces.IPostUsecase;
 
 import api.PostsApi;
 import lombok.RequiredArgsConstructor;
-import model.CreateLikeToPostRequest;
 import model.CreatePostFormData;
 import model.PostResponse;
 
@@ -55,11 +54,20 @@ public class PostController implements PostsApi {
 	}
 
 	@Override
-	@PostMapping("/posts/{postId}/plant_records/{plantRecordId}/likes")
+	@PostMapping("/posts/{postId}/plant_records/{plantRecordId}/users/{userId}/likes")
 	public ResponseEntity<PostResponse> createLikeToPost(@PathVariable("postId") String postId,
 			@PathVariable("plantRecordId") String plantRecordId,
-			@Valid CreateLikeToPostRequest createLikeToPostRequest) {
-		Optional<PostResponse> response = postUsecase.createLikeToPost(plantRecordId, postId, createLikeToPostRequest);
+			@PathVariable("userId") String userId) {
+		Optional<PostResponse> response = postUsecase.createLikeToPost(plantRecordId, postId, userId);
+		return new ResponseEntity<>(response.get(), HttpStatus.OK);
+	}
+
+	@Override
+	@DeleteMapping("/posts/{postId}/plant_records/{plantRecordId}/users/{userId}/likes")
+	public ResponseEntity<PostResponse> deleteLikeToPost(@PathVariable("postId") String postId,
+			@PathVariable("plantRecordId") String plantRecordId,
+			@PathVariable("userId") String userId) {
+		Optional<PostResponse> response = postUsecase.deleteLikeToPost(plantRecordId, postId, userId);
 		return new ResponseEntity<>(response.get(), HttpStatus.OK);
 	}
 

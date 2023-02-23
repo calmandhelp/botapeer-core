@@ -1,7 +1,9 @@
 package com.botapeer.domain.model.post;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
+import com.botapeer.domain.model.like.LikeCountPost;
 import com.botapeer.domain.model.text.Article;
 import com.botapeer.domain.model.text.Title;
 
@@ -25,5 +27,7 @@ public class Post {
 	LocalDateTime createdAt;
 
 	LocalDateTime updatedAt;
+
+	Optional<LikeCountPost> likeCountPost;
 
 }

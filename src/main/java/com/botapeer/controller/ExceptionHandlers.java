@@ -78,6 +78,9 @@ public class ExceptionHandlers extends ResponseEntityExceptionHandler {
 		case ResponseConstants.NOTFOUND_PLANT_RECORD_CODE:
 			errorInner.setCode(ResponseConstants.NOTFOUND_PLANT_RECORD_CODE);
 			errorInner.setMessage(ResponseConstants.NOTFOUND_PLANT_RECORD_MESSAGE);
+		case ResponseConstants.NOTFOUND_LIKE_CODE:
+			errorInner.setCode(ResponseConstants.NOTFOUND_LIKE_CODE);
+			errorInner.setMessage(ResponseConstants.NOTFOUND_LIKE_MESSAGE);
 		}
 
 		errors.add(errorInner);

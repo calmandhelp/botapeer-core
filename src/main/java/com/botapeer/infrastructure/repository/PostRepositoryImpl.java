@@ -42,14 +42,14 @@ public class PostRepositoryImpl implements IPostRepository {
 	}
 
 	@Override
-	public Optional<Post> getPostByIdAndPlantRecordId(String plantRecordId, String postId) {
+	public Optional<Post> getPostByIdAndPlantRecordId(Long plantRecordId, Long postId) {
 		Optional<PostEntity> entity = postMapper.getPostByIdAndPlantRecordId(plantRecordId, postId);
 		Optional<Post> model = PostRepositoryDto.toModel(entity);
 		return model;
 	}
 
 	@Override
-	public boolean delete(String plantRecordId, String postId) {
+	public boolean delete(Long plantRecordId, Long postId) {
 		return postMapper.delete(plantRecordId, postId);
 	}
 

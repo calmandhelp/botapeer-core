@@ -23,7 +23,7 @@ public class UserResponseDto {
 			response.setDescription(user.get().getDescription());
 			return Optional.ofNullable(response);
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	public static Collection<UserResponse> toResponse(Collection<User> users) {

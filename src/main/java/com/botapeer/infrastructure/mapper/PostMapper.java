@@ -44,11 +44,11 @@ public interface PostMapper {
 	@Select("SELECT * FROM posts WHERE "
 			+ "plant_record_id = #{plantRecordId} AND "
 			+ "id = #{postId}")
-	Optional<PostEntity> getPostByIdAndPlantRecordId(String plantRecordId, String postId);
+	Optional<PostEntity> getPostByIdAndPlantRecordId(Long plantRecordId, Long postId);
 
 	@Delete("DELETE FROM posts WHERE "
 			+ "plant_record_id = #{plantRecordId} AND "
 			+ "id = #{postId}")
-	boolean delete(String plantRecordId, String postId);
+	boolean delete(Long plantRecordId, Long postId);
 
 }

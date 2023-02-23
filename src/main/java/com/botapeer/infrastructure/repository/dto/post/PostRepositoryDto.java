@@ -51,7 +51,7 @@ public class PostRepositoryDto {
 			model.setUpdatedAt(e.getCreatedAt());
 			return Optional.ofNullable(model);
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	public static PostEntity toEntity(Post model) {

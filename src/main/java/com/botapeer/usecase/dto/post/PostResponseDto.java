@@ -26,8 +26,9 @@ public class PostResponseDto {
 			response.setTitle(title.getTitle());
 			response.setCreatedAt(m.getCreatedAt().atOffset(TimeZoneUtils.getZoneOffset()));
 			response.setUpdatedAt(m.getUpdatedAt().atOffset(TimeZoneUtils.getZoneOffset()));
+
 			return Optional.ofNullable(response);
 		}
-		return null;
+		return Optional.empty();
 	}
 }

@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import model.CreateLikeToPostRequest;
 import model.CreatePostFormData;
 import model.PostResponse;
 
@@ -16,6 +15,8 @@ public interface IPostUsecase {
 	public boolean deletePost(String id, String postId);
 
 	public Optional<PostResponse> createLikeToPost(String plantRecordId, String postId,
-			CreateLikeToPostRequest createLikeToPostRequest);
+			String userId);
 
+	public Optional<PostResponse> deleteLikeToPost(String plantRecordId, String postId,
+			String userId);
 }

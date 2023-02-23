@@ -17,18 +17,4 @@ public interface PlaceMapper {
 	@Select("SELECT * FROM places WHERE id = #{id}")
 	Optional<Place> findById(Long id);
 
-	//	@Insert("INSERT INTO labels ( "
-	//			+ "name, "
-	//			+ "plant_record_id, "
-	//			+ "created_at, "
-	//			+ "updated_at "
-	//			+ ") "
-	//			+ "VALUES ( "
-	//			+ "#{name}, "
-	//			+ "#{plantRecordId}, "
-	//			+ "CURRENT_TIMESTAMP, "
-	//			+ "CURRENT_TIMESTAMP "
-	//			+ ");")
-	//	boolean create(Label label);
-
 }

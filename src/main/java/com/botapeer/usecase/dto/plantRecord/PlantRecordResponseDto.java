@@ -58,7 +58,7 @@ public class PlantRecordResponseDto {
 
 			return Optional.ofNullable(response);
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	public static Collection<PlantRecordResponse> toResponse(Collection<PlantRecord> models) {

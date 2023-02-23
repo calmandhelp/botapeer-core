@@ -6,14 +6,15 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.botapeer.constants.ResponseConstants;
+import com.botapeer.domain.model.like.LikeCountPost;
 import com.botapeer.domain.model.post.Post;
 import com.botapeer.domain.repository.IPostRepository;
 import com.botapeer.domain.service.interfaces.ILikeService;
 import com.botapeer.domain.service.interfaces.IPostService;
 import com.botapeer.exception.DuplicateKeyException;
+import com.botapeer.exception.NotFoundException;
 
 import lombok.RequiredArgsConstructor;
-import model.CreateLikeToPostRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -35,23 +36,47 @@ public class PostService implements IPostService {
 	}
 
 	@Override
-	public Optional<Post> getPostByIdAndPlantRecordId(String id, String postId) {
+	public Optional<Post> getPostByIdAndPlantRecordId(Long id, Long postId) {
 		return postRepository.getPostByIdAndPlantRecordId(id, postId);
 	}
 
 	@Override
-	public boolean delete(String id, String postId) {
+	public boolean delete(Long id, Long postId) {
 		return postRepository.delete(id, postId);
 	}
 
 	@Override
-	public Optional<Post> createLikeToPost(String plantRecordId, String postId,
-			CreateLikeToPostRequest createLikeToPostRequest) {
-		if (likeService.isLike(plantRecordId, postId, createLikeToPostRequest.getUserId())) {
+	public Optional<Post> createLikeToPost(Long plantRecordId, Long postId,
+			Integer userId) {
+		if (likeService.isLikeWithPost(plantRecordId, postId, userId)) {
 			throw new DuplicateKeyException(ResponseConstants.DUPLICATE_KEY_LIKE_CODE);
 		}
-		likeService.createLikeToPost(plantRecordId, postId, createLikeToPostRequest.getUserId());
-		return getPostByIdAndPlantRecordId(plantRecordId, postId);
+		likeService.createLikeToPost(plantRecordId, postId, userId);
+		Optional<Post> post = getPostByIdAndPlantRecordId(plantRecordId, postId);
+
+		Optional<LikeCountPost> likeCountPost = likeService.countLikeWithPost(postId);
+
+		post.get().setLikeCountPost(likeCountPost);
+
+		return post;
+	}
+
+	@Override
+	public Optional<Post> deleteLikeToPost(Long plantRecordId, Long postId, Integer userId) {
+
+		if (!likeService.isLikeWithPost(plantRecordId, postId, userId)) {
+			throw new NotFoundException(ResponseConstants.NOTFOUND_LIKE_CODE);
+		}
+
+		likeService.deleteLikeToPost(plantRecordId, postId, userId);
+
+		Optional<Post> post = getPostByIdAndPlantRecordId(plantRecordId, postId);
+
+		Optional<LikeCountPost> likeCountPost = likeService.countLikeWithPost(postId);
+
+		post.get().setLikeCountPost(likeCountPost);
+
+		return post;
 	}
 
 }
