@@ -50,4 +50,5 @@ public interface PostMapper {
 			+ "plant_record_id = #{plantRecordId} AND "
 			+ "id = #{postId}")
 	boolean delete(String plantRecordId, String postId);
+
 }

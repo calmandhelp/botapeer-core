@@ -18,6 +18,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.botapeer.constants.ResponseConstants;
+import com.botapeer.exception.DuplicateKeyException;
 import com.botapeer.exception.NotFoundException;
 import com.botapeer.exception.ValidationExceptionDto;
 
@@ -84,6 +85,23 @@ public class ExceptionHandlers extends ResponseEntityExceptionHandler {
 		re.setErrors(errors);
 
 		return super.handleExceptionInternal(ex, re, null, HttpStatus.NOT_FOUND, request);
+	}
+
+	@ExceptionHandler(DuplicateKeyException.class)
+	public ResponseEntity<Object> handleDuplicateKeyException(DuplicateKeyException ex, WebRequest request) {
+		List<ErrorInner> errors = new ArrayList<>();
+		ErrorInner errorInner = new ErrorInner();
+		switch (ex.getCode()) {
+		case ResponseConstants.DUPLICATE_KEY_LIKE_CODE:
+			errorInner.setCode(ResponseConstants.DUPLICATE_KEY_LIKE_CODE);
+			errorInner.setMessage(ResponseConstants.DUPLICATE_KEY_LIKE_MESSAGE);
+		}
+
+		errors.add(errorInner);
+		ErrorResponse re = new ErrorResponse();
+		re.setErrors(errors);
+
+		return super.handleExceptionInternal(ex, re, null, HttpStatus.CONFLICT, request);
 	}
 
 	@ExceptionHandler(IllegalArgumentException.class)

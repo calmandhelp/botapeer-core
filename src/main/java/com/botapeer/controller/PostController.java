@@ -19,6 +19,7 @@ import com.botapeer.usecase.interfaces.IPostUsecase;
 
 import api.PostsApi;
 import lombok.RequiredArgsConstructor;
+import model.CreateLikeToPostRequest;
 import model.CreatePostFormData;
 import model.PostResponse;
 
@@ -54,10 +55,12 @@ public class PostController implements PostsApi {
 	}
 
 	@Override
-	public ResponseEntity<PostResponse> createLikeToPost(String paramString1, String paramString2,
-			@Valid String paramString3) {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+	@PostMapping("/posts/{postId}/plant_records/{plantRecordId}/likes")
+	public ResponseEntity<PostResponse> createLikeToPost(@PathVariable("postId") String postId,
+			@PathVariable("plantRecordId") String plantRecordId,
+			@Valid CreateLikeToPostRequest createLikeToPostRequest) {
+		Optional<PostResponse> response = postUsecase.createLikeToPost(plantRecordId, postId, createLikeToPostRequest);
+		return new ResponseEntity<>(response.get(), HttpStatus.OK);
 	}
 
 }

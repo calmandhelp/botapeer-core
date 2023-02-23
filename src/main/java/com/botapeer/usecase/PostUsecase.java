@@ -16,6 +16,7 @@ import com.botapeer.usecase.interfaces.IPostUsecase;
 import com.botapeer.util.ImageUtils;
 
 import lombok.RequiredArgsConstructor;
+import model.CreateLikeToPostRequest;
 import model.CreatePostFormData;
 import model.PostResponse;
 
@@ -56,6 +57,14 @@ public class PostUsecase implements IPostUsecase {
 	@Override
 	public boolean deletePost(String id, String postId) {
 		return postService.delete(id, postId);
+	}
+
+	@Override
+	public Optional<PostResponse> createLikeToPost(String plantRecordId, String postId,
+			CreateLikeToPostRequest createLikeToPostRequest) {
+		Optional<Post> p = postService.createLikeToPost(plantRecordId, postId, createLikeToPostRequest);
+		Optional<PostResponse> response = PostResponseDto.toResponse(p);
+		return response;
 	}
 
 }

@@ -16,7 +16,7 @@ INSERT INTO places(name) values("その他");
 INSERT INTO plant_records(user_id, title, alive, place_id, created_at, updated_at) values(1, "バラの生育記録", 1, 1, "2023-02-17 15:46:35", "2023-02-17 15:46:35");
 
 INSERT INTO posts(plant_record_id, title, article, created_at, updated_at) values(1, "初めての投稿", "初めての投稿です。よろしくお願いします。", "2023-02-17 15:46:35", "2023-02-17 15:46:35");
-INSERT INTO posts(plant_record_id, title, article, created_at, updated_at) values(1, "芽が出ました", "徐々に芽がでてきましたー");
-INSERT INTO posts(plant_record_id, title, article, created_at, updated_at) values(1, "徐々に育ってきています", "いい感じです〜");
-INSERT INTO posts(plant_record_id, title, article, created_at, updated_at) values(1, "蕾が咲きました", "もうそろそろ咲きそうかな？");
-INSERT INTO posts(plant_record_id, title, article, created_at, updated_at) values(1, "花が咲きました", "綺麗に咲きました！");
+INSERT INTO posts(plant_record_id, title, article, created_at, updated_at) values(1, "芽が出ました", "徐々に芽がでてきましたー", "2023-02-17 15:46:35", "2023-02-17 15:46:35");
+INSERT INTO posts(plant_record_id, title, article, created_at, updated_at) values(1, "徐々に育ってきています", "いい感じです〜", "2023-02-17 15:46:35", "2023-02-17 15:46:35");
+INSERT INTO posts(plant_record_id, title, article, created_at, updated_at) values(1, "蕾が咲きました", "もうそろそろ咲きそうかな？", "2023-02-17 15:46:35", "2023-02-17 15:46:35");
+INSERT INTO posts(plant_record_id, title, article, created_at, updated_at) values(1, "花が咲きました", "綺麗に咲きました！", "2023-02-17 15:46:35", "2023-02-17 15:46:35");

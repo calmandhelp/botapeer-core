@@ -15,6 +15,6 @@ public interface IPostRepository {
 
 	Optional<Post> getPostByIdAndPlantRecordId(String plantRecordId, String postId);
 
-	boolean delete(String plantRecordId, String postId);
+	public boolean delete(String plantRecordId, String postId);
 
 }

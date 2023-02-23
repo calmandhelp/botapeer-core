@@ -146,8 +146,6 @@ public class UserUsecase implements IUserUsecase {
 
 	@Override
 	public void delete(String userId) {
-		// TODO 自動生成されたメソッド・スタブ
-
 	}
 
 	@Override
