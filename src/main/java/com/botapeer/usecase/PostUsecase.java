@@ -56,24 +56,23 @@ public class PostUsecase implements IPostUsecase {
 	}
 
 	@Override
-	public Optional<PostResponse> getPostByIdAndPlantRecordId(String plantRecorId, String postId) {
+	public Optional<PostResponse> getById(String postId) {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		String userName = auth.getName();
 		Optional<User> user = userService.findByName(userName);
 
-		Long plantRecorIdL = Long.parseLong(plantRecorId);
 		Long postIdL = Long.parseLong(postId);
 
-		Optional<Post> p = postService.getPostByIdAndPlantRecordId(plantRecorIdL, postIdL);
+		Optional<Post> p = postService.getById(postIdL);
 		Optional<PostResponse> response = PostResponseDto.toResponse(p);
 
 		Optional<LikeCountPost> likeCountPost = likeService.countLikeWithPost(postIdL);
 
 		boolean isLikeWithUser = false;
 		if (user != null) {
-			isLikeWithUser = likeService.isLikeWithPost(plantRecorIdL, postIdL, user.get().getId());
+			isLikeWithUser = likeService.isLikeWithPost(postIdL, user.get().getId());
 		}
 
 		response.get().setLike(new LikeResponse());
@@ -89,35 +88,31 @@ public class PostUsecase implements IPostUsecase {
 	}
 
 	@Override
-	public boolean deletePost(String id, String postId) {
-
-		Long idL = Long.parseLong(id);
+	public boolean deletePost(String postId) {
 		Long postIdL = Long.parseLong(postId);
 
-		return postService.delete(idL, postIdL);
+		return postService.delete(postIdL);
 	}
 
 	@Override
-	public Optional<PostResponse> createLikeToPost(String plantRecordId, String postId,
-			String userId) {
+	public Optional<PostResponse> createLikeToPost(String postId, String userId) {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		String userName = auth.getName();
 		Optional<User> user = userService.findByName(userName);
 
-		Long plantRecorIdL = Long.parseLong(plantRecordId);
 		Long postIdL = Long.parseLong(postId);
 		Integer userIdL = Integer.parseInt(userId);
 
-		Optional<Post> p = postService.createLikeToPost(plantRecorIdL, postIdL, userIdL);
+		Optional<Post> p = postService.createLikeToPost(postIdL, userIdL);
 		Optional<PostResponse> response = PostResponseDto.toResponse(p);
 
 		Optional<LikeCountPost> likeCountPost = likeService.countLikeWithPost(postIdL);
 
 		boolean isLikeWithUser = false;
 		if (user != null) {
-			isLikeWithUser = likeService.isLikeWithPost(plantRecorIdL, postIdL, user.get().getId());
+			isLikeWithUser = likeService.isLikeWithPost(postIdL, user.get().getId());
 		}
 
 		response.get().setLike(new LikeResponse());
@@ -133,25 +128,24 @@ public class PostUsecase implements IPostUsecase {
 	}
 
 	@Override
-	public Optional<PostResponse> deleteLikeToPost(String plantRecordId, String postId, String userId) {
+	public Optional<PostResponse> deleteLikeToPost(String postId, String userId) {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		String userName = auth.getName();
 		Optional<User> user = userService.findByName(userName);
 
-		Long plantRecorIdL = Long.parseLong(plantRecordId);
 		Long postIdL = Long.parseLong(postId);
 		Integer userIdL = Integer.parseInt(userId);
 
-		Optional<Post> p = postService.deleteLikeToPost(plantRecorIdL, postIdL, userIdL);
+		Optional<Post> p = postService.deleteLikeToPost(postIdL, userIdL);
 		Optional<PostResponse> response = PostResponseDto.toResponse(p);
 
 		Optional<LikeCountPost> likeCountPost = likeService.countLikeWithPost(postIdL);
 
 		boolean isLikeWithUser = false;
 		if (user != null) {
-			isLikeWithUser = likeService.isLikeWithPost(plantRecorIdL, postIdL, user.get().getId());
+			isLikeWithUser = likeService.isLikeWithPost(postIdL, user.get().getId());
 		}
 
 		response.get().setLike(new LikeResponse());

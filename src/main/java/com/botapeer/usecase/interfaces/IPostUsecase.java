@@ -10,13 +10,11 @@ import model.PostResponse;
 public interface IPostUsecase {
 	public Optional<PostResponse> createPost(String plantRecordId, MultipartFile image, CreatePostFormData formData);
 
-	public Optional<PostResponse> getPostByIdAndPlantRecordId(String id, String postId);
+	public Optional<PostResponse> getById(String postId);
 
-	public boolean deletePost(String id, String postId);
+	public boolean deletePost(String postId);
 
-	public Optional<PostResponse> createLikeToPost(String plantRecordId, String postId,
-			String userId);
+	public Optional<PostResponse> createLikeToPost(String postId, String userId);
 
-	public Optional<PostResponse> deleteLikeToPost(String plantRecordId, String postId,
-			String userId);
+	public Optional<PostResponse> deleteLikeToPost(String postId, String userId);
 }

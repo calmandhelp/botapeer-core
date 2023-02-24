@@ -30,29 +30,29 @@ public class PostService implements IPostService {
 
 	@Override
 	public Optional<Post> create(Post post) {
-		Long plantRecordId = postRepository.create(post);
-		Optional<Post> p = postRepository.findById(plantRecordId);
+		Long postId = postRepository.create(post);
+		Optional<Post> p = getById(postId);
 		return p;
 	}
 
 	@Override
-	public Optional<Post> getPostByIdAndPlantRecordId(Long id, Long postId) {
-		return postRepository.getPostByIdAndPlantRecordId(id, postId);
+	public Optional<Post> getById(Long id) {
+		return postRepository.findById(id);
 	}
 
 	@Override
-	public boolean delete(Long id, Long postId) {
-		return postRepository.delete(id, postId);
+	public boolean delete(Long id) {
+		return postRepository.delete(id);
 	}
 
 	@Override
-	public Optional<Post> createLikeToPost(Long plantRecordId, Long postId,
+	public Optional<Post> createLikeToPost(Long postId,
 			Integer userId) {
-		if (likeService.isLikeWithPost(plantRecordId, postId, userId)) {
+		if (likeService.isLikeWithPost(postId, userId)) {
 			throw new DuplicateKeyException(ResponseConstants.DUPLICATE_KEY_LIKE_CODE);
 		}
-		likeService.createLikeToPost(plantRecordId, postId, userId);
-		Optional<Post> post = getPostByIdAndPlantRecordId(plantRecordId, postId);
+		likeService.createLikeToPost(postId, userId);
+		Optional<Post> post = getById(postId);
 
 		Optional<LikeCountPost> likeCountPost = likeService.countLikeWithPost(postId);
 
@@ -62,15 +62,15 @@ public class PostService implements IPostService {
 	}
 
 	@Override
-	public Optional<Post> deleteLikeToPost(Long plantRecordId, Long postId, Integer userId) {
+	public Optional<Post> deleteLikeToPost(Long postId, Integer userId) {
 
-		if (!likeService.isLikeWithPost(plantRecordId, postId, userId)) {
+		if (!likeService.isLikeWithPost(postId, userId)) {
 			throw new NotFoundException(ResponseConstants.NOTFOUND_LIKE_CODE);
 		}
 
-		likeService.deleteLikeToPost(plantRecordId, postId, userId);
+		likeService.deleteLikeToPost(postId, userId);
 
-		Optional<Post> post = getPostByIdAndPlantRecordId(plantRecordId, postId);
+		Optional<Post> post = getById(postId);
 
 		Optional<LikeCountPost> likeCountPost = likeService.countLikeWithPost(postId);
 

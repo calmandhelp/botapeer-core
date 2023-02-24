@@ -19,20 +19,18 @@ public class LikeRepositoryImpl implements ILikeRepository {
 	private final LikeMapper likeMapper;
 
 	@Override
-	public boolean createLikeToPost(Long plantRecordId, Long postId,
-			Integer userId) {
-		return likeMapper.createLikeToPost(plantRecordId, postId, userId);
+	public boolean createLikeToPost(Long postId, Integer userId) {
+		return likeMapper.createLikeToPost(postId, userId);
 	}
 
 	@Override
-	public boolean deleteLikeToPost(Long plantRecordId, Long postId,
-			Integer userId) {
-		return likeMapper.deleteLikeToPost(plantRecordId, postId, userId);
+	public boolean deleteLikeToPost(Long postId, Integer userId) {
+		return likeMapper.deleteLikeToPost(postId, userId);
 	}
 
 	@Override
-	public boolean isLikeWithPost(Long plantRecordId, Long postId, Integer userId) {
-		return likeMapper.isLikeWithPost(plantRecordId, postId, userId);
+	public boolean isLikeWithPost(Long postId, Integer userId) {
+		return likeMapper.isLikeWithPost(postId, userId);
 	}
 
 	@Override

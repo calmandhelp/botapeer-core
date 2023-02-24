@@ -13,8 +13,6 @@ public interface IPostRepository {
 
 	Long create(Post post);
 
-	Optional<Post> getPostByIdAndPlantRecordId(Long plantRecordId, Long postId);
-
-	public boolean delete(Long plantRecordId, Long postId);
+	public boolean delete(Long postId);
 
 }

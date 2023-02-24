@@ -11,13 +11,13 @@ public interface IPostService {
 
 	public Optional<Post> create(Post post);
 
-	public Optional<Post> getPostByIdAndPlantRecordId(Long id, Long postId);
+	public Optional<Post> getById(Long id);
 
-	public boolean delete(Long id, Long postId);
+	public boolean delete(Long id);
 
-	public Optional<Post> createLikeToPost(Long plantRecordId, Long postId,
+	public Optional<Post> createLikeToPost(Long postId,
 			Integer userId);
 
-	public Optional<Post> deleteLikeToPost(Long plantRecordId, Long postId,
+	public Optional<Post> deleteLikeToPost(Long postId,
 			Integer userId);
 }

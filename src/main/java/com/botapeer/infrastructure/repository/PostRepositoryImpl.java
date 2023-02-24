@@ -42,15 +42,8 @@ public class PostRepositoryImpl implements IPostRepository {
 	}
 
 	@Override
-	public Optional<Post> getPostByIdAndPlantRecordId(Long plantRecordId, Long postId) {
-		Optional<PostEntity> entity = postMapper.getPostByIdAndPlantRecordId(plantRecordId, postId);
-		Optional<Post> model = PostRepositoryDto.toModel(entity);
-		return model;
-	}
-
-	@Override
-	public boolean delete(Long plantRecordId, Long postId) {
-		return postMapper.delete(plantRecordId, postId);
+	public boolean delete(Long id) {
+		return postMapper.delete(id);
 	}
 
 }

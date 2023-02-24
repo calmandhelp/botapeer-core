@@ -41,14 +41,8 @@ public interface PostMapper {
 			+ ");")
 	boolean create(PostEntity post);
 
-	@Select("SELECT * FROM posts WHERE "
-			+ "plant_record_id = #{plantRecordId} AND "
-			+ "id = #{postId}")
-	Optional<PostEntity> getPostByIdAndPlantRecordId(Long plantRecordId, Long postId);
-
 	@Delete("DELETE FROM posts WHERE "
-			+ "plant_record_id = #{plantRecordId} AND "
-			+ "id = #{postId}")
-	boolean delete(Long plantRecordId, Long postId);
+			+ "id = #{id}")
+	boolean delete(Long id);
 
 }

@@ -17,14 +17,13 @@ public class LikeServiceImpl implements ILikeService {
 	private final ILikeRepository likeRepository;
 
 	@Override
-	public boolean createLikeToPost(Long plantRecordId, Long postId,
-			Integer userId) {
-		return likeRepository.createLikeToPost(plantRecordId, postId, userId);
+	public boolean createLikeToPost(Long postId, Integer userId) {
+		return likeRepository.createLikeToPost(postId, userId);
 	}
 
 	@Override
-	public boolean isLikeWithPost(Long plantRecordId, Long postId, Integer userId) {
-		return likeRepository.isLikeWithPost(plantRecordId, postId, userId);
+	public boolean isLikeWithPost(Long postId, Integer userId) {
+		return likeRepository.isLikeWithPost(postId, userId);
 	}
 
 	@Override
@@ -33,8 +32,8 @@ public class LikeServiceImpl implements ILikeService {
 	}
 
 	@Override
-	public boolean deleteLikeToPost(Long plantRecordId, Long postId, Integer userId) {
-		return likeRepository.deleteLikeToPost(plantRecordId, postId, userId);
+	public boolean deleteLikeToPost(Long postId, Integer userId) {
+		return likeRepository.deleteLikeToPost(postId, userId);
 	}
 
 }

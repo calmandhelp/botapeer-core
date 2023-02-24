@@ -28,7 +28,7 @@ public class PlantRecordRepositoryDto {
 			model.setPlace(place);
 			return Optional.ofNullable(model);
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	public static Collection<PlantRecord> toModel(Collection<PlantRecordEntity> entities) {

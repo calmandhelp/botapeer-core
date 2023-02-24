@@ -14,7 +14,6 @@ public interface LikeMapper {
 			+ "( "
 			+ "user_id, "
 			+ "post_id, "
-			+ "plant_record_id, "
 			+ "created_at, "
 			+ "updated_at "
 			+ ") "
@@ -22,29 +21,24 @@ public interface LikeMapper {
 			+ "( "
 			+ "#{userId} , "
 			+ "#{postId}, "
-			+ "#{plantRecordId}, "
 			+ "CURRENT_TIMESTAMP, "
 			+ "CURRENT_TIMESTAMP "
 			+ ")")
-	boolean createLikeToPost(Long plantRecordId, Long postId, Integer userId);
+	boolean createLikeToPost(Long postId, Integer userId);
 
 	@Insert("DELETE FROM likes WHERE "
 			+ "user_id = #{userId} "
 			+ "AND "
-			+ "post_id = #{postId} "
-			+ "AND "
-			+ "plant_record_id = #{plantRecordId}")
-	boolean deleteLikeToPost(Long plantRecordId, Long postId, Integer userId);
+			+ "post_id = #{postId}")
+	boolean deleteLikeToPost(Long postId, Integer userId);
 
 	@Select("SELECT EXISTS (SELECT 1 FROM likes WHERE "
 			+ "user_id = #{userId} "
 			+ "AND "
 			+ "post_id = #{postId} "
-			+ "AND "
-			+ "plant_record_id = #{plantRecordId} "
 			+ ") "
 			+ "AS result")
-	boolean isLikeWithPost(Long plantRecordId, Long postId, Integer userId);
+	boolean isLikeWithPost(Long postId, Integer userId);
 
 	@Select("SELECT post_id, "
 			+ "COUNT(post_id) count "

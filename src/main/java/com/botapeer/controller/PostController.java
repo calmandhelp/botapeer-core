@@ -39,35 +39,33 @@ public class PostController implements PostsApi {
 	}
 
 	@Override
-	@GetMapping("/posts/{postId}/plant_records/{plantRecordId}")
-	public ResponseEntity<PostResponse> getPostByIdAndPlantRecordId(@PathVariable String plantRecordId,
+	@GetMapping("/posts/{postId}")
+	public ResponseEntity<PostResponse> getPostById(
 			@PathVariable String postId) {
-		Optional<PostResponse> response = postUsecase.getPostByIdAndPlantRecordId(plantRecordId, postId);
+		Optional<PostResponse> response = postUsecase.getById(postId);
 		return new ResponseEntity<>(response.get(), HttpStatus.OK);
 	}
 
 	@Override
-	@DeleteMapping("/posts/{postId}/plant_records/{plantRecordId}")
-	public ResponseEntity<Void> deletePost(@PathVariable String plantRecordId, @PathVariable String postId) {
-		postUsecase.deletePost(plantRecordId, postId);
+	@DeleteMapping("/posts/{postId}")
+	public ResponseEntity<Void> deletePost(@PathVariable String postId) {
+		postUsecase.deletePost(postId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override
-	@PostMapping("/posts/{postId}/plant_records/{plantRecordId}/users/{userId}/likes")
+	@PostMapping("/posts/{postId}/users/{userId}/likes")
 	public ResponseEntity<PostResponse> createLikeToPost(@PathVariable("postId") String postId,
-			@PathVariable("plantRecordId") String plantRecordId,
 			@PathVariable("userId") String userId) {
-		Optional<PostResponse> response = postUsecase.createLikeToPost(plantRecordId, postId, userId);
+		Optional<PostResponse> response = postUsecase.createLikeToPost(postId, userId);
 		return new ResponseEntity<>(response.get(), HttpStatus.OK);
 	}
 
 	@Override
-	@DeleteMapping("/posts/{postId}/plant_records/{plantRecordId}/users/{userId}/likes")
+	@DeleteMapping("/posts/{postId}/users/{userId}/likes")
 	public ResponseEntity<PostResponse> deleteLikeToPost(@PathVariable("postId") String postId,
-			@PathVariable("plantRecordId") String plantRecordId,
 			@PathVariable("userId") String userId) {
-		Optional<PostResponse> response = postUsecase.deleteLikeToPost(plantRecordId, postId, userId);
+		Optional<PostResponse> response = postUsecase.deleteLikeToPost(postId, userId);
 		return new ResponseEntity<>(response.get(), HttpStatus.OK);
 	}
 
