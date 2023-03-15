@@ -23,12 +23,6 @@ services:
        - JWT_SECRET=${JWT_SECRET}
        - JWT_EXPIRATION_IN_MS=${JWT_EXPIRATION_IN_MS}
        - IMAGE_PATH=${IMAGE_PATH}
-   migrate:
-      image: flyway/flyway
-      command: -url=${DB_URL} -schemas=${DB_SCHEMA} -user=${DB_USERNAME} -password=${DB_PASSWORD} migrate
-      depends_on:
-         db:
-            condition: service_healthy
    db:
       image: mysql:8.0.31
       ports:
@@ -36,5 +30,3 @@ services:
       environment:
          MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
          MYSQL_DATABASE: ${DB_SCHEMA}
-      healthcheck:
-         test: mysqladmin ping -h 127.0.0.1 -u${DB_USERNAME} -p${DB_PASSWORD}
