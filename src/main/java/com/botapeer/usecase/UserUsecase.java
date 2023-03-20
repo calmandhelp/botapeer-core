@@ -50,6 +50,7 @@ public class UserUsecase implements IUserUsecase {
 	public Optional<UserResponse> findById(String userId) {
 		try {
 			int id = Integer.parseInt(userId);
+			System.out.println(id);
 			Optional<User> user = userService.findById((long) id);
 			Optional<UserResponse> r = UserResponseDto.toResponse(user);
 			return r;
