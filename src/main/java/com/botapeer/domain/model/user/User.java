@@ -7,6 +7,14 @@ import lombok.Data;
 
 @Data
 public class User {
+
+	public User() {
+	}
+
+	public User(Integer valueOf, UserName userName, String string, Password password2, Integer valueOf2, String string2,
+			String string3, String string4) {
+	}
+
 	private Integer id;
 
 	@NotBlank
