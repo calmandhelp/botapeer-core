@@ -11,8 +11,15 @@ public class User {
 	public User() {
 	}
 
-	public User(Integer valueOf, UserName userName, String string, Password password2, Integer valueOf2, String string2,
-			String string3, String string4) {
+	public User(Integer id, UserName name, String email, Password password, Integer status, String description,
+			String profileImage, String coverImage) {
+		this.id = id;
+		this.name = name;
+		this.password = password;
+		this.status = status;
+		this.description = description;
+		this.profileImage = profileImage;
+		this.coverImage = coverImage;
 	}
 
 	private Integer id;

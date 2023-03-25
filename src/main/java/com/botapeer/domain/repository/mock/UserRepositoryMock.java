@@ -15,21 +15,21 @@ public class UserRepositoryMock implements IUserRepository {
 	private List<User> users = new ArrayList<>();
 
 	public UserRepositoryMock() {
-		users.add(new User(Integer.valueOf(1), new UserName("taro"), "taro@taro.com", new Password("password"),
-				Integer.valueOf(1), "説明",
+		users.add(new User(1, new UserName("taro"), "taro@taro.com", new Password("password"),
+				Integer.valueOf(1), "説明1",
 				"", ""));
-		users.add(new User(Integer.valueOf(2), new UserName("jiro"), "jiro@taro.com", new Password("password"),
-				Integer.valueOf(1), "説明",
+		users.add(new User(2, new UserName("jiro"), "jiro@taro.com", new Password("password"),
+				Integer.valueOf(1), "説明2",
 				"", ""));
-		users.add(new User(Integer.valueOf(3), new UserName("saburo"), "saburo@saburo.com", new Password("password"),
-				Integer.valueOf(1), "説明",
+		users.add(new User(3, new UserName("saburo"), "saburo@saburo.com", new Password("password"),
+				Integer.valueOf(1), "説明3",
 				"", ""));
 	}
 
 	@Override
 	public Optional<User> findById(Long userId) {
 		return users.stream()
-				.filter(user -> user.getId().equals(userId))
+				.filter(user -> user.getId().equals(Integer.valueOf(userId.intValue())))
 				.findFirst();
 	}
 
