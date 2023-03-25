@@ -2,7 +2,6 @@ package com.botapeer.domain.repository.mock;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import com.botapeer.domain.model.user.Password;
@@ -12,7 +11,7 @@ import com.botapeer.domain.repository.IUserRepository;
 
 public class UserRepositoryMock implements IUserRepository {
 
-	private List<User> users = new ArrayList<>();
+	private Collection<User> users = new ArrayList<>();
 
 	public UserRepositoryMock() {
 		users.add(new User(1, new UserName("taro"), "taro@taro.com", new Password("password"),
@@ -35,8 +34,17 @@ public class UserRepositoryMock implements IUserRepository {
 
 	@Override
 	public Collection<User> findUsers(String name) {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		Collection<User> u = new ArrayList<>();
+		Optional<User> optionalUser = users.stream()
+				.filter(user -> user.getName().getName().equals(name))
+				.findFirst();
+		if (optionalUser.isPresent()) {
+			u.add(optionalUser.get());
+			return u;
+		} else {
+			return (Collection<User>) users;
+		}
+
 	}
 
 	@Override
