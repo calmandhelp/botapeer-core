@@ -11,11 +11,21 @@ public class User {
 	public User() {
 	}
 
+	public User(UserName name, String email, String description,
+			String profileImage, String coverImage) {
+		this.name = name;
+		this.email = email;
+		this.description = description;
+		this.profileImage = profileImage;
+		this.coverImage = coverImage;
+	}
+
 	public User(Integer id, UserName name, String email, Password password, Integer status, String description,
 			String profileImage, String coverImage) {
 		this.id = id;
 		this.name = name;
 		this.password = password;
+		this.email = email;
 		this.status = status;
 		this.description = description;
 		this.profileImage = profileImage;

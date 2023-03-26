@@ -14,13 +14,13 @@ public class UserRepositoryMock implements IUserRepository {
 	private Collection<User> users = new ArrayList<>();
 
 	public UserRepositoryMock() {
-		users.add(new User(1, new UserName("taro"), "taro@taro.com", new Password("password"),
+		users.add(new User(1, new UserName("taro"), "taro@taro.com", new Password("encryptedPassword"),
 				Integer.valueOf(1), "説明1",
 				"", ""));
-		users.add(new User(2, new UserName("jiro"), "jiro@taro.com", new Password("password"),
+		users.add(new User(2, new UserName("jiro"), "jiro@taro.com", new Password("encryptedPassword"),
 				Integer.valueOf(1), "説明2",
 				"", ""));
-		users.add(new User(3, new UserName("saburo"), "saburo@saburo.com", new Password("password"),
+		users.add(new User(3, new UserName("saburo"), "saburo@saburo.com", new Password("encryptedPassword"),
 				Integer.valueOf(1), "説明3",
 				"", ""));
 	}
@@ -44,18 +44,23 @@ public class UserRepositoryMock implements IUserRepository {
 		} else {
 			return (Collection<User>) users;
 		}
-
 	}
 
 	@Override
 	public Integer create(User user, String encryptedPassword) {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		if (user.getName().getName().isEmpty() ||
+				user.getEmail().isEmpty() ||
+				user.getPassword().getPassword().isEmpty()) {
+			return null;
+		}
+		users.add(new User(4, user.getName(), user.getEmail(), new Password(encryptedPassword),
+				user.getStatus(), user.getDescription(),
+				user.getProfileImage(), user.getCoverImage()));
+		return (int) (users.size() + 1.);
 	}
 
 	@Override
 	public boolean update(User user) {
-		// TODO 自動生成されたメソッド・スタブ
 		return false;
 	}
 
