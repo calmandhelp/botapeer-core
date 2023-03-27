@@ -1,5 +1,6 @@
 package com.botapeer.domain.service;
 
+import java.security.InvalidParameterException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -19,11 +20,20 @@ public class UserSeviceImpl implements IUserService {
 
 	@Override
 	public Optional<User> findById(Long userId) {
+		if (userId == null) {
+			throw new NullPointerException();
+		}
+		if (userId < 0) {
+			throw new InvalidParameterException();
+		}
 		return this.userRepository.findById(userId);
 	}
 
 	@Override
 	public Collection<User> findUsers(String name) {
+		if (name == null) {
+			throw new NullPointerException();
+		}
 		return this.userRepository.findUsers(name);
 	}
 
