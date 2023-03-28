@@ -1,6 +1,5 @@
 package com.botapeer.domain.service;
 
-import java.security.InvalidParameterException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -9,12 +8,13 @@ import org.springframework.stereotype.Service;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.repository.IUserRepository;
 import com.botapeer.domain.service.interfaces.IUserService;
+import com.botapeer.util.ValidateUtils;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserSeviceImpl implements IUserService {
+public class UserServiceImpl implements IUserService {
 
 	private final IUserRepository userRepository;
 
@@ -24,7 +24,7 @@ public class UserSeviceImpl implements IUserService {
 			throw new NullPointerException();
 		}
 		if (userId < 0) {
-			throw new InvalidParameterException();
+			throw new IllegalArgumentException();
 		}
 		return this.userRepository.findById(userId);
 	}
@@ -39,6 +39,7 @@ public class UserSeviceImpl implements IUserService {
 
 	@Override
 	public Integer create(User user, String encryptedPassword) {
+		ValidateUtils.validNullOrEmpty(encryptedPassword);
 		user.setStatus(2);
 		return this.userRepository.create(user, encryptedPassword);
 	}

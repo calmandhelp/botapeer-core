@@ -1,6 +1,5 @@
 package com.botapeer.domain.service;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,7 +21,7 @@ import com.botapeer.domain.repository.IUserRepository;
 public class UserServiceImplTests {
 
 	@InjectMocks
-	private UserSeviceImpl userService;
+	private UserServiceImpl userService;
 
 	@Mock
 	private IUserRepository userRepository;
@@ -72,7 +71,7 @@ public class UserServiceImplTests {
 		Mockito.when(userRepository.delete(Mockito.anyLong())).thenReturn(true);
 		
 		
-		userService = new UserSeviceImpl(userRepository);
+		userService = new UserServiceImpl(userRepository);
 	}
 
 	@Test
@@ -87,7 +86,7 @@ public class UserServiceImplTests {
 		Assertions.assertEquals("説明1", user.getDescription());
 		Assertions.assertEquals("", user.getProfileImage());
 		Assertions.assertEquals("", user.getCoverImage());
-		Assertions.assertThrows(InvalidParameterException.class, () -> {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			userService.findById(-1L);
 		});
 		Assertions.assertThrows(NullPointerException.class, () -> {
@@ -120,10 +119,15 @@ public class UserServiceImplTests {
 	void testCreateUser() {
 		User user = new User(new UserName("shiro"), "shiro@shiro.com", "説明4",
 				"", "");
-		user.setPassword(new Password("encryptedPassword"));
 		Integer createdId = userService.create(user, "encryptedPassword");
 		Assertions.assertEquals(4, createdId);
 		Assertions.assertEquals(2, user.getStatus());
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			userService.create(user, "");
+		});
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			userService.create(user, null);
+		});
 	}
 
 	@Test
@@ -143,7 +147,6 @@ public class UserServiceImplTests {
 	@Test
 	void testFindUserNameOrEmail() {
 		Optional<User> user = userService.findByUserNameOrEmail("test@test.com");
-
 	}
 
 }
