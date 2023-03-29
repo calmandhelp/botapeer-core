@@ -5,9 +5,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.botapeer.constants.ResponseConstants;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.repository.IUserRepository;
 import com.botapeer.domain.service.interfaces.IUserService;
+import com.botapeer.exception.NotFoundException;
 import com.botapeer.util.ValidateUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -20,12 +22,8 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public Optional<User> findById(Long userId) {
-		if (userId == null) {
-			throw new NullPointerException();
-		}
-		if (userId < 0) {
-			throw new IllegalArgumentException();
-		}
+		ValidateUtils.validateNullOrEmpty(userId);
+		ValidateUtils.validateZeroOrNegative(userId);
 		return this.userRepository.findById(userId);
 	}
 
@@ -39,13 +37,18 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public Integer create(User user, String encryptedPassword) {
-		ValidateUtils.validNullOrEmpty(encryptedPassword);
+		ValidateUtils.validateNullOrEmpty(encryptedPassword);
 		user.setStatus(2);
 		return this.userRepository.create(user, encryptedPassword);
 	}
 
 	@Override
 	public boolean update(User user) {
+		ValidateUtils.validateNullOrEmpty(user);
+		ValidateUtils.validateNotEmpty(user.getPassword(), user.getStatus());
+		if (!findById((long) user.getId()).isPresent()) {
+			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
+		}
 		return this.userRepository.update(user);
 	}
 
@@ -65,21 +68,30 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public boolean delete(Long userId) {
+		ValidateUtils.validateNullOrEmpty(userId);
+		ValidateUtils.validateZeroOrNegative(userId);
 		return userRepository.delete(userId);
 	}
 
 	@Override
 	public Optional<User> findByUserNameOrEmail(String usernameOrEmail) {
-		return userRepository.findUserByNameOrEmail(usernameOrEmail);
+		ValidateUtils.validateNullOrEmpty(usernameOrEmail);
+		Optional<User> user = userRepository.findUserByNameOrEmail(usernameOrEmail);
+		if (!user.isPresent()) {
+			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
+		}
+		return user;
 	}
 
 	@Override
 	public Optional<User> findByEmail(String email) {
+		ValidateUtils.validateNullOrEmpty(email);
 		return userRepository.findByEmail(email);
 	}
 
 	@Override
 	public Optional<User> findByName(String name) {
+		ValidateUtils.validateNullOrEmpty(name);
 		return userRepository.findByName(name);
 	}
 
