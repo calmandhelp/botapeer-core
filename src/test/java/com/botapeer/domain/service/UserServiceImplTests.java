@@ -194,6 +194,36 @@ public class UserServiceImplTests {
 		Assertions.assertThrows(ConstraintViolationException.class, () -> {
 			userService.update(userWithNullUserName);
 		});
+		User userWithNullEmail = new User(1, new UserName("goro"), null, "説明5",
+				"/image/imagePath1", "/image/imagePath2");
+		setValidation(userWithNullEmail);
+		Assertions.assertThrows(ConstraintViolationException.class, () -> {
+			userService.update(userWithNullEmail);
+		});
+		User userWithEmptyEmail = new User(1, new UserName("goro"), "", "説明5",
+				"/image/imagePath1", "/image/imagePath2");
+		setValidation(userWithEmptyEmail);
+		Assertions.assertThrows(ConstraintViolationException.class, () -> {
+			userService.update(userWithEmptyEmail);
+		});
+		User userWithPassword = new User(1, new UserName("goro"), "", "説明5",
+				"/image/imagePath1", "/image/imagePath2");
+		userWithPassword.setPassword(new Password("password"));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			userService.update(userWithPassword);
+		});
+		User userWithNullProfileImage = new User(1, new UserName("goro"), "", "説明5",
+				null, "/image/imagePath2");
+		setValidation(userWithNullProfileImage);
+		Assertions.assertThrows(ConstraintViolationException.class, () -> {
+			userService.update(userWithNullProfileImage);
+		});
+		User userWithNullCoverImage = new User(1, new UserName("goro"), "", "説明5",
+				"/image/imagePath1", null);
+		setValidation(userWithNullCoverImage);
+		Assertions.assertThrows(ConstraintViolationException.class, () -> {
+			userService.update(userWithNullCoverImage);
+		});
 		User user1000 = new User(1000, new UserName("taro"), "taro@taro.com", "説明1000",
 				"/image/imagePath1", "/image/imagePath2");
 		Assertions.assertThrows(NotFoundException.class, () -> {
