@@ -10,32 +10,37 @@ public class ValidateUtils {
 
 	public static void validateNull(Object o) {
 		if (o == null) {
-			logger.error("NullPointerException", o);
 			throw new NullPointerException();
 		}
 	}
 
 	public static void validateNullOrEmpty(Object o) {
 		if (o == null) {
-			logger.error("NullPointerException", o);
 			throw new NullPointerException();
 		} else if (ObjectUtils.isEmpty(o)) {
-			logger.error("IllegalArgumentException", o);
 			throw new IllegalArgumentException();
+		}
+	}
+
+	public static void validateNullOrEmpty(Object... objects) {
+		for (Object o : objects) {
+			if (o == null) {
+				throw new NullPointerException();
+			} else if (ObjectUtils.isEmpty(o)) {
+				throw new IllegalArgumentException();
+			}
 		}
 	}
 
 	public static void validateNotEmpty(Object o) {
 		if (!ObjectUtils.isEmpty(o)) {
-			logger.error("IllegalArgumentException", o);
 			throw new IllegalArgumentException();
 		}
 	}
 
-	public static void validateNotEmpty(Object... objects) {
+	public static void validatePresent(Object... objects) {
 		for (Object o : objects) {
 			if (!ObjectUtils.isEmpty(o)) {
-				logger.error("IllegalArgumentException", o);
 				throw new IllegalArgumentException();
 			}
 		}
@@ -43,7 +48,12 @@ public class ValidateUtils {
 
 	public static void validateZeroOrNegative(Long l) {
 		if (l <= 0) {
-			logger.error("IllegalArgumentException", l);
+			throw new IllegalArgumentException();
+		}
+	}
+
+	public static void validateZeroOrNegative(Integer l) {
+		if (l <= 0) {
 			throw new IllegalArgumentException();
 		}
 	}

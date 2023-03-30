@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.util.ObjectUtils;
 
 import com.botapeer.domain.model.user.Password;
 import com.botapeer.domain.model.user.User;
@@ -26,6 +30,9 @@ public class UserServiceImplTests {
 
 	@Mock
 	private IUserRepository userRepository;
+
+	@Mock
+	private Validator validator;
 
 	@BeforeEach
 	void setup() {
@@ -63,6 +70,9 @@ public class UserServiceImplTests {
 				Mockito.when(userRepository.findUserByNameOrEmail("taro@taro.com")).thenReturn(Optional.of(user));
 				Mockito.when(userRepository.findByEmail("taro@taro.com")).thenReturn(Optional.of(user));
 				Mockito.when(userRepository.findByName("taro")).thenReturn(Optional.of(user));
+				if(user.getId() < 0 || ObjectUtils.isEmpty(user.getName()) || ObjectUtils.isEmpty(user.getEmail()) || user.getDescription()  == null  || user.getCoverImage() == null || user.getProfileImage()  == null) {
+						Mockito.doThrow(ConstraintViolationException.class);
+				}
 			}else if(user.getName().getName().equals("jiro")) {
 				Mockito.when(userRepository.findByName("jiro")).thenReturn(Optional.of(user));
 				Mockito.when(userRepository.findUsers("jiro")).thenReturn(Collections.singletonList(user));
@@ -70,6 +80,9 @@ public class UserServiceImplTests {
 				Mockito.when(userRepository.findUserByNameOrEmail("jiro@jiro.com")).thenReturn(Optional.of(user));
 				Mockito.when(userRepository.findByEmail("jiro@jiro.com")).thenReturn(Optional.of(user));
 				Mockito.when(userRepository.findByName("jiro")).thenReturn(Optional.of(user));
+				if(user.getId() < 0 || ObjectUtils.isEmpty(user.getName()) || ObjectUtils.isEmpty(user.getEmail()) || user.getDescription()  == null  || user.getCoverImage() == null || user.getProfileImage()  == null) {
+					Mockito.doThrow(ConstraintViolationException.class);
+			}
 			}else if(user.getName().getName().equals("saburo")) {
 				Mockito.when(userRepository.findByName("saburo")).thenReturn(Optional.of(user));
 				Mockito.when(userRepository.findUsers("saburo")).thenReturn(Collections.singletonList(user));
@@ -84,7 +97,7 @@ public class UserServiceImplTests {
 		Mockito.when(userRepository.update(Mockito.isA(User.class))).thenReturn(true);
 		
 		
-		userService = new UserServiceImpl(userRepository);
+		userService = new UserServiceImpl(userRepository, validator);
 	}
 
 	@Test
@@ -159,10 +172,27 @@ public class UserServiceImplTests {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			userService.update(user);
 		});
-		user.setPassword(null);
-		user.setStatus(2);
+		User userWithStatus = new User(1, new UserName("goro"), "goro@goro.com", "説明5",
+				"/image/imagePath1", "/image/imagePath2");
+		userWithStatus.setStatus(2);
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			userService.update(user);
+			userService.update(userWithStatus);
+		});
+		User userWithNegativeId = new User(-1000, new UserName("goro"), "goro@goro.com", "説明5",
+				"/image/imagePath1", "/image/imagePath2");
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			userService.update(userWithNegativeId);
+		});
+		User userWithNullId = new User(null, new UserName("goro"), "goro@goro.com", "説明5",
+				"/image/imagePath1", "/image/imagePath2");
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			userService.update(userWithNullId);
+		});
+		User userWithNullUserName = new User(1, null, "goro@goro.com", "説明5",
+				"/image/imagePath1", "/image/imagePath2");
+		setValidation(userWithNullUserName);
+		Assertions.assertThrows(ConstraintViolationException.class, () -> {
+			userService.update(userWithNullUserName);
 		});
 		User user1000 = new User(1000, new UserName("taro"), "taro@taro.com", "説明1000",
 				"/image/imagePath1", "/image/imagePath2");
@@ -251,6 +281,13 @@ public class UserServiceImplTests {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			userService.findByName("");
 		});
+	}
+
+	void setValidation(User user) {
+		if (user.getId() < 0 || ObjectUtils.isEmpty(user.getName()) || ObjectUtils.isEmpty(user.getEmail())
+				|| user.getDescription() == null || user.getCoverImage() == null || user.getProfileImage() == null) {
+			Mockito.when(userService.update(user)).thenThrow(ConstraintViolationException.class);
+		}
 	}
 
 }
