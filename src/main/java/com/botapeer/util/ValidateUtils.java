@@ -1,61 +1,46 @@
 package com.botapeer.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Optional;
+
 import org.springframework.util.ObjectUtils;
 
 public class ValidateUtils {
 
-	private static final Logger logger = LoggerFactory.getLogger(ValidateUtils.class);
-
-	public static void validateNull(Object o) {
+	public static Optional<String> validateNull(Object o, String message) {
 		if (o == null) {
-			throw new NullPointerException();
+			return Optional.of(message);
 		}
+		return Optional.empty();
 	}
 
-	public static void validateNullOrEmpty(Object o) {
+	public static Optional<String> validateNullOrEmpty(Object o, String message) {
 		if (o == null) {
-			throw new NullPointerException();
+			return Optional.of(message);
 		} else if (ObjectUtils.isEmpty(o)) {
-			throw new IllegalArgumentException();
+			return Optional.of(message);
 		}
+		return Optional.empty();
 	}
 
-	public static void validateNullOrEmpty(Object... objects) {
-		for (Object o : objects) {
-			if (o == null) {
-				throw new NullPointerException();
-			} else if (ObjectUtils.isEmpty(o)) {
-				throw new IllegalArgumentException();
-			}
-		}
-	}
-
-	public static void validateNotEmpty(Object o) {
+	public static Optional<String> validatePresent(Object o, String message) {
 		if (!ObjectUtils.isEmpty(o)) {
-			throw new IllegalArgumentException();
+			return Optional.of(message);
 		}
+		return Optional.empty();
 	}
 
-	public static void validatePresent(Object... objects) {
-		for (Object o : objects) {
-			if (!ObjectUtils.isEmpty(o)) {
-				throw new IllegalArgumentException();
-			}
-		}
-	}
-
-	public static void validateZeroOrNegative(Long l) {
+	public static Optional<String> validateZeroOrNegative(Long l, String message) {
 		if (l <= 0) {
-			throw new IllegalArgumentException();
+			return Optional.of(message);
 		}
+		return Optional.empty();
 	}
 
-	public static void validateZeroOrNegative(Integer l) {
+	public static Optional<String> validateZeroOrNegative(Integer l, String message) {
 		if (l <= 0) {
-			throw new IllegalArgumentException();
+			return Optional.of(message);
 		}
+		return Optional.empty();
 	}
 
 }

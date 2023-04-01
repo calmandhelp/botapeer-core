@@ -25,6 +25,7 @@ import com.botapeer.usecase.dto.user.UpdateUserRequestDto;
 import com.botapeer.usecase.dto.user.UserResponseDto;
 import com.botapeer.usecase.interfaces.IUserUsecase;
 import com.botapeer.util.ImageUtils;
+import com.botapeer.util.NumberUtils;
 
 import lombok.RequiredArgsConstructor;
 import model.CreateUserRequest;
@@ -48,15 +49,18 @@ public class UserUsecase implements IUserUsecase {
 
 	@Override
 	public Optional<UserResponse> findById(String userId) {
-		try {
-			int id = Integer.parseInt(userId);
-			Optional<User> user = userService.findById((long) id);
-			Optional<UserResponse> r = UserResponseDto.toResponse(user);
-			return r;
-		} catch (NumberFormatException e) {
-			logger.error(e.getMessage(), e);
+		//		ValidateUtils.validateNullOrEmpty(userId);
+		if (!NumberUtils.canString2Number(userId)) {
+			return Optional.empty();
 		}
-		return Optional.empty();
+		Integer userIdInteger = Integer.parseInt(userId);
+		//		ValidateUtils.validateZeroOrNegative(userIdInteger);
+		Optional<User> savedUser = userService.findById((long) userIdInteger);
+		if (!savedUser.isPresent()) {
+			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
+		}
+		Optional<UserResponse> r = UserResponseDto.toResponse(savedUser);
+		return r;
 	}
 
 	@Override
