@@ -21,6 +21,7 @@ import com.botapeer.domain.model.user.Password;
 import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.model.user.UserName;
 import com.botapeer.domain.repository.IUserRepository;
+import com.botapeer.exception.NotFoundException;
 
 public class UserServiceImplTests {
 
@@ -117,29 +118,31 @@ public class UserServiceImplTests {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			userService.findById(null);
 		});
-		Optional<User> nullUser = userService.findById(100L);
-		Assertions.assertEquals(Optional.empty(), nullUser);
+		Assertions.assertThrows(NotFoundException.class, () -> {
+			userService.findById(100L);
+		});
+
 	}
 
-	//	@Test
-	//	void testFindUsers() {
-	//		Collection<User> u = userService.findUsers("taro");
-	//		Assertions.assertEquals(1, u.stream().findFirst().get().getId());
-	//		Assertions.assertEquals("taro", u.stream().findFirst().get().getName().getName());
-	//		Assertions.assertEquals("taro@taro.com", u.stream().findFirst().get().getEmail());
-	//		Assertions.assertEquals("encryptedPassword", u.stream().findFirst().get().getPassword().getPassword());
-	//		Assertions.assertEquals(1, u.stream().findFirst().get().getStatus());
-	//		Assertions.assertEquals("", u.stream().findFirst().get().getProfileImage());
-	//		Assertions.assertEquals("", u.stream().findFirst().get().getCoverImage());
-	//		Assertions.assertThrows(NullPointerException.class, () -> {
-	//			userService.findUsers(null);
-	//		});
-	//		Collection<User> userEmpty = userService.findUsers("");
-	//		Assertions.assertEquals(3, userEmpty.size());
-	//		Collection<User> userTest = userService.findUsers("test");
-	//		Assertions.assertEquals(0, userTest.size());
-	//	}
-	//
+	@Test
+	void testFindUsers() {
+		Collection<User> userFoundByName = userService.findUsers("taro");
+		Assertions.assertEquals(1, userFoundByName.stream().findFirst().get().getId());
+		Assertions.assertEquals("taro", userFoundByName.stream().findFirst().get().getName().getName());
+		Assertions.assertEquals("taro@taro.com", userFoundByName.stream().findFirst().get().getEmail());
+		Assertions.assertEquals("encryptedPassword",
+				userFoundByName.stream().findFirst().get().getPassword().getPassword());
+		Assertions.assertEquals(1, userFoundByName.stream().findFirst().get().getStatus());
+		Assertions.assertEquals("", userFoundByName.stream().findFirst().get().getProfileImage());
+		Assertions.assertEquals("", userFoundByName.stream().findFirst().get().getCoverImage());
+		Collection<User> userNull = userService.findUsers(null);
+		Assertions.assertEquals(3, userNull.size());
+		Collection<User> userEmpty = userService.findUsers("");
+		Assertions.assertEquals(3, userEmpty.size());
+		Collection<User> userNotFound = userService.findUsers("test");
+		Assertions.assertEquals(0, userNotFound.size());
+	}
+
 	//	@Test
 	//	void testCreateUser() {
 	//		User user = new User(new UserName("shiro"), "shiro@shiro.com", "説明4",

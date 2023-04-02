@@ -19,6 +19,7 @@ import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.repository.IUserRepository;
 import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.exception.NotFoundException;
+import com.botapeer.util.StringUtils;
 import com.botapeer.util.ValidateUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,10 @@ public class UserServiceImpl implements IUserService {
 		if (!errorMessages.isEmpty()) {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
+		Optional<User> u = userRepository.findById(userId);
+		if (!u.isPresent()) {
+			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
+		}
 
 		return this.userRepository.findById(userId);
 	}
@@ -60,7 +65,7 @@ public class UserServiceImpl implements IUserService {
 		validationMessage.ifPresent(msg -> errorMessages.put("name_null", msg));
 
 		if (!errorMessages.isEmpty()) {
-			throw new IllegalArgumentException(errorMessages.toString());
+			name = StringUtils.null2Void(name);
 		}
 
 		return this.userRepository.findUsers(name);
