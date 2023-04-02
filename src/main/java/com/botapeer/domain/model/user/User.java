@@ -23,6 +23,12 @@ public class User {
 		this.coverImage = coverImage;
 	}
 
+	public User(UserName name, String email, Password password) {
+		this.name = name;
+		this.email = email;
+		this.password = password;
+	}
+
 	public User(UserName name, String email, String description,
 			String profileImage, String coverImage) {
 		this.name = name;

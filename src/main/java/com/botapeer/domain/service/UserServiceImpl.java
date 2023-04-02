@@ -84,6 +84,10 @@ public class UserServiceImpl implements IUserService {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
 
+		user.setDescription(StringUtils.null2Void(user.getDescription()));
+		user.setProfileImage(StringUtils.null2Void(user.getProfileImage()));
+		user.setCoverImage(StringUtils.null2Void(user.getCoverImage()));
+
 		Set<ConstraintViolation<User>> violations = validator.validate(user);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException(violations);
@@ -103,6 +107,24 @@ public class UserServiceImpl implements IUserService {
 		if (!errorMessages.isEmpty()) {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
+
+		validationMessage = ValidateUtils.validateNull(user.getId(), "userId is null");
+		validationMessage.ifPresent(msg -> errorMessages.put("userId_null", msg));
+
+		if (!errorMessages.isEmpty()) {
+			throw new IllegalArgumentException(errorMessages.toString());
+		}
+
+		validationMessage = ValidateUtils.validateZeroOrNegative(user.getId(), "userId is zero or negative");
+		validationMessage.ifPresent(msg -> errorMessages.put("userId_ZeroOrNegative", msg));
+
+		if (!errorMessages.isEmpty()) {
+			throw new IllegalArgumentException(errorMessages.toString());
+		}
+
+		user.setDescription(StringUtils.null2Void(user.getDescription()));
+		user.setProfileImage(StringUtils.null2Void(user.getProfileImage()));
+		user.setCoverImage(StringUtils.null2Void(user.getCoverImage()));
 
 		Set<ConstraintViolation<User>> violations = validator.validate(user);
 		if (!violations.isEmpty()) {
@@ -146,9 +168,12 @@ public class UserServiceImpl implements IUserService {
 		Optional<String> validationMessage;
 		validationMessage = ValidateUtils.validateNullOrEmpty(userId, "userId is null or empty");
 		validationMessage.ifPresent(msg -> errorMessages.put("userId_nullOrEmpty", msg));
+		if (!errorMessages.isEmpty()) {
+			throw new IllegalArgumentException(errorMessages.toString());
+		}
+
 		validationMessage = ValidateUtils.validateZeroOrNegative(userId, "userIdis zero or negative");
 		validationMessage.ifPresent(msg -> errorMessages.put("userId_ZeroOrNegative", msg));
-
 		if (!errorMessages.isEmpty()) {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
@@ -189,7 +214,14 @@ public class UserServiceImpl implements IUserService {
 		if (!errorMessages.isEmpty()) {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
-		return userRepository.findByEmail(email);
+
+		Optional<User> user = userRepository.findByEmail(email);
+
+		if (!user.isPresent()) {
+			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
+		}
+
+		return user;
 	}
 
 	@Override
@@ -201,6 +233,12 @@ public class UserServiceImpl implements IUserService {
 
 		if (!errorMessages.isEmpty()) {
 			throw new IllegalArgumentException(errorMessages.toString());
+		}
+
+		Optional<User> user = userRepository.findByName(name);
+
+		if (!user.isPresent()) {
+			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
 		}
 
 		return userRepository.findByName(name);
