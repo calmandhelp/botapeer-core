@@ -1,7 +1,14 @@
 package com.botapeer.usecase;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +33,8 @@ import com.botapeer.usecase.dto.user.UserResponseDto;
 import com.botapeer.usecase.interfaces.IUserUsecase;
 import com.botapeer.util.ImageUtils;
 import com.botapeer.util.NumberUtils;
+import com.botapeer.util.StringUtil;
+import com.botapeer.util.ValidateUtils;
 
 import lombok.RequiredArgsConstructor;
 import model.CreateUserRequest;
@@ -41,6 +50,7 @@ public class UserUsecase implements IUserUsecase {
 	private final IPlantRecordService plantRecordService;
 	private final PasswordEncoder passwordEncoder;
 	private final ImageUtils imageUtils;
+	private final Validator validator;
 
 	@Value(value = "${imagePath}")
 	private String imagePath;
@@ -49,32 +59,64 @@ public class UserUsecase implements IUserUsecase {
 
 	@Override
 	public Optional<UserResponse> findById(String userId) {
-		//		ValidateUtils.validateNullOrEmpty(userId);
-		if (!NumberUtils.canString2Number(userId)) {
-			return Optional.empty();
+		Map<String, String> errorMessages = new HashMap<>();
+		Optional<String> validationMessage;
+		validationMessage = ValidateUtils.validateNullOrEmpty(userId, "userId is null or empty");
+		validationMessage.ifPresent(msg -> errorMessages.put("userId_nullOrEmpty", msg));
+		if (!errorMessages.isEmpty()) {
+			throw new IllegalArgumentException(errorMessages.toString());
 		}
+
+		if (!NumberUtils.canString2Number(userId)) {
+			throw new IllegalArgumentException("userId cannnot be converted to a number");
+		}
+
 		Integer userIdInteger = Integer.parseInt(userId);
-		//		ValidateUtils.validateZeroOrNegative(userIdInteger);
+		validationMessage = ValidateUtils.validateZeroOrNegative(userIdInteger, "userId is zero or negative");
+		validationMessage.ifPresent(msg -> errorMessages.put("userId_ZeroOrNegative", msg));
+		if (!errorMessages.isEmpty()) {
+			throw new IllegalArgumentException(errorMessages.toString());
+		}
+
 		Optional<User> savedUser = userService.findById((long) userIdInteger);
 		if (!savedUser.isPresent()) {
 			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
 		}
+
 		Optional<UserResponse> r = UserResponseDto.toResponse(savedUser);
 		return r;
 	}
 
 	@Override
 	public Collection<UserResponse> findUsers(String name) {
-		Collection<User> user = userService.findUsers(name);
-		if (user.isEmpty()) {
-			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
+		Map<String, String> errorMessages = new HashMap<>();
+		Optional<String> validationMessage;
+		validationMessage = ValidateUtils.validateNullOrEmpty(name, "userId is null or empty");
+		validationMessage.ifPresent(msg -> errorMessages.put("userId_nullOrEmpty", msg));
+		if (!errorMessages.isEmpty()) {
+			name = StringUtil.null2Void(name);
 		}
+
+		Collection<User> user = userService.findUsers(name);
 		Collection<UserResponse> r = UserResponseDto.toResponse(user);
 		return r;
 	}
 
 	@Override
 	public Optional<UserResponse> create(CreateUserRequest request) {
+		Map<String, String> errorMessages = new HashMap<>();
+		Optional<String> validationMessage;
+		validationMessage = ValidateUtils.validateNullOrEmpty(request, "createUserRequest is null or empty");
+		validationMessage.ifPresent(msg -> errorMessages.put("createUserRequest_nullOrEmpty", msg));
+
+		if (!errorMessages.isEmpty()) {
+			throw new IllegalArgumentException(errorMessages.toString());
+		}
+
+		Set<ConstraintViolation<CreateUserRequest>> violations = validator.validate(request);
+		if (!violations.isEmpty()) {
+			throw new ConstraintViolationException(violations);
+		}
 
 		User u = UpdateUserRequestDto.toModel(request);
 

@@ -1,7 +1,8 @@
 #!/bin/bash
 
+# for debug
 source .env
-mvn test -DB_URL=${DB_URL} \
+mvn test -Dmaven.surefire.debug -DB_URL=${DB_URL} \
 -DB_SCHEMA=${DB_SCHEMA} \
 -DSPRING_DATASOURCE_URL=jdbc:mysql://localhost:33061/${DB_SCHEMA} \
 -DDB_USERNAME=${DB_USERNAME} \

@@ -19,7 +19,7 @@ import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.repository.IUserRepository;
 import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.exception.NotFoundException;
-import com.botapeer.util.StringUtils;
+import com.botapeer.util.StringUtil;
 import com.botapeer.util.ValidateUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -65,7 +65,7 @@ public class UserServiceImpl implements IUserService {
 		validationMessage.ifPresent(msg -> errorMessages.put("name_null", msg));
 
 		if (!errorMessages.isEmpty()) {
-			name = StringUtils.null2Void(name);
+			name = StringUtil.null2Void(name);
 		}
 
 		return this.userRepository.findUsers(name);
@@ -84,9 +84,9 @@ public class UserServiceImpl implements IUserService {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
 
-		user.setDescription(StringUtils.null2Void(user.getDescription()));
-		user.setProfileImage(StringUtils.null2Void(user.getProfileImage()));
-		user.setCoverImage(StringUtils.null2Void(user.getCoverImage()));
+		user.setDescription(StringUtil.null2Void(user.getDescription()));
+		user.setProfileImage(StringUtil.null2Void(user.getProfileImage()));
+		user.setCoverImage(StringUtil.null2Void(user.getCoverImage()));
 
 		Set<ConstraintViolation<User>> violations = validator.validate(user);
 		if (!violations.isEmpty()) {
@@ -122,9 +122,9 @@ public class UserServiceImpl implements IUserService {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
 
-		user.setDescription(StringUtils.null2Void(user.getDescription()));
-		user.setProfileImage(StringUtils.null2Void(user.getProfileImage()));
-		user.setCoverImage(StringUtils.null2Void(user.getCoverImage()));
+		user.setDescription(StringUtil.null2Void(user.getDescription()));
+		user.setProfileImage(StringUtil.null2Void(user.getProfileImage()));
+		user.setCoverImage(StringUtil.null2Void(user.getCoverImage()));
 
 		Set<ConstraintViolation<User>> violations = validator.validate(user);
 		if (!violations.isEmpty()) {
@@ -172,7 +172,7 @@ public class UserServiceImpl implements IUserService {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
 
-		validationMessage = ValidateUtils.validateZeroOrNegative(userId, "userIdis zero or negative");
+		validationMessage = ValidateUtils.validateZeroOrNegative(userId, "userId is zero or negative");
 		validationMessage.ifPresent(msg -> errorMessages.put("userId_ZeroOrNegative", msg));
 		if (!errorMessages.isEmpty()) {
 			throw new IllegalArgumentException(errorMessages.toString());

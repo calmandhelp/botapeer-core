@@ -36,7 +36,7 @@ public class UserServiceImplTests {
 
 	@BeforeEach
 	void setup() {
-		Collection<User> users = new ArrayList<User>();
+		Collection<User> users = new ArrayList<>();
 		users.add(new User(1, new UserName("taro"), "taro@taro.com", new Password("encryptedPassword"),
 				Integer.valueOf(1), "説明1",
 				"", ""));
@@ -337,10 +337,10 @@ public class UserServiceImplTests {
 	}
 
 	void setValidation(User user) {
-			if (user.getId() < 0 || ObjectUtils.isEmpty(user.getName()) || ObjectUtils.isEmpty(user.getEmail())
-					|| user.getDescription() == null || user.getCoverImage() == null || user.getProfileImage() == null) {
-				Mockito.when(userService.update(user)).thenThrow(ConstraintViolationException.class);
-			}
+		if (user.getId() < 0 || ObjectUtils.isEmpty(user.getName()) || ObjectUtils.isEmpty(user.getEmail())
+				|| user.getDescription() == null || user.getCoverImage() == null || user.getProfileImage() == null) {
+			Mockito.when(userService.update(user)).thenThrow(ConstraintViolationException.class);
 		}
+	}
 
 }
