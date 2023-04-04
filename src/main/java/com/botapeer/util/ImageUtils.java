@@ -22,7 +22,7 @@ public class ImageUtils {
 
 	Logger logger = LoggerFactory.getLogger(ImageUtils.class);
 
-	public String uploadImage(MultipartFile image) {
+	public String uploadImage(MultipartFile image) throws IOException {
 		if (!ObjectUtils.isEmpty(image)) {
 			FileUploadForm fileUploadForm = new FileUploadForm();
 			fileUploadForm.setMultipartFile(image);
@@ -31,8 +31,7 @@ public class ImageUtils {
 				String fileName = fileUploadService.fileUpload(fileUploadForm, "image.botapeer.com/images");
 				return fileName;
 			} catch (IOException e) {
-				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
+				throw new IOException(e.getMessage());
 			}
 		}
 		return null;

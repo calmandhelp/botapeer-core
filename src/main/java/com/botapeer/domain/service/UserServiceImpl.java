@@ -50,7 +50,7 @@ public class UserServiceImpl implements IUserService {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
 		Optional<User> u = userRepository.findById(userId);
-		if (!u.isPresent()) {
+		if (u.isEmpty()) {
 			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
 		}
 
@@ -132,7 +132,7 @@ public class UserServiceImpl implements IUserService {
 		}
 
 		Optional<User> savedUser = findById((long) user.getId());
-		if (!savedUser.isPresent()) {
+		if (savedUser.isEmpty()) {
 			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
 		}
 
@@ -179,7 +179,7 @@ public class UserServiceImpl implements IUserService {
 		}
 
 		Optional<User> savedUser = findById(userId);
-		if (!savedUser.isPresent()) {
+		if (savedUser.isEmpty()) {
 			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
 		}
 
@@ -198,7 +198,7 @@ public class UserServiceImpl implements IUserService {
 		}
 
 		Optional<User> user = userRepository.findUserByNameOrEmail(usernameOrEmail);
-		if (!user.isPresent()) {
+		if (user.isEmpty()) {
 			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
 		}
 		return user;
@@ -217,7 +217,7 @@ public class UserServiceImpl implements IUserService {
 
 		Optional<User> user = userRepository.findByEmail(email);
 
-		if (!user.isPresent()) {
+		if (user.isEmpty()) {
 			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
 		}
 
@@ -237,7 +237,7 @@ public class UserServiceImpl implements IUserService {
 
 		Optional<User> user = userRepository.findByName(name);
 
-		if (!user.isPresent()) {
+		if (user.isEmpty()) {
 			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
 		}
 

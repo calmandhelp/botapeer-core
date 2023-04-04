@@ -1,5 +1,6 @@
 package com.botapeer.usecase.interfaces;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -17,7 +18,7 @@ public interface IUserUsecase {
 	public Optional<UserResponse> create(CreateUserRequest request);
 
 	public Optional<UserResponse> update(UpdateUserFormData user, MultipartFile coverImage,
-			MultipartFile profileImage);
+			MultipartFile profileImage, String userId) throws IOException;
 
 	//	public Optional<User> updatePassword(Principal principal, UpdatePasswordRequest request,
 	//			BindingResult result);

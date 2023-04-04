@@ -1,5 +1,6 @@
 package com.botapeer.usecase;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,16 +11,19 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
+import com.botapeer.exception.DifferentUserException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.core.AuthenticationException;
 
 import com.botapeer.constants.ResponseConstants;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
@@ -68,7 +72,7 @@ public class UserUsecase implements IUserUsecase {
 		}
 
 		if (!NumberUtils.canString2Number(userId)) {
-			throw new IllegalArgumentException("userId cannnot be converted to a number");
+			throw new IllegalArgumentException("userId cannot be converted to a number");
 		}
 
 		Integer userIdInteger = Integer.parseInt(userId);
@@ -79,7 +83,7 @@ public class UserUsecase implements IUserUsecase {
 		}
 
 		Optional<User> savedUser = userService.findById((long) userIdInteger);
-		if (!savedUser.isPresent()) {
+		if (savedUser.isEmpty()) {
 			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
 		}
 
@@ -135,12 +139,40 @@ public class UserUsecase implements IUserUsecase {
 	public Optional<UserResponse> update(
 			UpdateUserFormData formData,
 			MultipartFile profileImage,
-			MultipartFile coverImage) {
+			MultipartFile coverImage,
+			String userId) throws IOException {
+		Map<String, String> errorMessages = new HashMap<>();
+		Optional<String> validationMessage;
+		validationMessage = ValidateUtils.validateNullOrEmpty(userId, "userId is null or empty");
+		if(validationMessage.isPresent()) {
+			errorMessages.put("userId_nullOrEmpty", validationMessage.get());
+		} else if(!NumberUtils.canString2Number(userId)) {
+			errorMessages.put("userId_CannotConvert2Number", "userId cannot be converted to a number");
+		}
+		if (validationMessage.isPresent()) {
+			throw new IllegalArgumentException(errorMessages.toString());
+		}
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		String name = auth.getName();
 		Optional<User> targetUser = userService.findByName(name);
+
+		if(targetUser.isEmpty()) {
+			throw new NotFoundException(ResponseConstants.NOTFOUND_PLANT_RECORD_CODE);
+		}
+
+		Integer userIdInteger = Integer.parseInt(userId);
+		validationMessage = ValidateUtils.validateZeroOrNegative(userIdInteger, "userId is zero or negative");
+		validationMessage.ifPresent(s -> errorMessages.put("userId_ZeroOrNegative", s));
+
+		if (validationMessage.isPresent()) {
+			throw new IllegalArgumentException(errorMessages.toString());
+		}
+
+		if(targetUser.get().getId().equals(userIdInteger)) {
+			throw new DifferentUserException("Access is Denied");
+		}
 
 		User u = UpdateUserRequestDto.toModel(formData);
 
@@ -163,6 +195,7 @@ public class UserUsecase implements IUserUsecase {
 		u.setPassword(targetUser.get().getPassword());
 
 		if (!userService.update(u)) {
+			logger.error("user could not be updated");
 			throw new Error();
 		}
 

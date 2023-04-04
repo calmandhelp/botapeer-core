@@ -21,7 +21,6 @@ public class UpdateUserRequestDto {
 		user.setPassword(password);
 		user.setName(userName);
 		user.setEmail(request.getEmail());
-		user.setDescription(request.getPassword());
 		return user;
 	}
 

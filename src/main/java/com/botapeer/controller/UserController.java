@@ -55,7 +55,7 @@ public class UserController implements UsersApi {
 			@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
 			@RequestPart(value = "coverImage", required = false) MultipartFile coverImage) {
 
-		Optional<UserResponse> u = userUsecase.update(user, profileImage, coverImage);
+		Optional<UserResponse> u = userUsecase.update(user, profileImage, coverImage, userId);
 
 		return new ResponseEntity<>(u.get(), HttpStatus.OK);
 	}

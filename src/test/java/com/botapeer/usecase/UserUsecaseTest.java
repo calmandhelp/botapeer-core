@@ -1,5 +1,6 @@
 package com.botapeer.usecase;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -8,6 +9,7 @@ import java.util.Optional;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
+import model.UpdateUserFormData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,9 +18,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.domain.model.user.Password;
 import com.botapeer.domain.model.user.User;
@@ -53,6 +57,7 @@ public class UserUsecaseTest {
 
 	@Mock
 	private ImageUtils imageUtils;
+
 
 	@BeforeEach
 	void setup() {
@@ -92,8 +97,16 @@ public class UserUsecaseTest {
 				Mockito.when(userService.findUsers(user.getName().getName())).thenReturn(Collections.singletonList(user));
 			}
 		}
+
+		Mockito.when(imageUtils.uploadImage(Mockito.any()))
+				.thenAnswer(invocation -> {
+					MultipartFile image = invocation.getArgument(0);
+					if(image.isEmpty()) {
+
+					}
+				});
 		
-		userUsecase = new UserUsecase(userService, null, passwordEncoder, null, validator);
+		userUsecase = new UserUsecase(userService, null, passwordEncoder, imageUtils, validator);
 	}
 
 	@Test
@@ -156,14 +169,12 @@ public class UserUsecaseTest {
 		});
 
 		CreateUserRequest userWithNullName = new CreateUserRequest(null, "taro@taro.com", "password");
-		setValidation(userWithNullName);
-		Assertions.assertThrows(ConstraintViolationException.class, () -> {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			userUsecase.create(userWithNullName);
 		});
 
 		CreateUserRequest userWithEmptyName = new CreateUserRequest("", "taro@taro.com", "password");
-		setValidation(userWithEmptyName);
-		Assertions.assertThrows(ConstraintViolationException.class, () -> {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			userUsecase.create(userWithEmptyName);
 		});
 
@@ -191,22 +202,22 @@ public class UserUsecaseTest {
 			userUsecase.create(userWithNullPassword);
 		});
 
-		CreateUserRequest userWithEmptyPassword = new CreateUserRequest("taro", "taro@taro.com", null);
+		CreateUserRequest userWithEmptyPassword = new CreateUserRequest("taro", "taro@taro.com", "");
 		setValidation(userWithEmptyPassword);
 		Assertions.assertThrows(ConstraintViolationException.class, () -> {
 			userUsecase.create(userWithEmptyPassword);
 		});
 
 		CreateUserRequest userWithUnder8Password = new CreateUserRequest("taro", "taro@taro.com", "8UnderP");
-		setValidation(userWithEmptyPassword);
+		setValidation(userWithUnder8Password);
 		Assertions.assertThrows(ConstraintViolationException.class, () -> {
 			userUsecase.create(userWithUnder8Password);
 		});
 
-		CreateUserRequest userWithOver15Password = new CreateUserRequest("taro", "taro@taro.com", "15OverPasswordAA");
-		setValidation(userWithEmptyPassword);
+		CreateUserRequest userWithOver20Password = new CreateUserRequest("taro", "taro@taro.com", "20OverPasswordValidation");
+		setValidation(userWithOver20Password);
 		Assertions.assertThrows(ConstraintViolationException.class, () -> {
-			userUsecase.create(userWithOver15Password);
+			userUsecase.create(userWithOver20Password);
 		});
 
 		User userWithEncryptedPassword = new User();
@@ -214,11 +225,29 @@ public class UserUsecaseTest {
 		Password password = new Password("password");
 		String encryptedPassword = passwordEncoder.encode(password.getPassword());
 		int userId = userService.create(userWithEncryptedPassword, encryptedPassword);
-		Assertions.assertEquals(4, userId);
+		Assertions.assertEquals(5, userId);
 	}
 
 	@Test
 	void update() {
+		// 画像更新用
+		String contentProfile = "profile content";
+		String fileNameProfile = "profile.jpg";
+		String contentTypeProfile = "image/jpg";
+		byte[] contentBytesProfile = contentProfile.getBytes(StandardCharsets.UTF_8);
+		MultipartFile mockMultipartFileProfileImage = new MockMultipartFile(contentProfile, fileNameProfile, contentTypeProfile, contentBytesProfile);
+
+		String contentCover = "cover content";
+		String fileNameCover = "cover.jpg";
+		String contentTypeCover = "image/jpg";
+		byte[] contentBytesCover = contentCover.getBytes(StandardCharsets.UTF_8);
+		MultipartFile mockMultipartFileCoverImage = new MockMultipartFile(contentCover, fileNameCover, contentTypeCover, contentBytesCover);
+
+
+		UpdateUserFormData updateUserFormData = new UpdateUserFormData("taro", "taro@taro.com");
+		updateUserFormData.setDescription("説明1");
+
+		userUsecase.update(updateUserFormData, mockMultipartFileProfileImage,mockMultipartFileCoverImage, "1");
 
 	}
 
@@ -227,15 +256,15 @@ public class UserUsecaseTest {
 
 	}
 
-	void setValidation(CreateUserRequest user) {
-		if (ObjectUtils.isEmpty(user.getName()) || ObjectUtils.isEmpty(user.getEmail())) {
-			Mockito.when(userUsecase.create(user)).thenThrow(ConstraintViolationException.class);
+	void setValidation(CreateUserRequest request) {
+		if (ObjectUtils.isEmpty(request.getEmail())) {
+			Mockito.when(validator.validate(request)).thenThrow(ConstraintViolationException.class);
 		}
-		if(user.getName().length() > 15) {
-			Mockito.when(userUsecase.create(user)).thenThrow(ConstraintViolationException.class);
+		if(!ObjectUtils.isEmpty(request.getName()) && request.getName().length() > 15) {
+			Mockito.when(validator.validate(request)).thenThrow(ConstraintViolationException.class);
 		}
-		if(user.getPassword().length() < 8 || user.getPassword().length() > 15) {
-			Mockito.when(userUsecase.create(user)).thenThrow(ConstraintViolationException.class);
+		if(ObjectUtils.isEmpty(request.getPassword()) || request.getPassword().length() < 8 || request.getPassword().length() > 20) {
+			Mockito.when(validator.validate(request)).thenThrow(ConstraintViolationException.class);
 		}
 	}
 
