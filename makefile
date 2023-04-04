@@ -8,7 +8,7 @@ up-build:
 	docker compose up --build botapeer_core db
 	
 up-debug:
-	docker compose up  botapeer_core _debug db
+	docker compose up  botapeer_core_debug db
 	
 up-debug-build:
 	docker compose up --build botapeer_core_debug db	
