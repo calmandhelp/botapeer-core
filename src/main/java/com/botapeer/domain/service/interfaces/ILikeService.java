@@ -6,13 +6,13 @@ import com.botapeer.domain.model.like.LikeCountPost;
 
 public interface ILikeService {
 
-	public boolean createLikeToPost(Long postId,
+	boolean createLikeToPost(Long postId,
 			Integer userId);
 
-	public boolean deleteLikeToPost(Long postId,
+	boolean deleteLikeToPost(Long postId,
 			Integer userId);
 
 	boolean isLikeWithPost(Long postId, Integer userId);
 
-	public Optional<LikeCountPost> countLikeWithPost(Long postId);
+	Optional<LikeCountPost> countLikeWithPost(Long postId);
 }

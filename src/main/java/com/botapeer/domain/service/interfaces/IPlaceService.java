@@ -6,9 +6,9 @@ import java.util.Optional;
 import com.botapeer.domain.model.place.Place;
 
 public interface IPlaceService {
-	public Collection<Place> findAll();
+	Collection<Place> findAll();
 
-	public Optional<Place> findById(Long placeId);
+	Optional<Place> findById(Long placeId);
 
 	//	public boolean create(Label label);
 

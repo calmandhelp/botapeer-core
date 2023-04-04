@@ -11,19 +11,18 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
+import com.botapeer.adapter.IUploader;
 import com.botapeer.exception.DifferentUserException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.security.core.AuthenticationException;
 
 import com.botapeer.constants.ResponseConstants;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
@@ -35,7 +34,7 @@ import com.botapeer.exception.NotFoundException;
 import com.botapeer.usecase.dto.user.UpdateUserRequestDto;
 import com.botapeer.usecase.dto.user.UserResponseDto;
 import com.botapeer.usecase.interfaces.IUserUsecase;
-import com.botapeer.util.ImageUtils;
+import com.botapeer.adapter.Uploader;
 import com.botapeer.util.NumberUtils;
 import com.botapeer.util.StringUtil;
 import com.botapeer.util.ValidateUtils;
@@ -53,11 +52,7 @@ public class UserUsecase implements IUserUsecase {
 
 	private final IPlantRecordService plantRecordService;
 	private final PasswordEncoder passwordEncoder;
-	private final ImageUtils imageUtils;
 	private final Validator validator;
-
-	@Value(value = "${imagePath}")
-	private String imagePath;
 
 	Logger logger = LoggerFactory.getLogger(UserUsecase.class);
 
@@ -140,7 +135,7 @@ public class UserUsecase implements IUserUsecase {
 			UpdateUserFormData formData,
 			MultipartFile profileImage,
 			MultipartFile coverImage,
-			String userId) throws IOException {
+			String userId) {
 		Map<String, String> errorMessages = new HashMap<>();
 		Optional<String> validationMessage;
 		validationMessage = ValidateUtils.validateNullOrEmpty(userId, "userId is null or empty");
@@ -170,7 +165,7 @@ public class UserUsecase implements IUserUsecase {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
 
-		if(targetUser.get().getId().equals(userIdInteger)) {
+		if(!targetUser.get().getId().equals(userIdInteger)) {
 			throw new DifferentUserException("Access is Denied");
 		}
 
@@ -178,31 +173,15 @@ public class UserUsecase implements IUserUsecase {
 
 		u.setId(targetUser.get().getId());
 
-		String coverImageName = imageUtils.uploadImage(coverImage);
-		if (StringUtils.isEmpty(coverImageName)) {
-			u.setCoverImage(targetUser.get().getCoverImage());
-		} else {
-			u.setCoverImage(imagePath + coverImageName);
-		}
-
-		String profileImageName = imageUtils.uploadImage(profileImage);
-		if (StringUtils.isEmpty(profileImageName)) {
-			u.setProfileImage(targetUser.get().getProfileImage());
-		} else {
-			u.setProfileImage(imagePath + profileImageName);
-		}
-
 		u.setPassword(targetUser.get().getPassword());
 
-		if (!userService.update(u)) {
+		Optional<User> updatedUser = userService.update(u, profileImage, coverImage);
+		if (updatedUser.isEmpty()) {
 			logger.error("user could not be updated");
-			throw new Error();
+			throw new RuntimeException();
 		}
 
-		Optional<User> userModel = userService.findById((long) targetUser.get().getId());
-
-		Optional<UserResponse> r = UserResponseDto.toResponse(userModel);
-		return r;
+		return UserResponseDto.toResponse(updatedUser);
 	}
 
 	//	@Override

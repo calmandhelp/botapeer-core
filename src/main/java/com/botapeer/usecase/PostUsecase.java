@@ -1,7 +1,9 @@
 package com.botapeer.usecase;
 
+import java.io.IOException;
 import java.util.Optional;
 
+import com.botapeer.adapter.IUploader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +21,7 @@ import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.usecase.dto.plantRecord.CreatePostFormDataDto;
 import com.botapeer.usecase.dto.post.PostResponseDto;
 import com.botapeer.usecase.interfaces.IPostUsecase;
-import com.botapeer.util.ImageUtils;
+import com.botapeer.adapter.Uploader;
 
 import lombok.RequiredArgsConstructor;
 import model.CreatePostFormData;
@@ -33,7 +35,7 @@ public class PostUsecase implements IPostUsecase {
 	private final IPostService postService;
 	private final ILikeService likeService;
 	private final IUserService userService;
-	private final ImageUtils imageUtils;
+	private final IUploader uploader;
 
 	Logger logger = LoggerFactory.getLogger(PlantRecordUsecase.class);
 
@@ -45,7 +47,12 @@ public class PostUsecase implements IPostUsecase {
 
 		Long plantRecordIdL = Long.parseLong(plantRecordId);
 
-		String fileName = imageUtils.uploadImage(image);
+		String fileName = null;
+		try {
+			fileName = uploader.uploadImage(image);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 		Post post = CreatePostFormDataDto.toModel(formData);
 		post.setImageUrl(imagePath + fileName);
 		post.setStatus(1);

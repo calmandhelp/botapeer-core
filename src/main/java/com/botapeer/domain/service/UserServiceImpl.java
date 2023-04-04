@@ -1,5 +1,6 @@
 package com.botapeer.domain.service;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,8 +11,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
+import com.botapeer.adapter.IUploader;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.botapeer.constants.ResponseConstants;
@@ -23,6 +27,7 @@ import com.botapeer.util.StringUtil;
 import com.botapeer.util.ValidateUtils;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +37,10 @@ public class UserServiceImpl implements IUserService {
 
 	private final IUserRepository userRepository;
 	private final Validator validator;
+	private final IUploader uploader;
+
+	@Value(value = "${imagePath}")
+	private String imagePath;
 
 	@Override
 	public Optional<User> findById(Long userId) {
@@ -98,54 +107,83 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public boolean update(User user) {
+	public Optional<User> update(User userForUpdate , MultipartFile profileImage, MultipartFile coverImage) {
 		Map<String, String> errorMessages = new HashMap<>();
 		Optional<String> validationMessage;
-		validationMessage = ValidateUtils.validateNullOrEmpty(user, "user is null or empty");
+		validationMessage = ValidateUtils.validateNullOrEmpty(userForUpdate, "userForUpdate is null or empty");
 		validationMessage.ifPresent(msg -> errorMessages.put("user_nullOrEmpty", msg));
 
 		if (!errorMessages.isEmpty()) {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
 
-		validationMessage = ValidateUtils.validateNull(user.getId(), "userId is null");
+		validationMessage = ValidateUtils.validateNull(userForUpdate.getId(), "userId is null");
 		validationMessage.ifPresent(msg -> errorMessages.put("userId_null", msg));
 
 		if (!errorMessages.isEmpty()) {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
 
-		validationMessage = ValidateUtils.validateZeroOrNegative(user.getId(), "userId is zero or negative");
+		validationMessage = ValidateUtils.validateZeroOrNegative(userForUpdate.getId(), "userId is zero or negative");
 		validationMessage.ifPresent(msg -> errorMessages.put("userId_ZeroOrNegative", msg));
 
 		if (!errorMessages.isEmpty()) {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
 
-		user.setDescription(StringUtil.null2Void(user.getDescription()));
-		user.setProfileImage(StringUtil.null2Void(user.getProfileImage()));
-		user.setCoverImage(StringUtil.null2Void(user.getCoverImage()));
+		userForUpdate.setDescription(StringUtil.null2Void(userForUpdate.getDescription()));
+		userForUpdate.setProfileImage(StringUtil.null2Void(userForUpdate.getProfileImage()));
+		userForUpdate.setCoverImage(StringUtil.null2Void(userForUpdate.getCoverImage()));
 
-		Set<ConstraintViolation<User>> violations = validator.validate(user);
+		Set<ConstraintViolation<User>> violations = validator.validate(userForUpdate);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException(violations);
 		}
 
-		Optional<User> savedUser = findById((long) user.getId());
+		Optional<User> savedUser = findById((long) userForUpdate.getId());
 		if (savedUser.isEmpty()) {
 			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
 		}
 
-		validationMessage = ValidateUtils.validatePresent(user.getPassword(), "password is present");
+		validationMessage = ValidateUtils.validatePresent(userForUpdate.getPassword(), "password is present");
 		validationMessage.ifPresent(msg -> errorMessages.put("password_present", msg));
-		validationMessage = ValidateUtils.validatePresent(user.getStatus(), "status is present");
+		validationMessage = ValidateUtils.validatePresent(userForUpdate.getStatus(), "status is present");
 		validationMessage.ifPresent(msg -> errorMessages.put("status_present", msg));
 
 		if (!errorMessages.isEmpty()) {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
 
-		return this.userRepository.update(user);
+		String coverImageName = null;
+		try {
+			coverImageName = uploader.uploadImage(coverImage);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		if (StringUtils.isEmpty(coverImageName)) {
+			userForUpdate.setCoverImage(savedUser.get().getCoverImage());
+		} else {
+			userForUpdate.setCoverImage(imagePath + coverImageName);
+		}
+
+		String profileImageName = null;
+		try {
+			profileImageName = uploader.uploadImage(profileImage);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		if (StringUtils.isEmpty(profileImageName)) {
+			userForUpdate.setProfileImage(savedUser.get().getProfileImage());
+		} else {
+			userForUpdate.setProfileImage(imagePath + profileImageName);
+		}
+
+		if(!this.userRepository.update(userForUpdate)) {
+			logger.error("user cannot be updated");
+			throw new RuntimeException();
+		}
+
+		return findById((long)userForUpdate.getId());
 	}
 
 	//	@Override

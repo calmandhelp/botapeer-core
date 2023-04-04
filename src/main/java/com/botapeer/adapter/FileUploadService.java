@@ -1,4 +1,4 @@
-package com.botapeer.domain.service;
+package com.botapeer.adapter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.botapeer.s3.FileUploadForm;
+import com.botapeer.adapter.FileUploadForm;
 
 @Service
 public class FileUploadService {

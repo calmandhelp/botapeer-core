@@ -1,4 +1,4 @@
-package com.botapeer.s3;
+package com.botapeer.adapter;
 
 import java.time.LocalDateTime;
 

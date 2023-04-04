@@ -6,11 +6,11 @@ import java.util.Optional;
 import com.botapeer.domain.model.plantRecord.PlantRecord;
 
 public interface IPlantRecordService {
-	public Optional<PlantRecord> findById(Long plantId);
+	Optional<PlantRecord> findById(Long plantId);
 
-	public Optional<PlantRecord> create(PlantRecord plantRecord);
+	Optional<PlantRecord> create(PlantRecord plantRecord);
 
-	public Collection<PlantRecord> findByUserId(Long userId);
+	Collection<PlantRecord> findByUserId(Long userId);
 
 	//	public Collection<PlantRecordEntity> findByUserId(int userId);
 	//

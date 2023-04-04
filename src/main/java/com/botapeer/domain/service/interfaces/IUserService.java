@@ -4,24 +4,25 @@ import java.util.Collection;
 import java.util.Optional;
 
 import com.botapeer.domain.model.user.User;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface IUserService {
 
-	public Optional<User> findById(Long userId);
+	Optional<User> findById(Long userId);
 
-	public Collection<User> findUsers(String username);
+	Collection<User> findUsers(String username);
 
-	public Integer create(User user, String encryptedPassword);
+	Integer create(User user, String encryptedPassword);
 
-	public boolean update(User user);
+	Optional<User> update(User user, MultipartFile profileImage, MultipartFile coverImage);
 
-	//	public boolean updatePassword(UpdatePasswordRequest request);
+	//	boolean updatePassword(UpdatePasswordRequest request);
 
-	public boolean delete(Long userId);
+	boolean delete(Long userId);
 
-	public Optional<User> findByUserNameOrEmail(String usernameOrEmail);
+	Optional<User> findByUserNameOrEmail(String usernameOrEmail);
 
-	public Optional<User> findByEmail(String email);
+	Optional<User> findByEmail(String email);
 
-	public Optional<User> findByName(String name);
+	Optional<User> findByName(String name);
 }

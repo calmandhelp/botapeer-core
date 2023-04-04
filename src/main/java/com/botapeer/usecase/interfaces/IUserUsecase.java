@@ -18,7 +18,7 @@ public interface IUserUsecase {
 	public Optional<UserResponse> create(CreateUserRequest request);
 
 	public Optional<UserResponse> update(UpdateUserFormData user, MultipartFile coverImage,
-			MultipartFile profileImage, String userId) throws IOException;
+			MultipartFile profileImage, String userId);
 
 	//	public Optional<User> updatePassword(Principal principal, UpdatePasswordRequest request,
 	//			BindingResult result);

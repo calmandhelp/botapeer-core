@@ -1,5 +1,6 @@
 package com.botapeer.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -56,7 +57,6 @@ public class UserController implements UsersApi {
 			@RequestPart(value = "coverImage", required = false) MultipartFile coverImage) {
 
 		Optional<UserResponse> u = userUsecase.update(user, profileImage, coverImage, userId);
-
 		return new ResponseEntity<>(u.get(), HttpStatus.OK);
 	}
 

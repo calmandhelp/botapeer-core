@@ -1,5 +1,6 @@
 package com.botapeer.domain.service;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -8,6 +9,7 @@ import java.util.Optional;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
+import com.botapeer.adapter.IUploader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.ObjectUtils;
 
 import com.botapeer.domain.model.user.Password;
@@ -22,6 +25,7 @@ import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.model.user.UserName;
 import com.botapeer.domain.repository.IUserRepository;
 import com.botapeer.exception.NotFoundException;
+import org.springframework.web.multipart.MultipartFile;
 
 public class UserServiceImplTests {
 
@@ -33,6 +37,9 @@ public class UserServiceImplTests {
 
 	@Mock
 	private Validator validator;
+
+	@Mock
+	private IUploader uploader;
 
 	@BeforeEach
 	void setup() {
@@ -95,9 +102,14 @@ public class UserServiceImplTests {
 		
 		Mockito.when(userRepository.create(Mockito.isA(User.class), Mockito.anyString())).thenReturn(4);
 		Mockito.when(userRepository.update(Mockito.isA(User.class))).thenReturn(true);
+
+//		Mockito.when(uploader.uploadImage(Mockito.any()))
+//		.thenAnswer(invocation -> {
+//			MultipartFile image = invocation.getArgument(0);
+//				return "";
+//		});
 		
-		
-		userService = new UserServiceImpl(userRepository, validator);
+		userService = new UserServiceImpl(userRepository, validator, uploader);
 	}
 
 	@Test
@@ -165,84 +177,100 @@ public class UserServiceImplTests {
 
 	@Test
 	void testUpdateUser() {
+
+//		画像更新用
+		String contentProfile = "profile content";
+		String fileNameProfile = "profile.jpg";
+		String contentTypeProfile = "image/jpg";
+		byte[] contentBytesProfile = contentProfile.getBytes(StandardCharsets.UTF_8);
+		MultipartFile mockMultipartFileProfileImage = new MockMultipartFile(contentProfile, fileNameProfile, contentTypeProfile, contentBytesProfile);
+
+		String contentCover = "cover content";
+		String fileNameCover = "cover.jpg";
+		String contentTypeCover = "image/jpg";
+		byte[] contentBytesCover = contentCover.getBytes(StandardCharsets.UTF_8);
+		MultipartFile mockMultipartFileCoverImage = new MockMultipartFile(contentCover, fileNameCover, contentTypeCover, contentBytesCover);
+
+
+
 		User user = new User(1, new UserName("goro"), "goro@goro.com", "説明5",
 				"/image/imagePath1", "/image/imagePath2");
-		boolean isSuccess = userService.update(user);
-		Assertions.assertTrue(isSuccess);
+		Optional<User> updatedUser = userService.update(user, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
+		Assertions.assertTrue(updatedUser.isPresent());
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			userService.update(null);
+			userService.update(null, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
 		});
 		user.setPassword(new Password("password"));
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			userService.update(user);
+			userService.update(user, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
 		});
 
 		User userWithStatus = new User(1, new UserName("goro"), "goro@goro.com", "説明5",
 				"/image/imagePath1", "/image/imagePath2");
 		userWithStatus.setStatus(2);
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			userService.update(userWithStatus);
+			userService.update(userWithStatus, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
 		});
 
 		User userWithNegativeId = new User(-1000, new UserName("goro"), "goro@goro.com", "説明5",
 				"/image/imagePath1", "/image/imagePath2");
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			userService.update(userWithNegativeId);
+			userService.update(userWithNegativeId, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
 		});
 
 		User userWithNullId = new User(null, new UserName("goro"), "goro@goro.com", "説明5",
 				"/image/imagePath1", "/image/imagePath2");
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			userService.update(userWithNullId);
+			userService.update(userWithNullId, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
 		});
 
 		User userWithNullUserName = new User(1, null, "goro@goro.com", "説明5",
 				"/image/imagePath1", "/image/imagePath2");
 		setValidation(userWithNullUserName);
 		Assertions.assertThrows(ConstraintViolationException.class, () -> {
-			userService.update(userWithNullUserName);
+			userService.update(userWithNullUserName, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
 		});
 
 		User userWithNullEmail = new User(1, new UserName("goro"), null, "説明5",
 				"/image/imagePath1", "/image/imagePath2");
 		setValidation(userWithNullEmail);
 		Assertions.assertThrows(ConstraintViolationException.class, () -> {
-			userService.update(userWithNullEmail);
+			userService.update(userWithNullEmail, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
 		});
 
 		User userWithEmptyEmail = new User(1, new UserName("goro"), "", "説明5",
 				"/image/imagePath1", "/image/imagePath2");
 		setValidation(userWithEmptyEmail);
 		Assertions.assertThrows(ConstraintViolationException.class, () -> {
-			userService.update(userWithEmptyEmail);
+			userService.update(userWithEmptyEmail, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
 		});
 
 		User userWithPassword = new User(1, new UserName("goro"), "", "説明5",
 				"/image/imagePath1", "/image/imagePath2");
 		userWithPassword.setPassword(new Password("password"));
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			userService.update(userWithPassword);
+			userService.update(userWithPassword, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
 		});
 
 		User userWithNullProfileImage = new User(1, new UserName("goro"), "", "説明5",
 				null, "/image/imagePath2");
-		boolean isSuccessWithNullProfileImage = userService.update(userWithNullProfileImage);
-		Assertions.assertTrue(isSuccessWithNullProfileImage);
+		Optional<User> resultUserWithNullProfileImage = userService.update(userWithNullProfileImage, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
+		Assertions.assertTrue(resultUserWithNullProfileImage.isPresent());
 
 		User userWithNullCoverImage = new User(1, new UserName("goro"), "", "説明5",
 				"/image/imagePath1", null);
-		boolean isSuccessWithNullCoverImage = userService.update(userWithNullCoverImage);
-		Assertions.assertTrue(isSuccessWithNullCoverImage);
+		Optional<User> resultWithNullCoverImage = userService.update(userWithNullCoverImage, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
+		Assertions.assertTrue(resultWithNullCoverImage.isPresent());
 
-		User userWithNullDescription = new User(1, new UserName("goro"), "", "説明5",
-				"/image/imagePath1", null);
-		boolean isSuccessWithNullDescription = userService.update(userWithNullDescription);
-		Assertions.assertTrue(isSuccessWithNullDescription);
+		User userWithNullDescription = new User(1, new UserName("goro"), "", null,
+				"/image/imagePath1", "/image/imagePath2");
+		Optional<User> resultUserWithNullDescription = userService.update(userWithNullDescription, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
+		Assertions.assertTrue(resultUserWithNullDescription.isPresent());
 
 		User user1000 = new User(1000, new UserName("taro"), "taro@taro.com", "説明1000",
 				"/image/imagePath1", "/image/imagePath2");
 		Assertions.assertThrows(NotFoundException.class, () -> {
-			userService.update(user1000);
+			userService.update(user1000, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
 		});
 	}
 
@@ -339,7 +367,7 @@ public class UserServiceImplTests {
 	void setValidation(User user) {
 		if (user.getId() < 0 || ObjectUtils.isEmpty(user.getName()) || ObjectUtils.isEmpty(user.getEmail())
 				|| user.getDescription() == null || user.getCoverImage() == null || user.getProfileImage() == null) {
-			Mockito.when(userService.update(user)).thenThrow(ConstraintViolationException.class);
+			Mockito.when(userService.update(user, Mockito.any(), Mockito.any())).thenThrow(ConstraintViolationException.class);
 		}
 	}
 

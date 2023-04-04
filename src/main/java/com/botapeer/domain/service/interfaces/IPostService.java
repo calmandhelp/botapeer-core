@@ -7,17 +7,17 @@ import com.botapeer.domain.model.post.Post;
 
 public interface IPostService {
 
-	public Collection<Post> findByPlantRecordId(Long plantRecordId);
+	Collection<Post> findByPlantRecordId(Long plantRecordId);
 
-	public Optional<Post> create(Post post);
+	Optional<Post> create(Post post);
 
-	public Optional<Post> getById(Long id);
+	Optional<Post> getById(Long id);
 
-	public boolean delete(Long id);
+	boolean delete(Long id);
 
-	public Optional<Post> createLikeToPost(Long postId,
+	Optional<Post> createLikeToPost(Long postId,
 			Integer userId);
 
-	public Optional<Post> deleteLikeToPost(Long postId,
+	Optional<Post> deleteLikeToPost(Long postId,
 			Integer userId);
 }
