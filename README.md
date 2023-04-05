@@ -69,6 +69,7 @@ Frameworks & Driversはアプリケーション外部と実際に接続するた
 
 
 # ER図
+マーメイドを利用して設計しています。
 ```mermaid
 erDiagram
     users ||--o{ follows : follows
@@ -187,3 +188,4 @@ erDiagram
         string name
     }
 ```
+
