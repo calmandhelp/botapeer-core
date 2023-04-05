@@ -1,3 +1,66 @@
+# 概要
+Spring Bootで開発されたbotapeerのバックエンドAPIです。
+
+# アプリケーションアーキテクチャ
+基本的にはクリーンアーキテクチャの思想を参考に開発されたプロジェクトです。
+![68747470733a2f2f71696974612d696d6167652d73746f72652e73332e616d617a6f6e6177732e636f6d2f302f3239333336382f37636531666231302d353034652d313665302d383933302d3237386238613766393432642e6a706567](https://user-images.githubusercontent.com/39892315/229960337-019f959f-18c3-4233-bd21-9b08b568f321.jpg)
+
+黄色い部分のEnterpisse Business Rulesにはビジネスロジックが書かれています。このプロジェクトではdomain層にある各サービスやドメインモデルがそれにあたります。  
+赤い部分のApplication Business Rulesにはユースケース（アプリケーションロジック）が書かれています。このプロジェクトではusecase層がそれにあたります。
+usecase層はdomain層に依存し、ワークフローやビジネスロジックを実行する役割を持ちます。
+
+
+ディレクトリ構造をなるべくシンプルにすると以下のようになります。
+```
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── com
+│   │   │       └── botapeer
+│   │   │           ├── adapter
+│   │   │           ├── config
+│   │   │           ├── constants
+│   │   │           ├── controller
+│   │   │           │   └── payload
+│   │   │           │       └── label
+│   │   │           ├── domain
+│   │   │           │   ├── model
+│   │   │           │   │   ├── label
+│   │   │           │   │   ├── like
+│   │   │           │   │   ├── place
+│   │   │           │   │   ├── plantRecord
+│   │   │           │   │   ├── post
+│   │   │           │   │   ├── text
+│   │   │           │   │   └── user
+│   │   │           │   ├── repository
+│   │   │           │   ├── adapter
+│   │   │           │   └── service
+│   │   │           │       └── interfaces
+│   │   │           ├── exception
+│   │   │           ├── infrastructure
+│   │   │           │   ├── entity
+│   │   │           │   ├── mapper
+│   │   │           │   └── repository
+│   │   │           │       └── dto
+│   │   │           │           ├── like
+│   │   │           │           ├── place
+│   │   │           │           ├── plantRecord
+│   │   │           │           ├── post
+│   │   │           │           └── user
+│   │   │           ├── security
+│   │   │           ├── usecase
+│   │   │           │   ├── dto
+│   │   │           │   │   ├── place
+│   │   │           │   │   ├── plantRecord
+│   │   │           │   │   ├── post
+│   │   │           │   │   └── user
+│   │   │           │   └── interfaces
+│   │   │           └── util
+
+```
+
+
+
 # ER図
 ```mermaid
 erDiagram
