@@ -215,5 +215,5 @@ config/SecurityConfig.javaでセキュリティに関する設定を行なって
 
 ## スキーマ駆動開発
 開発はスキーマ駆動で開発を行っています。controller層では自動生成されたAPIインターフェースを継承して実装を行っております。
-詳しい解説は[https://github.com/calmandhelp/botapeer-openapi](botapeer-openapi)のリポジトリをご参照ください。
+詳しい解説は[botapeer-openapi](https://github.com/calmandhelp/botapeer-openapi)のリポジトリをご参照ください。
 
