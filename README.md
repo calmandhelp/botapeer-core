@@ -212,3 +212,8 @@ erDiagram
 config/SecurityConfig.javaでセキュリティに関する設定を行なっています。
 /apiがAPIのルートパスになります。ルートパス以降のGETでの呼び出しは全て許可しており、それ以外のAPIは認証時のみ利用可能です。  
 ただし、例外的に/api/authだけはユーザー作成やログインのために、POSTを呼び出す必要があるため認証をせずに呼び出すことができます。
+
+## スキーマ駆動開発
+開発はスキーマ駆動で開発を行っています。controller層では自動生成されたAPIインターフェースを継承して実装を行っております。
+詳しい解説は[https://github.com/calmandhelp/botapeer-openapi](botapeer-openapi)のリポジトリをご参照ください。
+
