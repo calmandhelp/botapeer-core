@@ -107,12 +107,15 @@ public class UserUsecase implements IUserUsecase {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
 
-		Set<ConstraintViolation<CreateUserRequest>> violations = validator.validate(request);
+		User u = UpdateUserRequestDto.toModel(request);
+		u.setDescription("");
+		u.setProfileImage("");
+		u.setCoverImage("");
+
+		Set<ConstraintViolation<User>> violations = validator.validate(u);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException(violations);
 		}
-
-		User u = UpdateUserRequestDto.toModel(request);
 
 		Password password = new Password(request.getPassword());
 

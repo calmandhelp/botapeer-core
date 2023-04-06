@@ -50,7 +50,6 @@ public class User {
 		this.coverImage = coverImage;
 	}
 
-	@Positive
 	private Integer id;
 
 	@NotNull

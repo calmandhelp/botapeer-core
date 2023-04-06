@@ -179,6 +179,9 @@ public class UserServiceImplTests {
 	@Test
 	void testCreateUser() {
 		User user = new User(new UserName("shiro"), "shiro@shiro.com", new Password("password"));
+		user.setDescription("");
+		user.setProfileImage("");
+		user.setCoverImage("");
 		Integer createdId = userService.create(user, "encryptedPassword");
 		Assertions.assertEquals(4, createdId);
 		Assertions.assertEquals(2, user.getStatus());

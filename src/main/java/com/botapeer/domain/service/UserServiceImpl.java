@@ -72,10 +72,6 @@ public class UserServiceImpl implements IUserService {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
 
-		user.setDescription(StringUtil.null2Void(user.getDescription()));
-		user.setProfileImage(StringUtil.null2Void(user.getProfileImage()));
-		user.setCoverImage(StringUtil.null2Void(user.getCoverImage()));
-
 		user.setStatus(2);
 		return this.userRepository.create(user, encryptedPassword);
 	}
