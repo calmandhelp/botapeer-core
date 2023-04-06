@@ -11,7 +11,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
-import com.botapeer.adapter.IUploader;
+import com.botapeer.domain.adapter.IUploader;
+import com.botapeer.exception.InvalidImageException;
+import com.botapeer.util.ImageUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,8 @@ import com.botapeer.util.ValidateUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import static org.apache.commons.lang3.ObjectUtils.isEmpty;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements IUserService {
@@ -39,7 +43,7 @@ public class UserServiceImpl implements IUserService {
 	private final Validator validator;
 	private final IUploader uploader;
 
-	@Value(value = "${imagePath}")
+	@Value(value = "${IMAGE_PATH}")
 	private String imagePath;
 
 	@Override
@@ -108,6 +112,7 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public Optional<User> update(User userForUpdate , MultipartFile profileImage, MultipartFile coverImage) {
+
 		Map<String, String> errorMessages = new HashMap<>();
 		Optional<String> validationMessage;
 		validationMessage = ValidateUtils.validateNullOrEmpty(userForUpdate, "userForUpdate is null or empty");
@@ -140,11 +145,6 @@ public class UserServiceImpl implements IUserService {
 			throw new ConstraintViolationException(violations);
 		}
 
-		Optional<User> savedUser = findById((long) userForUpdate.getId());
-		if (savedUser.isEmpty()) {
-			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
-		}
-
 		validationMessage = ValidateUtils.validatePresent(userForUpdate.getPassword(), "password is present");
 		validationMessage.ifPresent(msg -> errorMessages.put("password_present", msg));
 		validationMessage = ValidateUtils.validatePresent(userForUpdate.getStatus(), "status is present");
@@ -154,16 +154,20 @@ public class UserServiceImpl implements IUserService {
 			throw new IllegalArgumentException(errorMessages.toString());
 		}
 
-		String coverImageName = null;
-		try {
-			coverImageName = uploader.uploadImage(coverImage);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+		Optional<User> savedUser = findById((long) userForUpdate.getId());
+		if (savedUser.isEmpty()) {
+			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
 		}
-		if (StringUtils.isEmpty(coverImageName)) {
-			userForUpdate.setCoverImage(savedUser.get().getCoverImage());
-		} else {
-			userForUpdate.setCoverImage(imagePath + coverImageName);
+
+		if(!isEmpty(profileImage)) {
+			if(ImageUtils.isImage(profileImage)) {
+				throw new InvalidImageException("The uploaded file is not an image.");
+			}
+		}
+		if(!isEmpty(coverImage)) {
+			if(ImageUtils.isImage(coverImage)) {
+				throw new InvalidImageException("The uploaded file is not an image.");
+			}
 		}
 
 		String profileImageName = null;
@@ -176,6 +180,18 @@ public class UserServiceImpl implements IUserService {
 			userForUpdate.setProfileImage(savedUser.get().getProfileImage());
 		} else {
 			userForUpdate.setProfileImage(imagePath + profileImageName);
+		}
+
+		String coverImageName = null;
+		try {
+			coverImageName = uploader.uploadImage(coverImage);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		if (StringUtils.isEmpty(coverImageName)) {
+			userForUpdate.setCoverImage(savedUser.get().getCoverImage());
+		} else {
+			userForUpdate.setCoverImage(imagePath + coverImageName);
 		}
 
 		if(!this.userRepository.update(userForUpdate)) {

@@ -3,7 +3,7 @@ package com.botapeer.usecase;
 import java.io.IOException;
 import java.util.Optional;
 
-import com.botapeer.adapter.IUploader;
+import com.botapeer.domain.adapter.IUploader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +21,6 @@ import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.usecase.dto.plantRecord.CreatePostFormDataDto;
 import com.botapeer.usecase.dto.post.PostResponseDto;
 import com.botapeer.usecase.interfaces.IPostUsecase;
-import com.botapeer.adapter.Uploader;
 
 import lombok.RequiredArgsConstructor;
 import model.CreatePostFormData;

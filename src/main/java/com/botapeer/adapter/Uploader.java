@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 import com.botapeer.constants.AppConstants;
+import com.botapeer.domain.adapter.IUploader;
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
-public class Uploader implements IUploader{
+public class Uploader implements IUploader {
 
 	private final FileUploadService fileUploadService;
 

@@ -1,4 +1,4 @@
-package com.botapeer.adapter;
+package com.botapeer.domain.adapter;
 
 import org.springframework.web.multipart.MultipartFile;
 

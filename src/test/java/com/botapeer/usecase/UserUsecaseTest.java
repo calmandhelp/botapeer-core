@@ -1,7 +1,6 @@
 package com.botapeer.usecase;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,8 +9,6 @@ import java.util.Optional;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
-import com.botapeer.adapter.IUploader;
-import model.UpdateUserFormData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,11 +17,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.botapeer.domain.model.user.Password;
 import com.botapeer.domain.model.user.User;
@@ -32,7 +27,6 @@ import com.botapeer.domain.model.user.UserName;
 import com.botapeer.domain.service.interfaces.IPlantRecordService;
 import com.botapeer.domain.service.interfaces.IUserService;
 import com.botapeer.exception.NotFoundException;
-import com.botapeer.adapter.Uploader;
 
 import model.CreateUserRequest;
 import model.UserResponse;

@@ -1,6 +1,5 @@
 package com.botapeer.usecase;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,13 +10,10 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
-import com.botapeer.adapter.IUploader;
 import com.botapeer.exception.DifferentUserException;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,7 +30,6 @@ import com.botapeer.exception.NotFoundException;
 import com.botapeer.usecase.dto.user.UpdateUserRequestDto;
 import com.botapeer.usecase.dto.user.UserResponseDto;
 import com.botapeer.usecase.interfaces.IUserUsecase;
-import com.botapeer.adapter.Uploader;
 import com.botapeer.util.NumberUtils;
 import com.botapeer.util.StringUtil;
 import com.botapeer.util.ValidateUtils;
