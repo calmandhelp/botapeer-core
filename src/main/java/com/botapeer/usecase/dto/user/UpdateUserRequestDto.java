@@ -26,7 +26,6 @@ public class UpdateUserRequestDto {
 
 	public static User toModel(UpdateUserFormData request) {
 		User user = new User();
-		System.out.println("name: " + request.getName());
 		UserName userName = new UserName(request.getName());
 		user.setName(userName);
 		user.setEmail(request.getEmail());

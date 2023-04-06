@@ -2,6 +2,7 @@ package com.botapeer.domain.service;
 
 import java.util.Optional;
 
+import com.botapeer.domain.service.interfaces.IUserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,11 +18,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-	private final IUserRepository userRepository;
+	private final IUserService userService;
 
 	@Override
 	public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-		Optional<User> user = userRepository.findUserByNameOrEmail(usernameOrEmail);
+		Optional<User> user = userService.findByUserNameOrEmail(usernameOrEmail);
 		if (!user.isPresent()) {
 			throw new UsernameNotFoundException(usernameOrEmail + "が存在しません");
 		}
@@ -29,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	}
 
 	public UserDetails loadUserById(Long userId) {
-		Optional<User> user = userRepository.findById(userId);
+		Optional<User> user = userService.findById(userId);
 		if (!user.isPresent()) {
 			throw new UsernameNotFoundException(userId + "が存在しません");
 		}

@@ -139,8 +139,17 @@ public class UserUsecase implements IUserUsecase {
 		} else if(!NumberUtils.canString2Number(userId)) {
 			errorMessages.put("userId_CannotConvert2Number", "userId cannot be converted to a number");
 		}
+
+		validationMessage = ValidateUtils.validateNull(formData, "formData is null");
+		validationMessage.ifPresent(message -> errorMessages.put("formData_nullOrEmpty", message));
+
 		if (validationMessage.isPresent()) {
 			throw new IllegalArgumentException(errorMessages.toString());
+		}
+
+		Set<ConstraintViolation<UpdateUserFormData>> violations = validator.validate(formData);
+		if (!violations.isEmpty()) {
+			throw new ConstraintViolationException(violations);
 		}
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -203,25 +212,39 @@ public class UserUsecase implements IUserUsecase {
 
 	@Override
 	public Optional<UserResponse> findByPlantRecordId(String plantRecordId) {
-		try {
-			Long id = Long.parseLong(plantRecordId);
+		Map<String, String> errorMessages = new HashMap<>();
+		Optional<String> validationMessage;
+		validationMessage = ValidateUtils.validateNullOrEmpty(plantRecordId, "plantRecordId is null or empty");
 
-			Optional<PlantRecord> plantRecord = plantRecordService.findById(id);
-			if (ObjectUtils.isEmpty(plantRecord)) {
-				throw new NotFoundException(ResponseConstants.NOTFOUND_PLANT_RECORD_CODE);
-			}
-
-			int userId = plantRecord.get().getUserId();
-
-			Optional<User> user = userService.findById((long) userId);
-
-			Optional<UserResponse> r = UserResponseDto.toResponse(user);
-
-			return r;
-		} catch (NumberFormatException e) {
-			logger.error(e.getMessage(), e);
+		if(validationMessage.isPresent()) {
+			errorMessages.put("plantRecordId_nullOrEmpty", validationMessage.get());
+		} else if(!NumberUtils.canString2Number(plantRecordId)) {
+			errorMessages.put("userId_CannotConvert2Number", "userId cannot be converted to a number");
 		}
-		return null;
+		if (validationMessage.isPresent()) {
+			throw new IllegalArgumentException(errorMessages.toString());
+		}
+
+		Long plantRcordIdLong = Long.parseLong(plantRecordId);
+		validationMessage = ValidateUtils.validateZeroOrNegative(plantRcordIdLong, "plantRcordId is zero or negative");
+		validationMessage.ifPresent(s -> errorMessages.put("userId_ZeroOrNegative", s));
+
+		if (validationMessage.isPresent()) {
+			throw new IllegalArgumentException(errorMessages.toString());
+		}
+
+		Optional<PlantRecord> plantRecord = plantRecordService.findById(plantRcordIdLong);
+		if (ObjectUtils.isEmpty(plantRecord)) {
+			throw new NotFoundException(ResponseConstants.NOTFOUND_PLANT_RECORD_CODE);
+		}
+
+		int userId = plantRecord.get().getUserId();
+
+		Optional<User> user = userService.findById((long) userId);
+
+		Optional<UserResponse> r = UserResponseDto.toResponse(user);
+
+		return r;
 	}
 
 }

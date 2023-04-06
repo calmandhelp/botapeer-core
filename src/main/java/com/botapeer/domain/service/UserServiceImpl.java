@@ -48,20 +48,6 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public Optional<User> findById(Long userId) {
-		Map<String, String> errorMessages = new HashMap<>();
-		Optional<String> validationMessage;
-
-		validationMessage = ValidateUtils.validateNull(userId, "userId is null");
-		validationMessage.ifPresent(msg -> errorMessages.put("userId_null", msg));
-		if (!errorMessages.isEmpty()) {
-			throw new IllegalArgumentException(errorMessages.toString());
-		}
-
-		validationMessage = ValidateUtils.validateZeroOrNegative(userId, "userId is zero or negative");
-		validationMessage.ifPresent(msg -> errorMessages.put("userId_ZeroOrNegative", msg));
-		if (!errorMessages.isEmpty()) {
-			throw new IllegalArgumentException(errorMessages.toString());
-		}
 		Optional<User> u = userRepository.findById(userId);
 		if (u.isEmpty()) {
 			throw new NotFoundException(ResponseConstants.NOTFOUND_USER_CODE);
@@ -72,15 +58,6 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public Collection<User> findUsers(String name) {
-		Map<String, String> errorMessages = new HashMap<>();
-		Optional<String> validationMessage;
-		validationMessage = ValidateUtils.validateNull(name, "name is null");
-		validationMessage.ifPresent(msg -> errorMessages.put("name_null", msg));
-
-		if (!errorMessages.isEmpty()) {
-			name = StringUtil.null2Void(name);
-		}
-
 		return this.userRepository.findUsers(name);
 	}
 
@@ -88,8 +65,6 @@ public class UserServiceImpl implements IUserService {
 	public Integer create(User user, String encryptedPassword) {
 		Map<String, String> errorMessages = new HashMap<>();
 		Optional<String> validationMessage;
-		validationMessage = ValidateUtils.validateNullOrEmpty(user, "user is null or empty");
-		validationMessage.ifPresent(msg -> errorMessages.put("user_nullOrEmpty", msg));
 		validationMessage = ValidateUtils.validateNullOrEmpty(encryptedPassword, "encryptedPassword is null or empty");
 		validationMessage.ifPresent(msg -> errorMessages.put("encryptedPassword_nullOrEmpty", msg));
 
@@ -101,11 +76,6 @@ public class UserServiceImpl implements IUserService {
 		user.setProfileImage(StringUtil.null2Void(user.getProfileImage()));
 		user.setCoverImage(StringUtil.null2Void(user.getCoverImage()));
 
-		Set<ConstraintViolation<User>> violations = validator.validate(user);
-		if (!violations.isEmpty()) {
-			throw new ConstraintViolationException(violations);
-		}
-
 		user.setStatus(2);
 		return this.userRepository.create(user, encryptedPassword);
 	}
@@ -115,35 +85,10 @@ public class UserServiceImpl implements IUserService {
 
 		Map<String, String> errorMessages = new HashMap<>();
 		Optional<String> validationMessage;
-		validationMessage = ValidateUtils.validateNullOrEmpty(userForUpdate, "userForUpdate is null or empty");
-		validationMessage.ifPresent(msg -> errorMessages.put("user_nullOrEmpty", msg));
-
-		if (!errorMessages.isEmpty()) {
-			throw new IllegalArgumentException(errorMessages.toString());
-		}
-
-		validationMessage = ValidateUtils.validateNull(userForUpdate.getId(), "userId is null");
-		validationMessage.ifPresent(msg -> errorMessages.put("userId_null", msg));
-
-		if (!errorMessages.isEmpty()) {
-			throw new IllegalArgumentException(errorMessages.toString());
-		}
-
-		validationMessage = ValidateUtils.validateZeroOrNegative(userForUpdate.getId(), "userId is zero or negative");
-		validationMessage.ifPresent(msg -> errorMessages.put("userId_ZeroOrNegative", msg));
-
-		if (!errorMessages.isEmpty()) {
-			throw new IllegalArgumentException(errorMessages.toString());
-		}
 
 		userForUpdate.setDescription(StringUtil.null2Void(userForUpdate.getDescription()));
 		userForUpdate.setProfileImage(StringUtil.null2Void(userForUpdate.getProfileImage()));
 		userForUpdate.setCoverImage(StringUtil.null2Void(userForUpdate.getCoverImage()));
-
-		Set<ConstraintViolation<User>> violations = validator.validate(userForUpdate);
-		if (!violations.isEmpty()) {
-			throw new ConstraintViolationException(violations);
-		}
 
 		validationMessage = ValidateUtils.validatePresent(userForUpdate.getPassword(), "password is present");
 		validationMessage.ifPresent(msg -> errorMessages.put("password_present", msg));

@@ -158,16 +158,9 @@ public class UserServiceImplTests {
 		Assertions.assertEquals("説明1", user.getDescription());
 		Assertions.assertEquals("", user.getProfileImage());
 		Assertions.assertEquals("", user.getCoverImage());
-		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			userService.findById(-1L);
-		});
-		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			userService.findById(null);
-		});
 		Assertions.assertThrows(NotFoundException.class, () -> {
 			userService.findById(100L);
 		});
-
 	}
 
 	@Test
@@ -181,12 +174,6 @@ public class UserServiceImplTests {
 		Assertions.assertEquals(1, userFoundByName.stream().findFirst().get().getStatus());
 		Assertions.assertEquals("", userFoundByName.stream().findFirst().get().getProfileImage());
 		Assertions.assertEquals("", userFoundByName.stream().findFirst().get().getCoverImage());
-		Collection<User> userNull = userService.findUsers(null);
-		Assertions.assertEquals(3, userNull.size());
-		Collection<User> userEmpty = userService.findUsers("");
-		Assertions.assertEquals(3, userEmpty.size());
-		Collection<User> userNotFound = userService.findUsers("test");
-		Assertions.assertEquals(0, userNotFound.size());
 	}
 
 	@Test
@@ -204,14 +191,10 @@ public class UserServiceImplTests {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			userService.create(user, null);
 		});
-		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			userService.create(null, "encryptedPassword");
-		});
 	}
 
 	@Test
 	void testUpdateUser() {
-
 //		画像更新用
 		String contentProfile = "profile content";
 		String fileNameProfile = "profile.jpg";
@@ -224,7 +207,6 @@ public class UserServiceImplTests {
 		String contentTypeCover = "image/jpg";
 		byte[] contentBytesCover = contentCover.getBytes(StandardCharsets.UTF_8);
 		MultipartFile mockMultipartFileCoverImage = new MockMultipartFile(contentCover, fileNameCover, contentTypeCover, contentBytesCover);
-
 
 		User successUser = new User(1, new UserName("goro"), "goro@goro.com", "説明5",
 				"/image/imagePath1", "/image/imagePath2");
@@ -247,10 +229,6 @@ public class UserServiceImplTests {
 		Assertions.assertEquals("/images/" + "uploadedFileName", updatedUserWithNullProfileImageFile.get().getProfileImage());
 		Assertions.assertEquals("/images/" + "uploadedFileName", updatedUserWithNullCoverImageFile.get().getCoverImage());
 
-		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			userService.update(null, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
-		});
-
 		User userWithPassword = new User(1, new UserName("goro"), "goro@goro.com", "説明5",
 				"/image/imagePath1", "/image/imagePath2");
 		userWithPassword.setPassword(new Password("password"));
@@ -263,39 +241,6 @@ public class UserServiceImplTests {
 		userWithStatus.setStatus(2);
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			userService.update(userWithStatus, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
-		});
-
-		User userWithNegativeId = new User(-1000, new UserName("goro"), "goro@goro.com", "説明5",
-				"/image/imagePath1", "/image/imagePath2");
-		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			userService.update(userWithNegativeId, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
-		});
-
-		User userWithNullId = new User(null, new UserName("goro"), "goro@goro.com", "説明5",
-				"/image/imagePath1", "/image/imagePath2");
-		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			userService.update(userWithNullId, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
-		});
-
-		User userWithNullUserName = new User(1, null, "goro@goro.com", "説明5",
-				"/image/imagePath1", "/image/imagePath2");
-		setValidation(userWithNullUserName);
-		Assertions.assertThrows(ConstraintViolationException.class, () -> {
-			userService.update(userWithNullUserName, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
-		});
-
-		User userWithNullEmail = new User(1, new UserName("goro"), null, "説明5",
-				"/image/imagePath1", "/image/imagePath2");
-		setValidation(userWithNullEmail);
-		Assertions.assertThrows(ConstraintViolationException.class, () -> {
-			userService.update(userWithNullEmail, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
-		});
-
-		User userWithEmptyEmail = new User(1, new UserName("goro"), "", "説明5",
-				"/image/imagePath1", "/image/imagePath2");
-		setValidation(userWithEmptyEmail);
-		Assertions.assertThrows(ConstraintViolationException.class, () -> {
-			userService.update(userWithEmptyEmail, mockMultipartFileProfileImage, mockMultipartFileCoverImage);
 		});
 
 		User userWithNullProfileImage = new User(1, new UserName("goro"), "", "説明5",
@@ -338,7 +283,6 @@ public class UserServiceImplTests {
 		});
 	}
 
-	//
 	@Test
 	void testFindByUserNameOrEmail() {
 		Assertions.assertThrows(NotFoundException.class, () -> {
