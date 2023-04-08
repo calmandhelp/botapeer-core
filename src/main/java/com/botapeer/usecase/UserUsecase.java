@@ -180,8 +180,6 @@ public class UserUsecase implements IUserUsecase {
 
 		u.setId(targetUser.get().getId());
 
-		u.setPassword(targetUser.get().getPassword());
-
 		Optional<User> updatedUser = userService.update(u, profileImage, coverImage);
 		if (updatedUser.isEmpty()) {
 			logger.error("user could not be updated");

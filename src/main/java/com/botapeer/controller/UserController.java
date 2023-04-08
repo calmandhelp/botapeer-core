@@ -52,11 +52,10 @@ public class UserController implements UsersApi {
 	@Override
 	@PatchMapping("/users/{userId}")
 	public ResponseEntity<UserResponse> updateUser(@PathVariable("userId") String userId,
-			@Valid UpdateUserFormData user,
+			@RequestPart(value = "formData", required = false) @Valid UpdateUserFormData formData,
 			@RequestPart(value = "profileImage", required = false) MultipartFile profileImage,
 			@RequestPart(value = "coverImage", required = false) MultipartFile coverImage) {
-
-		Optional<UserResponse> u = userUsecase.update(user, profileImage, coverImage, userId);
+		Optional<UserResponse> u = userUsecase.update(formData, profileImage, coverImage, userId);
 		return new ResponseEntity<>(u.get(), HttpStatus.OK);
 	}
 

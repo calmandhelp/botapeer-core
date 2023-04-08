@@ -6,6 +6,8 @@ import com.botapeer.domain.model.user.User;
 import com.botapeer.domain.model.user.UserName;
 import com.botapeer.exception.NotFoundException;
 import com.botapeer.usecase.interfaces.IUserUsecase;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import model.UpdateUserFormData;
 import model.UserResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,10 +18,16 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class UserControllerTests {
+
     private MockMvc mockMvc;
 
     @Mock
@@ -69,10 +78,29 @@ class UserControllerTests {
 
         MockitoAnnotations.openMocks(this);
 
+        Mockito.when(userUsecase.findById(Mockito.anyString())).thenReturn(Optional.empty());
         Mockito.when(userUsecase.findUsers("")).thenReturn(userList);
         Mockito.when(userUsecase.findUsers(null)).thenReturn(userList);
+        Mockito.when(userUsecase.update(Mockito.isA(UpdateUserFormData.class),
+                Mockito.isA(MultipartFile.class),
+                Mockito.isA(MultipartFile.class),
+                Mockito.anyString())).thenAnswer(invocation -> {
+                UpdateUserFormData updateUserFormData = invocation.getArgument(0);
+                String updateUserId = invocation.getArgument(3);
+
+                for(UserResponse updateMockUserInUserList: userList) {
+                    if(updateUserId.equals(updateMockUserInUserList.getId().toString())) {
+                        updateMockUserInUserList.setName(updateUserFormData.getName());
+                        updateMockUserInUserList.setEmail(updateUserFormData.getEmail());
+                        return Optional.of(updateMockUserInUserList);
+                    }
+                }
+                    return Optional.empty();
+                });
 
             for(UserResponse mockUserInUserList: userList) {
+                Mockito.when(userUsecase.findById(mockUserInUserList.getId().toString())).thenReturn(Optional.of(mockUserInUserList));
+
                 Mockito.when(userUsecase.findUsers(mockUserInUserList.getName())).thenAnswer(invocation -> {
                     String userName = invocation.getArgument(0);
                     if(mockUserInUserList.getName().equals(userName)) {
@@ -83,6 +111,8 @@ class UserControllerTests {
                     return Optional.empty();
                 });
         };
+
+        Mockito.when(userUsecase.findByPlantRecordId(Mockito.anyString())).thenReturn(Optional.of(new UserResponse()));
 
         this.mockMvc = MockMvcBuilders.standaloneSetup(new UserController(userUsecase)).build();
     }
@@ -97,7 +127,6 @@ class UserControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
 
-
         mockMvc.perform(MockMvcRequestBuilders.get("/api/users").param("username", "taro"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -107,6 +136,51 @@ class UserControllerTests {
                 .andExpect(jsonPath("$[0].profileImage", is("/images/profileImage")))
                 .andExpect(jsonPath("$[0].coverImage", is("/images/coverImage")))
                 .andExpect(jsonPath("$[0].status", is(1)));
+    }
+
+    @Test
+    void findUserByIdTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/{userId}", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("name", is("taro")))
+                .andExpect(jsonPath("email", is("taro@taro.com")))
+                .andExpect(jsonPath("description", is("説明1")))
+                .andExpect(jsonPath("profileImage", is("/images/profileImage")))
+                .andExpect(jsonPath("coverImage", is("/images/coverImage")))
+                .andExpect(jsonPath("status", is(1)));
+    }
+
+    @Test
+    void updateUserTest() throws Exception {
+        UpdateUserFormData formData = new UpdateUserFormData("goro", "goro@goro.com");
+        MockMultipartFile formDataImage = new MockMultipartFile("formData", "", MediaType.APPLICATION_JSON_VALUE, new ObjectMapper().writeValueAsBytes(formData));
+        MockMultipartFile profileImage = new MockMultipartFile("profileImage", new byte[0]);
+        MockMultipartFile coverImage = new MockMultipartFile("coverImage", new byte[0]);
+
+        RequestPostProcessor requestPostProcessor = request -> {
+            request.setMethod("PATCH");
+            return request;
+        };
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/api/users/{userId}", 1)
+                .file(formDataImage)
+                .file(profileImage)
+                .file(coverImage)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE)
+                .with(requestPostProcessor))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void deleteUserTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/users/{userId}", 1))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void findUserByPlantRecordIdTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/users/plant_records/{plantRecordId}", 1))
+                .andExpect(status().isOk());
     }
 
 }
