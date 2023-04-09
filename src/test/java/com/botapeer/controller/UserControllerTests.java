@@ -152,15 +152,15 @@ class UserControllerTests {
 
     @Test
     void updateUserTest() throws Exception {
-        UpdateUserFormData formData = new UpdateUserFormData("goro", "goro@goro.com");
-        MockMultipartFile formDataImage = new MockMultipartFile("formData", "", MediaType.APPLICATION_JSON_VALUE, new ObjectMapper().writeValueAsBytes(formData));
-        MockMultipartFile profileImage = new MockMultipartFile("profileImage", new byte[0]);
-        MockMultipartFile coverImage = new MockMultipartFile("coverImage", new byte[0]);
-
         RequestPostProcessor requestPostProcessor = request -> {
             request.setMethod("PATCH");
             return request;
         };
+
+        UpdateUserFormData formData = new UpdateUserFormData("goro", "goro@goro.com");
+        MockMultipartFile formDataImage = new MockMultipartFile("formData", "", MediaType.APPLICATION_JSON_VALUE, new ObjectMapper().writeValueAsBytes(formData));
+        MockMultipartFile profileImage = new MockMultipartFile("profileImage", new byte[0]);
+        MockMultipartFile coverImage = new MockMultipartFile("coverImage", new byte[0]);
 
         mockMvc.perform(MockMvcRequestBuilders.multipart("/api/users/{userId}", 1)
                 .file(formDataImage)
@@ -169,6 +169,32 @@ class UserControllerTests {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE)
                 .with(requestPostProcessor))
                 .andExpect(status().isOk());
+
+        UpdateUserFormData formDataTooLongName = new UpdateUserFormData("goroaaafegghwagera", "goro@goro.com");
+        MockMultipartFile formDataImageTooLongName = new MockMultipartFile("formData", "", MediaType.APPLICATION_JSON_VALUE, new ObjectMapper().writeValueAsBytes(formDataTooLongName));
+        MockMultipartFile profileImageTooLongName = new MockMultipartFile("profileImage", new byte[0]);
+        MockMultipartFile coverImageTooLongName = new MockMultipartFile("coverImage", new byte[0]);
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/api/users/{userId}", 1)
+                        .file(formDataImageTooLongName)
+                        .file(profileImageTooLongName)
+                        .file(coverImageTooLongName)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE)
+                        .with(requestPostProcessor))
+                        .andExpect(status().is4xxClientError());
+
+        UpdateUserFormData formDataInvalidEmailFormat = new UpdateUserFormData("goro", "goro");
+        MockMultipartFile formDataImageInvalidEmailFormat = new MockMultipartFile("formData", "", MediaType.APPLICATION_JSON_VALUE, new ObjectMapper().writeValueAsBytes(formDataInvalidEmailFormat));
+        MockMultipartFile profileImageInvalidEmailFormat = new MockMultipartFile("profileImage", new byte[0]);
+        MockMultipartFile coverImageInvalidEmailFormat = new MockMultipartFile("coverImage", new byte[0]);
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/api/users/{userId}", 1)
+                        .file(formDataImageInvalidEmailFormat)
+                        .file(profileImageInvalidEmailFormat)
+                        .file(coverImageInvalidEmailFormat)
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE)
+                        .with(requestPostProcessor))
+                .andExpect(status().is4xxClientError());
     }
 
     @Test

@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-   botapeer_core:
+   botapeer_core_test:
       build:
          context: .
       ports:
@@ -11,9 +11,9 @@ services:
       - "${HOME}/.m2:/root/.m2"
       tty: true
       depends_on:
-      - db
+      - db_test
       environment:
-       - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+       - SPRING_DATASOURCE_URL=jdbc:mysql://db_test/${DB_SCHEMA}
        - DB_USERNAME=${DB_USERNAME}
        - DB_PASSWORD=${DB_PASSWORD}
        - DB_DRIVER_CLASS_NAME=${DB_DRIVER_CLASS_NAME}
@@ -23,10 +23,10 @@ services:
        - JWT_SECRET=${JWT_SECRET}
        - JWT_EXPIRATION_IN_MS=${JWT_EXPIRATION_IN_MS}
        - IMAGE_PATH=${IMAGE_PATH}
-   db:
-      image: mysql:8.0.31
-      ports:
-      - 33061:3306
-      environment:
-         MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-         MYSQL_DATABASE: ${DB_SCHEMA}
+   db_test:
+     image: mysql:8.0.31
+     ports:
+       - 33062:3306
+     environment:
+       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+       MYSQL_DATABASE: ${DB_SCHEMA}

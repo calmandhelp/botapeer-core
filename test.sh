@@ -1,9 +1,9 @@
 #!/bin/bash
 
 source .env
-mvn test -DB_URL=${DB_URL} \
+mvn test -DB_URL=jdbc:mysql://db_test \
 -DB_SCHEMA=${DB_SCHEMA} \
--DSPRING_DATASOURCE_URL=jdbc:mysql://localhost:33061/${DB_SCHEMA} \
+-DSPRING_DATASOURCE_URL=jdbc:mysql://localhost:33062/${DB_SCHEMA} \
 -DDB_USERNAME=${DB_USERNAME} \
 -DDB_PASSWORD=${DB_PASSWORD} \
 -DDB_DRIVER_CLASS_NAME=${DB_DRIVER_CLASS_NAME} \
