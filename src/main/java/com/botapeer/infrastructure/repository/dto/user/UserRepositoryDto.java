@@ -30,7 +30,7 @@ public class UserRepositoryDto {
 			u.setPassword(p);
 			return Optional.ofNullable(u);
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	public static Collection<User> toModel(Collection<UserEntity> users) {

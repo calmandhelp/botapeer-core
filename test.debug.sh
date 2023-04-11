@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# for debug
 source .env
 mvn test -Dmaven.surefire.debug -DB_URL=jdbc:mysql://db_test \
 -DB_SCHEMA=${DB_SCHEMA} \
