@@ -103,6 +103,7 @@ public class UserUsecaseTest {
 		
 		Mockito.when(userService.findUsers(Mockito.any())).thenReturn(new ArrayList<>());
 		Mockito.when(userService.findUsers("")).thenReturn(userList);
+		Mockito.when(userService.findUsers(null)).thenReturn(userList);
 		Mockito.when(userService.create(Mockito.any(), Mockito.any()))
 		.thenAnswer(invocation -> {
 			User createdUser = invocation.getArgument(0);

@@ -88,7 +88,7 @@ public class UserUsecase implements IUserUsecase {
 		validationMessage = ValidateUtils.validateNullOrEmpty(name, "userId is null or empty");
 		validationMessage.ifPresent(msg -> errorMessages.put("userId_nullOrEmpty", msg));
 		if (!errorMessages.isEmpty()) {
-			name = StringUtil.null2Void(name);
+			name = null;
 		}
 
 		Collection<User> user = userService.findUsers(name);

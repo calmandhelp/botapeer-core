@@ -37,8 +37,8 @@ public class UserControllerTest {
                 },
                 ""
         );
-        assertThat(HttpStatus.OK).isEqualTo(responseEmptyName.getStatusCode());
-        assertThat(new ArrayList<>()).isEqualTo(responseEmptyName.getBody());
+        assertThat(responseEmptyName.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseEmptyName.getBody().size()).isEqualTo(3);
 
         ResponseEntity<List<UserResponse>> responseTaro = restTemplate.exchange(
                 "/api/users?username={username}",
@@ -48,7 +48,31 @@ public class UserControllerTest {
                 },
                 "taro"
         );
-        assertThat(HttpStatus.OK).isEqualTo(responseTaro.getStatusCode());
-        assertThat("taro").isEqualTo(responseTaro.getBody().get(0).getName());
+        assertThat(responseTaro.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseTaro.getBody().get(0).getName()).isEqualTo("taro");
+
+        ResponseEntity<List<UserResponse>> responseJiro = restTemplate.exchange(
+                "/api/users?username={username}",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<UserResponse>>() {
+                },
+                "jiro"
+        );
+        assertThat(responseJiro.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseJiro.getBody().get(0).getName()).isEqualTo("jiro");
+
+        ResponseEntity<List<UserResponse>> responseTaroEmail = restTemplate.exchange(
+                "/api/users?username={username}",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<UserResponse>>() {
+                },
+                "hanako"
+        );
+        assertThat(responseTaroEmail.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseTaroEmail.getBody().size()).isEqualTo(0);
+
+
     }
 }
